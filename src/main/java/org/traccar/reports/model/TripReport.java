@@ -19,6 +19,17 @@ package org.traccar.reports.model;
 public class TripReport extends BaseReport {
 
     private long startPositionId;
+    private String deviceName;
+
+    @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
     public long getStartPositionId() {
         return startPositionId;

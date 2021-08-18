@@ -87,6 +87,10 @@ public final class Stops {
                     groupsNames = groupsNames+','+group.getName();
                 }
             }
+            for(StopReport s :stops)
+            {
+                s.setDeviceName(device.getName());
+            }
             stopReportList.addAll(stops);
         }
 

@@ -32,6 +32,7 @@ import org.traccar.model.Geofence;
 import org.traccar.model.Group;
 import org.traccar.model.Maintenance;
 import org.traccar.reports.model.DeviceReport;
+import org.traccar.reports.model.EventReport;
 
 public final class Events {
 
@@ -66,7 +67,7 @@ public final class Events {
             long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
             Collection<String> types, Date from, Date to) throws SQLException, IOException {
         ReportUtils.checkPeriodLimit(from, to);
-        List<Event> eventList = new LinkedList<>();
+        List<EventReport> eventList = new LinkedList<>();
         ArrayList<DeviceReport> devicesEvents = new ArrayList<>();
         ArrayList<String> sheetNames = new ArrayList<>();
         HashMap<Long, String> geofenceNames = new HashMap<>();
@@ -107,6 +108,21 @@ public final class Events {
             }
            /* DeviceReport deviceEvents = new DeviceReport();*/
             Device device = Context.getIdentityManager().getById(deviceId);
+            List<EventReport> eventReports = new LinkedList<>();
+            for (Event ev : events)
+            {
+
+                eventReports.add(EventReport.Builder()
+                        .setDeviceName(device.getName())
+                        .setEventTime(ev.getEventTime())
+                        .setGeofenceId(ev.getGeofenceId())
+                        .setMaintenanceId(ev.getMaintenanceId())
+                        .setPositionId(ev.getPositionId())
+                        .DeviceId(ev.getDeviceId())
+                        .Build()
+                );
+
+            }
             //deviceEvents.setDeviceName(device.getName());
             //sheetNames.add(WorkbookUtil.createSafeSheetName(deviceEvents.getDeviceName()));
             devicesNames = devicesNames+","+device.getName();
@@ -119,7 +135,7 @@ public final class Events {
             }
             /*deviceEvents.setObjects(events);*/
             //devicesEvents.add(deviceEvents);
-            eventList.addAll(events);
+            eventList.addAll(eventReports);
 
         }
         if(devicesNames.length() > 1)
@@ -130,9 +146,6 @@ public final class Events {
         {
             groupsNames = groupsNames.substring(1, groupsNames.length());
         }
-
-
-
         DeviceReport deviceEvents = new DeviceReport();
         deviceEvents.setDeviceName(devicesNames);
         deviceEvents.setObjects(eventList);

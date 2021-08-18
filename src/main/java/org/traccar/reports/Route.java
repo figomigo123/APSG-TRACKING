@@ -29,6 +29,7 @@ import org.traccar.model.Device;
 import org.traccar.model.Group;
 import org.traccar.model.Position;
 import org.traccar.reports.model.DeviceReport;
+import org.traccar.reports.model.RouteReport;
 
 public final class Route {
 
@@ -54,14 +55,38 @@ public final class Route {
         ArrayList<String> sheetNames = new ArrayList<>();
         String devicesNames = "";
         String groupsNames = "";
-        List<Position> positionList = new LinkedList<>();
+        List<RouteReport> positionList = new LinkedList<>();
         for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<Position> positions = Context.getDataManager()
                     .getPositions(deviceId, from, to);
-            positionList.addAll(positions);
-
+            List<RouteReport> routes = new LinkedList<>();
             Device device = Context.getIdentityManager().getById(deviceId);
+            for(Position p :positions)
+            {
+                routes.add( RouteReport.Builder()
+                        .setProtocol(p.getProtocol())
+                        .setAccuracy(p.getAccuracy())
+                        .setAddress(p.getAddress())
+                        .setAltitude(p.getAltitude())
+                        .setTime(p.getServerTime())
+                        .setCourse(p.getCourse())
+                        .setDeviceTime(p.getDeviceTime())
+                        .setFixTime(p.getFixTime())
+                        .setLatitude(p.getLatitude())
+                        .setLongitude(p.getLongitude())
+                        .setNetwork(p.getNetwork())
+                        .setOutdated(p.getOutdated())
+                        .setServerTime(p.getServerTime())
+                        .setSpeed(p.getSpeed())
+                        .setValid(p.getValid())
+                        .setDeviceName(device.getName())
+                        .Build()
+                );
+            }
+            positionList.addAll(routes);
+
+
             devicesNames = devicesNames+" , "+device.getName();
             //deviceRoutes.setDeviceName(device.getName());
           /*  if(sheetNames.stream().count() == 0)

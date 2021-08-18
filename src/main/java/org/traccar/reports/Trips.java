@@ -73,8 +73,13 @@ public final class Trips {
         for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<TripReport> trips = detectTrips(deviceId, from, to);
-
             Device device = Context.getIdentityManager().getById(deviceId);
+            for (TripReport tr : trips)
+            {
+                tr.setDeviceName(device.getName());
+            }
+
+
             //deviceTrips.setDeviceName(device.getName());
             //sheetNames.add(WorkbookUtil.createSafeSheetName(deviceTrips.getDeviceName()));
             devicesNames = devicesNames+","+device.getName();

@@ -165,7 +165,10 @@ public final class ReportUtils {
             xlsArea.setFormulaProcessor(new StandardFormulaProcessor());
             xlsArea.processFormulas();
         }
-        transformer.deleteSheet(xlsAreas.get(0).getStartCellRef().getSheetName());
+
+            transformer.deleteSheet(xlsAreas.get(0).getStartCellRef().getSheetName());
+
+
         transformer.write();
     }
 
