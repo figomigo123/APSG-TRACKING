@@ -33,12 +33,13 @@ public class EventReport extends Message {
     public EventReport() {
     }
 
-    public EventReport(String deviceName, Date eventTime, long positionId, long geofenceId, long maintenanceId) {
+    public EventReport(String deviceName, Date eventTime, long positionId, long geofenceId, long maintenanceId, String type) {
         this.deviceName = deviceName;
         this.eventTime = eventTime;
         this.positionId = positionId;
         this.geofenceId = geofenceId;
         this.maintenanceId = maintenanceId;
+        this.setType(type);
     }
 
     public static final String ALL_EVENTS = "allEvents";

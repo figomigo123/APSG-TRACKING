@@ -122,6 +122,6 @@ public class EventReportBuilder extends Message {
 
     public  EventReport Build()
     {
-        return  new EventReport(this.deviceName, this.eventTime, this.positionId, this.geofenceId, this.maintenanceId);
+        return  new EventReport(this.deviceName, this.eventTime, this.positionId, this.geofenceId, this.maintenanceId,this.getType() );
     }
 }
