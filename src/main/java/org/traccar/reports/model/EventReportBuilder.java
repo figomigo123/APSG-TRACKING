@@ -92,6 +92,12 @@ public class EventReportBuilder extends Message {
         return this;
     }
 
+    public EventReportBuilder Type(String type)
+    {
+        setType(type);
+        return this;
+    }
+
     private long geofenceId = 0;
 
     /*public long getGeofenceId() {

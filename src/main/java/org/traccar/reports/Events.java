@@ -119,6 +119,7 @@ public final class Events {
                         .setMaintenanceId(ev.getMaintenanceId())
                         .setPositionId(ev.getPositionId())
                         .DeviceId(ev.getDeviceId())
+                        .Type(ev.getType())
                         .Build()
                 );
 
