@@ -92,6 +92,11 @@ Ext.define('Traccar.view.map.Map', {
         // console.log(this.clusters.values_);
         // return this.clusters.values_.source;
     },
+    getClusterSource: function () {        
+        return this.clusters;
+        // console.log(this.clusters.values_);
+        // return this.clusters.values_.source;
+    },
 
     getAccuracySource: function () {
         return this.accuracySource;
@@ -147,50 +152,53 @@ Ext.define('Traccar.view.map.Map', {
         this.markersSource = new ol.source.Vector({
            
         });
+        console.log("Feature Collections", this.markersSource.featuresCollection_);
+
         this.map.addLayer(new ol.layer.Vector({
             source: this.markersSource
         }));
 
-        // var clusterSource = new ol.source.Cluster({
-        //     distance: 50,
-        //     source: this.markersSource
-        // });
+        var clusterSource = new ol.source.Cluster({
+            distance: 50,
+            source: this.markersSource
+        });
 
-        // var styleCache = {};
-        // this.clusters = new ol.layer.Vector({
-        //     source: clusterSource,
-        //     style: function (feature) {                
-        //         var size = feature.get('features').length;
-        //         if (size > 1) {
-        //             var style = styleCache[size];
-        //             if (!style) {
-        //                 style = new ol.style.Style({
-        //                     image: new ol.style.Circle({
-        //                         radius: 10,
-        //                         stroke: new ol.style.Stroke({
-        //                             color: '#fff'
-        //                         }),
-        //                         fill: new ol.style.Fill({
-        //                             color: '#3399CC'
-        //                         })
-        //                     }),
-        //                     text: new ol.style.Text({
-        //                         text: size.toString(),
-        //                         fill: new ol.style.Fill({
-        //                             color: '#fff'
-        //                         })
-        //                     })
-        //                 });
-        //                 styleCache[size] = style;
-        //             }
-        //             return style;
-        //         } else {
-        //             debugger
-        //             console.log("============================================", feature.get('features'));
-        //             return feature.get('features')[0].getStyle();
-        //         }
-        //     }
-        // });
-        // this.map.addLayer(this.clusters);
+       var styleCache = [];
+        this.clusters = new ol.layer.Vector({
+            source: clusterSource,
+            style: function (feature) {                
+                var size = feature.get('features').length;
+                var style = styleCache[size];
+                if (!style) {
+                    style = new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 10,
+                            stroke: new ol.style.Stroke({
+                                color: '#fff'
+                            }),
+                            fill: new ol.style.Fill({
+                                color: '#3399CC'
+                            })
+                        }),
+                        text: new ol.style.Text({
+                            text: size.toString(),
+                            fill: new ol.style.Fill({
+                                color: '#fff'
+                            })
+                        })
+                    });
+                    styleCache[size] = style;
+                }
+                return style;
+                // if (size > 1) {
+                   
+                // } else {
+                //     debugger
+                //     console.log("============================================", feature.get('features'));
+                //     return feature.get('features')[0].getStyle();
+                // }
+            }
+        });
+        this.map.addLayer(this.clusters);
     }
 });

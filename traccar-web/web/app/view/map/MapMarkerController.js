@@ -123,8 +123,13 @@ Ext.define('Traccar.view.map.MapMarkerController', {
 
         this.getView().getAccuracySource().addFeature(accuracyFeature);
         console.log(this.getView().getMarkersSource());
+        console.log(this.getView().getClusterSource().values_.source.features);
+        // this.getView().getMarkersSource().featuresCollection_.concat([]);
+        console.log("Collection", this.getView().getMarkersSource().featuresCollection_);
         debugger
-        this.getView().getMarkersSource().addFeature(positionFeature);
+       // this.getView().getMarkersSource().addFeatures([positionFeature]);
+    
+        this.getView().getClusterSource().values_.source.features.push(positionFeature);    
 
         this.geolocation = geolocation;
     },
