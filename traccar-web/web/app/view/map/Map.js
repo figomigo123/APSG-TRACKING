@@ -142,58 +142,55 @@ Ext.define('Traccar.view.map.Map', {
             name: 'accuracyLayer',
             source: this.accuracySource
         }));
-        // const coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-        // var features = [
-        //     new Feature(new Point(coordinates))
-        // ]
+        
 
         this.markersSource = new ol.source.Vector({
-            features: [],
+           
         });
-        // this.map.addLayer(new ol.layer.Vector({
-        //     source: this.markersSource
-        // }));
-
-        var clusterSource = new ol.source.Cluster({
-            distance: 50,
+        this.map.addLayer(new ol.layer.Vector({
             source: this.markersSource
-        });
+        }));
 
-        var styleCache = {};
-        this.clusters = new ol.layer.Vector({
-            source: clusterSource,
-            style: function (feature) {                
-                var size = feature.get('features').length;
-                if (size > 1) {
-                    var style = styleCache[size];
-                    if (!style) {
-                        style = new ol.style.Style({
-                            image: new ol.style.Circle({
-                                radius: 10,
-                                stroke: new ol.style.Stroke({
-                                    color: '#fff'
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: '#3399CC'
-                                })
-                            }),
-                            text: new ol.style.Text({
-                                text: size.toString(),
-                                fill: new ol.style.Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        });
-                        styleCache[size] = style;
-                    }
-                    return style;
-                } else {
-                    debugger
-                    console.log("============================================", feature.get('features'));
-                    return feature.get('features')[0].getStyle();
-                }
-            }
-        });
-        this.map.addLayer(this.clusters);
+        // var clusterSource = new ol.source.Cluster({
+        //     distance: 50,
+        //     source: this.markersSource
+        // });
+
+        // var styleCache = {};
+        // this.clusters = new ol.layer.Vector({
+        //     source: clusterSource,
+        //     style: function (feature) {                
+        //         var size = feature.get('features').length;
+        //         if (size > 1) {
+        //             var style = styleCache[size];
+        //             if (!style) {
+        //                 style = new ol.style.Style({
+        //                     image: new ol.style.Circle({
+        //                         radius: 10,
+        //                         stroke: new ol.style.Stroke({
+        //                             color: '#fff'
+        //                         }),
+        //                         fill: new ol.style.Fill({
+        //                             color: '#3399CC'
+        //                         })
+        //                     }),
+        //                     text: new ol.style.Text({
+        //                         text: size.toString(),
+        //                         fill: new ol.style.Fill({
+        //                             color: '#fff'
+        //                         })
+        //                     })
+        //                 });
+        //                 styleCache[size] = style;
+        //             }
+        //             return style;
+        //         } else {
+        //             debugger
+        //             console.log("============================================", feature.get('features'));
+        //             return feature.get('features')[0].getStyle();
+        //         }
+        //     }
+        // });
+        // this.map.addLayer(this.clusters);
     }
 });
