@@ -23,7 +23,7 @@ Ext.define('Traccar.view.ArrayListFilter', {
     type: 'arraylist',
 
     constructor: function (config) {
-        debugger
+        
         this.callParent([config]);
         this.filter.setFilterFn(function (item) {
             var i, property, value, splits;

@@ -49,6 +49,10 @@ Ext.define('Traccar.view.edit.DevicesController', {
             store: {
                 '#Devices': {
                     update: 'onUpdateDevice'
+                },
+                '#VisibleDevices': {
+                    datachanged: 'onUpdateDevice',
+                    filterchange: 'onUpdateDevice'
                 }
             }
         }
@@ -157,5 +161,9 @@ Ext.define('Traccar.view.edit.DevicesController', {
         } else {
             deviceList.clearFilter();
         }        
-    }
+    },
+    onUpdateDevice: function (store) {
+        this.lookupReference('toolbarTitle').setText(Strings.deviceTitle + ' (' + store.count() + ')');
+        this.updateButtons(this.getView().getSelectionModel().getSelected().items);
+    },
 });
