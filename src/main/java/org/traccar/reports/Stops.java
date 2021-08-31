@@ -107,7 +107,8 @@ public final class Stops {
         devicesStops.add(deviceStops);
         deviceStops.setDeviceName(devicesNames);
         deviceStops.setGroupName(devicesNames);
-        sheetNames.add(devicesNames);
+        /*sheetNames.add(devicesNames);*/
+        sheetNames.add("Stops");
         String templatePath = Context.getConfig().getString("report.templatesPath",
                 "templates/export/");
         try (InputStream inputStream = new FileInputStream(templatePath + "/stops.xlsx")) {

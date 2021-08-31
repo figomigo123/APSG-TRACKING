@@ -125,7 +125,7 @@ Ext.define('Traccar.view.map.MapMarkerController', {
         console.log(this.getView().getMarkersSource());
         console.log(this.getView().getClusterSource().values_.source.features);
         // this.getView().getMarkersSource().featuresCollection_.concat([]);
-        console.log("Collection", this.getView().getMarkersSource().featuresCollection_);
+        console.log("Collection", this.getView().getMarkersSource());
         debugger
        // this.getView().getMarkersSource().addFeatures([positionFeature]);
     

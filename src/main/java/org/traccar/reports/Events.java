@@ -152,7 +152,8 @@ public final class Events {
         deviceEvents.setObjects(eventList);
         deviceEvents.setGroupName(groupsNames);
         devicesEvents.add(deviceEvents);
-        sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));
+        /*sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));*/
+        sheetNames.add(WorkbookUtil.createSafeSheetName("Events"));
 
 
 

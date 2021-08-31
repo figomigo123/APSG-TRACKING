@@ -119,7 +119,8 @@ public final class Route {
         deviceRoutes.setObjects(positionList);
         devicesRoutes.add(deviceRoutes);
 
-        sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));
+        /*sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));*/
+        sheetNames.add(WorkbookUtil.createSafeSheetName("Routes"));
         String templatePath = Context.getConfig().getString("report.templatesPath",
                 "templates/export/");
         try (InputStream inputStream = new FileInputStream(templatePath + "/route.xlsx")) {

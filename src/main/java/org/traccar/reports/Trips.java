@@ -105,7 +105,8 @@ public final class Trips {
         DeviceReport deviceTrips = new DeviceReport();
         deviceTrips.setGroupName(groupNames);
         deviceTrips.setDeviceName(devicesNames);
-        sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));
+        /*sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));*/
+        sheetNames.add(WorkbookUtil.createSafeSheetName("Trips"));
         deviceTrips.setObjects(tripList);
         devicesTrips.add(deviceTrips);
 
