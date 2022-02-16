@@ -47,15 +47,8 @@ public class LandmarkResource extends BaseResource {
     @PermitAll
     @POST
     public Response add(Landmark entity) throws SQLException {
-        if (entity == null) {
-            entity = new Landmark();
-            entity.setName("landmark1");
-            entity.setDescription("this is my 1st landmark");
-            entity.setLatitude(31.2356);
-            entity.setLongitude(31.2356);
-            entity.setUserid(getUserId());
-        }
-        Context.getDataManager().addObject(entity);
+        if (entity != null)
+            Context.getDataManager().addObject(entity);
 
         return Response.ok().build();
     }
