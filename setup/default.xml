@@ -13,8 +13,6 @@
     <entry key='web.port'>8082</entry>
     <entry key='web.path'>./web</entry>
 
-    <entry key='geocoder.enable'>false</entry>
-    <entry key='geocoder.type'>google</entry>
 
     <entry key='logger.level'>info</entry>
     <entry key='logger.file'>./logs/tracker-server.log</entry>
@@ -38,6 +36,7 @@
     <entry key='database.ignoreUnknown'>true</entry>
     <entry key='database.generateQueries'>true</entry>
     <entry key='database.changelog'>./schema/changelog-master.xml</entry>
+
  
     <entry key='database.loginUser'>
         SELECT * FROM tc_users
@@ -63,6 +62,13 @@
     <entry key='database.selectStatistics'>
         SELECT * FROM tc_statistics WHERE captureTime BETWEEN :from AND :to ORDER BY captureTime
     </entry>
+    <entry key='database.selectLandmarks'>
+        SELECT * FROM tc_landmarks WHERE userid= :userid
+    </entry>
+    <entry key='database.selectEventsByType'>
+        SELECT type, COUNT(*) FROM tc_events GROUP BY type
+    </entry>
+
 
     <entry key='gps103.port'>5001</entry>
     <entry key='tk103.port'>5002</entry>

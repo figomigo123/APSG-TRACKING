@@ -63,7 +63,11 @@ public class UserResource extends BaseObjectResource<User> {
         }
         return usersManager.getItems(result);
     }
-
+    @Path("/count")
+    @GET
+    public int getUsersCount(@QueryParam("map") String map) throws SQLException {
+        return 0;
+    }
     @Override
     @PermitAll
     @POST

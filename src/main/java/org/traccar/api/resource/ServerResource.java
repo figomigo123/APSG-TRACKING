@@ -57,6 +57,7 @@ public class ServerResource extends BaseResource {
     @Path("geocode")
     @GET
     public String geocode(@QueryParam("latitude") double latitude, @QueryParam("longitude") double longitude) {
+
         if (Context.getGeocoder() != null) {
             return Context.getGeocoder().getAddress(latitude, longitude, null);
         } else {

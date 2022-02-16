@@ -17,6 +17,7 @@
 package org.traccar.api;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.ws.rs.DELETE;
@@ -75,7 +76,7 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
 
     @Path("{id}")
     @GET
-    public Response getSingle(@PathParam("id") long id) throws SQLException {
+    public Response getSingle(@PathParam( "id") long id) throws SQLException {
         Context.getPermissionsManager().checkPermission(baseClass, getUserId(), id);
         BaseObjectManager<T> manager = Context.getManager(baseClass);
         T entity = manager.getById(id);
@@ -117,6 +118,8 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
         }
         return Response.ok(entity).build();
     }
+
+
 
     @Path("{id}")
     @PUT

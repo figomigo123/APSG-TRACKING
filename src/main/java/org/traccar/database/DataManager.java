@@ -29,23 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.traccar.Context;
 import org.traccar.config.Config;
 import org.traccar.config.Keys;
-import org.traccar.model.Attribute;
-import org.traccar.model.BaseModel;
+import org.traccar.model.*;
 import org.traccar.model.Calendar;
-import org.traccar.model.Command;
-import org.traccar.model.Device;
-import org.traccar.model.Driver;
-import org.traccar.model.Event;
-import org.traccar.model.Geofence;
-import org.traccar.model.Group;
-import org.traccar.model.Maintenance;
-import org.traccar.model.ManagedUser;
-import org.traccar.model.Notification;
-import org.traccar.model.Permission;
-import org.traccar.model.Position;
-import org.traccar.model.Server;
-import org.traccar.model.Statistics;
-import org.traccar.model.User;
 
 import javax.sql.DataSource;
 import java.beans.Introspector;
@@ -53,11 +38,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class DataManager {
 
@@ -356,6 +337,15 @@ public class DataManager {
                 .setDate("to", to)
                 .executeQuery(Event.class);
     }
+    public Collection<Landmark> getUserLandmarks(long userid) throws SQLException {
+        return QueryBuilder.create(dataSource, getQuery("database.selectLandmarks"))
+                .setLong("userid", userid)
+                .executeQuery(Landmark.class);
+    }
+    public Map<String, Long> getEventsCountByType() throws SQLException {
+        return QueryBuilder.create(dataSource, getQuery("database.selectEventsByType"))
+                .getEventsCountByType();
+    }
 
     public Collection<Statistics> getStatistics(Date from, Date to) throws SQLException {
         return QueryBuilder.create(dataSource, getQuery("database.selectStatistics"))
@@ -424,6 +414,7 @@ public class DataManager {
     }
 
     public void addObject(BaseModel entity) throws SQLException {
+        System.out.println(getQuery(ACTION_INSERT, entity.getClass()));
         entity.setId(QueryBuilder.create(dataSource, getQuery(ACTION_INSERT, entity.getClass()), true)
                 .setObject(entity)
                 .executeUpdate());

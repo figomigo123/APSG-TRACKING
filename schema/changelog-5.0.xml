@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
+  logicalFilePath="changelog-5.0">
+
+  <changeSet author="author" id="changelog-5.0">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <changeSetExecuted changeLogFile="changelog-5.0" id="changelog-5.0" author="author" />
+      </not>
+    </preConditions>
+    <createTable tableName="tc_landmarks">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints primaryKey="true" />
+      </column>
+      <column name="userid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="name" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+      <column name="description" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+
+      <column name="latitude" type="DOUBLE" defaultValueNumeric="0">
+        <constraints nullable="false" />
+      </column>
+      <column name="longitude" type="DOUBLE" defaultValueNumeric="0">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="tc_landmarks" baseColumnNames="userid" constraintName="fk_user_mark_userid" referencedTableName="tc_users" referencedColumnNames="id" onDelete="CASCADE" />
+
+
+  </changeSet>
+
+
+
+</databaseChangeLog>

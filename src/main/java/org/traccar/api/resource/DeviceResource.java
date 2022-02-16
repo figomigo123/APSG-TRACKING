@@ -97,4 +97,8 @@ public class DeviceResource extends BaseObjectResource<Device> {
         return Response.noContent().build();
     }
 
+
+
+
+
 }

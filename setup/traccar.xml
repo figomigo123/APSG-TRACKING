@@ -18,9 +18,33 @@
 
     -->
 
-    <entry key='database.driver'>org.h2.Driver</entry>
-    <entry key='database.url'>jdbc:h2:./data/database</entry>
+    <entry key='geocoder.enable'>true</entry>
+    <entry key='geocoder.type'>nominatim</entry>
+    <entry key='geocoder.url'>https://us1.locationiq.com/v1/reverse.php</entry>
+    <entry key='geocoder.key'>pk.af53577f703c38f6ac928fe829aa6488</entry>
+
+
+    <entry key='logger.console'>true</entry>
+
+    <!--<entry key='database.driver'>org.h2.Driver</entry>
+    <entry key='database.url'>jdbc:h2:./target/database</entry>
     <entry key='database.user'>sa</entry>
-    <entry key='database.password'></entry>
+    <entry key='database.password'></entry>-->
+
+    <entry key='database.driver'>com.microsoft.sqlserver.jdbc.SQLServerDriver</entry>
+    <entry key='database.url'>jdbc:sqlserver://localhost;user=sa1;password=P@ssw0rd;databaseName=demo3;</entry>
+    <entry key='database.user'>sa1</entry>
+    <entry key='database.password'>P@ssw0rd</entry>
+
+    <entry key='atrack.custom'>true</entry>
+    <entry key='intellitrac.port'>6037</entry>
+
+
+    <entry key='server.timeout'>3900</entry>
+    <entry key='status.timeout'>40</entry>
+    <entry key='teltonika.timeout'>20</entry>
+    <entry key='osmand.timeout'>20</entry>
+    <entry key='filter.zero'>true</entry>
+    <entry key='filter.invalid'>true</entry>
 
 </properties>

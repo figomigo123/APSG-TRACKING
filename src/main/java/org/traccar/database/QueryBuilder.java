@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.traccar.Context;
+import org.traccar.model.Landmark;
 import org.traccar.model.Permission;
 
 import javax.sql.DataSource;
@@ -33,13 +34,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class QueryBuilder {
 
@@ -288,6 +283,21 @@ public final class QueryBuilder {
         }
 
         return this;
+    }
+
+    public Map<String, Long> getEventsCountByType() throws SQLException {
+        Map<String, Long> eventsCount = new HashMap<>();
+        if (query != null) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(1)+" : "+resultSet.getLong(2));
+                        eventsCount.put(resultSet.getString(1),resultSet.getLong(2));
+                }}
+        }
+
+        return eventsCount;
+
+
     }
 
     private interface ResultSetProcessor<T> {
