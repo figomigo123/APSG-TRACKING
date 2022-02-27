@@ -412,7 +412,10 @@ public class DataManager {
         return QueryBuilder.create(dataSource, getQuery(ACTION_SELECT_ALL, clazz))
                 .executeQuery(clazz);
     }
-
+    public <T extends Message> Collection<T> getEvents(Class<T> clazz) throws SQLException {
+        return QueryBuilder.create(dataSource, "SELECT * FROM tc_events")
+                .executeQuery(clazz);
+    }
     public void addObject(BaseModel entity) throws SQLException {
         System.out.println(getQuery(ACTION_INSERT, entity.getClass()));
         entity.setId(QueryBuilder.create(dataSource, getQuery(ACTION_INSERT, entity.getClass()), true)

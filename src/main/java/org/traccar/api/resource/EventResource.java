@@ -1,6 +1,8 @@
 package org.traccar.api.resource;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,4 +37,10 @@ public class EventResource extends BaseResource {
         return event;
     }
 
+    @Path("all")
+    @GET
+    public Collection<Event> getAll() throws SQLException {
+        Collection<Event> events = Context.getDataManager().getEvents(Event.class);
+        return events;
+    }
 }

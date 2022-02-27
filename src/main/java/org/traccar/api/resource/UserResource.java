@@ -63,6 +63,22 @@ public class UserResource extends BaseObjectResource<User> {
         }
         return usersManager.getItems(result);
     }
+    @Path("all")
+    @GET
+    public Collection<User> getAll() throws SQLException {
+        UsersManager usersManager = Context.getUsersManager();
+        Set<Long> result;
+        if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
+
+                result = usersManager.getAllItems();
+
+        } else if (Context.getPermissionsManager().getUserManager(getUserId())) {
+            result = usersManager.getManagedItems(getUserId());
+        } else {
+            throw new SecurityException("Admin or manager access required");
+        }
+        return usersManager.getItems(result);
+    }
     @Path("/count")
     @GET
     public int getUsersCount(@QueryParam("map") String map) throws SQLException {
@@ -72,6 +88,19 @@ public class UserResource extends BaseObjectResource<User> {
     @PermitAll
     @POST
     public Response add(User entity) throws SQLException {
+        return addUser(entity);
+    }
+    @Path("/all")
+     @PermitAll
+    @POST
+    public Response addAll(Collection<User> entitys) throws SQLException {
+        for(User entity:entitys)
+            addUser(entity);
+        return Response.ok(entitys).build();
+    }
+
+    public Response addUser(User entity) throws SQLException {
+
         if (!Context.getPermissionsManager().getUserAdmin(getUserId())) {
             Context.getPermissionsManager().checkUserUpdate(getUserId(), new User(), entity);
             if (Context.getPermissionsManager().getUserManager(getUserId())) {

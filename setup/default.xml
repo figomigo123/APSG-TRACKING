@@ -55,6 +55,9 @@
         UPDATE tc_devices SET positionId = :id WHERE id = :deviceId
     </entry>
 
+    <entry key='database.selectAllEvents'>
+        SELECT * FROM tc_events
+    </entry>
     <entry key='database.selectEvents'>
         SELECT * FROM tc_events WHERE deviceId = :deviceId AND eventTime BETWEEN :from AND :to ORDER BY eventTime
     </entry>

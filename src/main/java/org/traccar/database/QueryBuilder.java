@@ -396,7 +396,7 @@ public final class QueryBuilder {
         if (query != null) {
 
             try {
-
+System.out.println(query);
                 try (ResultSet resultSet = statement.executeQuery()) {
 
                     ResultSetMetaData resultMetaData = resultSet.getMetaData();

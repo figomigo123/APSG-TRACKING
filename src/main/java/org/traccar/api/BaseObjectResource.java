@@ -89,6 +89,19 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
 
     @POST
     public Response add(T entity) throws SQLException {
+        System.out.println("from BaseObjectResource poast .....................................");
+        return addEntity(entity);
+    }
+
+    @Path("all")
+    @POST
+    public Response addAll(Collection<T> entitys) throws SQLException {
+        for(T entity:entitys){
+            System.out.println("from BaseObjectResource poast all ------------------------------------------------------------");
+       addEntity(entity);}
+        return Response.ok(entitys).build();
+    }
+    public Response addEntity(T entity) throws SQLException {
         Context.getPermissionsManager().checkReadonly(getUserId());
         if (baseClass.equals(Device.class)) {
             Context.getPermissionsManager().checkDeviceReadonly(getUserId());

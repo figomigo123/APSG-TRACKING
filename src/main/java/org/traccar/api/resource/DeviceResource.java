@@ -85,6 +85,23 @@ public class DeviceResource extends BaseObjectResource<Device> {
         return deviceManager.getItems(result);
     }
 
+
+    @Path("all")
+ @GET
+    public Collection<Device> getAll() throws SQLException {
+        DeviceManager deviceManager = Context.getDeviceManager();
+        Set<Long> result;
+
+            if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
+                result = deviceManager.getAllItems();
+            } else {
+                Context.getPermissionsManager().checkManager(getUserId());
+                result = deviceManager.getManagedItems(getUserId());
+            }
+
+        return deviceManager.getItems(result);
+    }
+
     @Path("{id}/accumulators")
     @PUT
     public Response updateAccumulators(DeviceAccumulators entity) throws SQLException {
