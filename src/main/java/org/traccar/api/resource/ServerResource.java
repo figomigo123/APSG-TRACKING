@@ -30,6 +30,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 @Path("server")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,6 +45,17 @@ public class ServerResource extends BaseResource {
             return Context.getDataManager().getServer();
         } else {
             return Context.getPermissionsManager().getServer();
+        }
+    }
+
+    @PermitAll
+    @Path("array")
+    @GET
+    public List<Server> getAsArray(@QueryParam("force") boolean force) throws SQLException {
+        if (force) {
+            return Arrays.asList(Context.getDataManager().getServer());
+        } else {
+            return Arrays.asList(Context.getPermissionsManager().getServer());
         }
     }
 

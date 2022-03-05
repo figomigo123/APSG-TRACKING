@@ -34,6 +34,29 @@
     <entry key='database.password'></entry>
 
 
+    <entry key='sms.smpp.enable'>true</entry>
+    <entry key='sms.smpp.host'>SMPP ADDRESS</entry>
+    <entry key='sms.smpp.port'>PORT</entry>
+    <entry key='sms.smpp.username'>USERNAME</entry>
+    <entry key='sms.smpp.password'>PASSWORD</entry>
+    <entry key='sms.smpp.notificationsCharset'>GSM</entry>
+    <entry key='sms.smpp.notificationsDataCoding'>0</entry>
+    <entry key='sms.smpp.sourceAddress'>SMPP INFO</entry>
+
+
+
+    <entry key='notificator.types'>web,mail,sms</entry>
+    <entry key='notificator.sms.manager.class'>org.traccar.sms.HttpSmsClient</entry>
+    <entry key='sms.http.url'>https://api.sms.to/sms/send</entry>
+    <entry key='sms.http.authorization'>Bearer ZIUzO******************c6tGi</entry>
+    <entry key='sms.http.template'>
+        {
+        "sender_id": "Warning!",
+        "to": "{phone}",
+        "message": "{message}"
+        }
+    </entry>
+
 
     <entry key='atrack.custom'>true</entry>
     <entry key='intellitrac.port'>6037</entry>
