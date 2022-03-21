@@ -16,10 +16,10 @@
  */
 package org.traccar.geofence;
 
+import org.traccar.helper.DistanceCalculator;
+
 import java.text.ParseException;
 import java.util.ArrayList;
-
-import org.traccar.helper.DistanceCalculator;
 
 public class GeofencePolyline extends GeofenceGeometry {
 

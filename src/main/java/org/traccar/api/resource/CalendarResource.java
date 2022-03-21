@@ -16,13 +16,18 @@
  */
 package org.traccar.api.resource;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import org.traccar.Context;
 import org.traccar.api.SimpleObjectResource;
+import org.traccar.api.resource.new_models.NewBaseModel;
+import org.traccar.database.BaseObjectManager;
 import org.traccar.model.Calendar;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Path("calendars")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,5 +37,19 @@ public class CalendarResource extends SimpleObjectResource<Calendar> {
     public CalendarResource() {
         super(Calendar.class);
     }
+
+    @Path("view")
+    @GET
+    public List<NewBaseModel> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+        BaseObjectManager<Calendar> manager = Context.getManager(getBaseClass());
+        Collection<Calendar> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        List<NewBaseModel> newBaseModels = new ArrayList<>();
+        items.forEach(u -> {
+            NewBaseModel newUser = new NewBaseModel(u.getName());
+            newBaseModels.add(newUser);
+        });
+        return newBaseModels;
+    }
+
 
 }

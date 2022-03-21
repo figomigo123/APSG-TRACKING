@@ -25,7 +25,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
 
 @Path("landmarks")
 @Produces(MediaType.APPLICATION_JSON)

@@ -21,7 +21,6 @@ import org.traccar.BaseProtocol;
 import org.traccar.CharacterDelimiterFrameDecoder;
 import org.traccar.PipelineBuilder;
 import org.traccar.TrackerServer;
-
 import org.traccar.model.Command;
 
 public class SviasProtocol extends BaseProtocol {

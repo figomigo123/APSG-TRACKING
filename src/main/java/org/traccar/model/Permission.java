@@ -16,11 +16,11 @@
  */
 package org.traccar.model;
 
+import org.traccar.database.DataManager;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.traccar.database.DataManager;
 
 public class Permission {
 

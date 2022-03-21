@@ -15,11 +15,10 @@
  */
 package org.traccar.protocol;
 
+import io.netty.handler.codec.string.StringDecoder;
 import org.traccar.BaseProtocol;
 import org.traccar.PipelineBuilder;
 import org.traccar.TrackerServer;
-
-import io.netty.handler.codec.string.StringDecoder;
 
 public class VtfmsProtocol extends BaseProtocol {
 

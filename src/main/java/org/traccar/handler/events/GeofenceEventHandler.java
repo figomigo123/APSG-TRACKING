@@ -15,11 +15,6 @@
  */
 package org.traccar.handler.events;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.netty.channel.ChannelHandler;
 import org.traccar.database.CalendarManager;
 import org.traccar.database.GeofenceManager;
@@ -28,6 +23,11 @@ import org.traccar.model.Calendar;
 import org.traccar.model.Device;
 import org.traccar.model.Event;
 import org.traccar.model.Position;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ChannelHandler.Sharable
 public class GeofenceEventHandler extends BaseEventHandler {

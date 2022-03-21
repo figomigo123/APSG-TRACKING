@@ -16,14 +16,14 @@
  */
 package org.traccar.handler.events;
 
-import java.util.Collections;
-import java.util.Map;
-
 import io.netty.channel.ChannelHandler;
 import org.traccar.database.IdentityManager;
 import org.traccar.model.Device;
 import org.traccar.model.Event;
 import org.traccar.model.Position;
+
+import java.util.Collections;
+import java.util.Map;
 
 @ChannelHandler.Sharable
 public class IgnitionEventHandler extends BaseEventHandler {

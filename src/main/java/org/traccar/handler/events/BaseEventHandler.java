@@ -15,12 +15,12 @@
  */
 package org.traccar.handler.events;
 
-import java.util.Map;
-
 import org.traccar.BaseDataHandler;
 import org.traccar.Context;
 import org.traccar.model.Event;
 import org.traccar.model.Position;
+
+import java.util.Map;
 
 public abstract class BaseEventHandler extends BaseDataHandler {
 

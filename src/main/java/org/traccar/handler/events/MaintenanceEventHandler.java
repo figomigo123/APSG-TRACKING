@@ -16,15 +16,15 @@
  */
 package org.traccar.handler.events;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.netty.channel.ChannelHandler;
 import org.traccar.database.IdentityManager;
 import org.traccar.database.MaintenancesManager;
 import org.traccar.model.Event;
 import org.traccar.model.Maintenance;
 import org.traccar.model.Position;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ChannelHandler.Sharable
 public class MaintenanceEventHandler extends BaseEventHandler {

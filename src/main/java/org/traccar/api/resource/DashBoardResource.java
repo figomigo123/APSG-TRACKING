@@ -17,22 +17,22 @@ package org.traccar.api.resource;
 
 import org.traccar.Context;
 import org.traccar.api.BaseObjectResource;
-import org.traccar.config.Keys;
 import org.traccar.database.DataManager;
 import org.traccar.database.DeviceManager;
-import org.traccar.database.UsersManager;
-import org.traccar.helper.LogAction;
 import org.traccar.model.Device;
 import org.traccar.model.Event;
-import org.traccar.model.ManagedUser;
 import org.traccar.model.User;
 
-import javax.annotation.security.PermitAll;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Path("dashboard")
 @Produces(MediaType.APPLICATION_JSON)

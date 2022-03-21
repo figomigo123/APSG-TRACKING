@@ -15,9 +15,8 @@
  */
 package org.traccar.model;
 
-import org.traccar.database.QueryIgnore;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.traccar.database.QueryIgnore;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Command extends Message implements Cloneable {

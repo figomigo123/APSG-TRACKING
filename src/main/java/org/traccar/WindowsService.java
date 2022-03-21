@@ -20,13 +20,7 @@ import com.sun.jna.platform.win32.Advapi32;
 import com.sun.jna.platform.win32.WinError;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.Winsvc;
-import com.sun.jna.platform.win32.Winsvc.HandlerEx;
-import com.sun.jna.platform.win32.Winsvc.SC_HANDLE;
-import com.sun.jna.platform.win32.Winsvc.SERVICE_DESCRIPTION;
-import com.sun.jna.platform.win32.Winsvc.SERVICE_MAIN_FUNCTION;
-import com.sun.jna.platform.win32.Winsvc.SERVICE_STATUS;
-import com.sun.jna.platform.win32.Winsvc.SERVICE_STATUS_HANDLE;
-import com.sun.jna.platform.win32.Winsvc.SERVICE_TABLE_ENTRY;
+import com.sun.jna.platform.win32.Winsvc.*;
 import jnr.posix.POSIXFactory;
 
 import java.io.File;

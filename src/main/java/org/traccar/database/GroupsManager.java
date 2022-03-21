@@ -16,12 +16,12 @@
  */
 package org.traccar.database;
 
+import org.traccar.Context;
+import org.traccar.model.Group;
+
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.traccar.Context;
-import org.traccar.model.Group;
 
 public class GroupsManager extends BaseObjectManager<Group> implements ManagableObjects {
 

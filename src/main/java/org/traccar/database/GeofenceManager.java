@@ -15,13 +15,13 @@
  */
 package org.traccar.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.traccar.Context;
 import org.traccar.model.Device;
 import org.traccar.model.Geofence;
 import org.traccar.model.Position;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeofenceManager extends ExtendedObjectManager<Geofence> {
 

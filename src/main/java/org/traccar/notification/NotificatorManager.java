@@ -16,24 +16,16 @@
  */
 package org.traccar.notification;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.traccar.Context;
 import org.traccar.model.Typed;
-import org.traccar.notificators.NotificatorFirebase;
-import org.traccar.notificators.NotificatorMail;
-import org.traccar.notificators.NotificatorNull;
-import org.traccar.notificators.Notificator;
-import org.traccar.notificators.NotificatorSms;
-import org.traccar.notificators.NotificatorTraccar;
-import org.traccar.notificators.NotificatorWeb;
-import org.traccar.notificators.NotificatorTelegram;
-import org.traccar.notificators.NotificatorPushover;
+import org.traccar.notificators.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public final class NotificatorManager {
 

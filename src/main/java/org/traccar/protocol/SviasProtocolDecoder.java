@@ -17,17 +17,17 @@ package org.traccar.protocol;
 
 import io.netty.channel.Channel;
 import org.traccar.BaseProtocolDecoder;
+import org.traccar.DeviceSession;
 import org.traccar.NetworkMessage;
 import org.traccar.Protocol;
 import org.traccar.helper.BitUtil;
+import org.traccar.helper.Parser;
 import org.traccar.helper.PatternBuilder;
+import org.traccar.helper.UnitsConverter;
+import org.traccar.model.Position;
 
 import java.net.SocketAddress;
 import java.util.regex.Pattern;
-import org.traccar.DeviceSession;
-import org.traccar.helper.Parser;
-import org.traccar.helper.UnitsConverter;
-import org.traccar.model.Position;
 
 public class SviasProtocolDecoder extends BaseProtocolDecoder {
 

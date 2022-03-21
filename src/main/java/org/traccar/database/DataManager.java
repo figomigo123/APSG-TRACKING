@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.traccar.Context;
 import org.traccar.config.Config;
 import org.traccar.config.Keys;
-import org.traccar.model.*;
 import org.traccar.model.Calendar;
+import org.traccar.model.*;
 
 import javax.sql.DataSource;
 import java.beans.Introspector;

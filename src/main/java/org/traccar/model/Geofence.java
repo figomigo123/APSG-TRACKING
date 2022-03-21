@@ -15,8 +15,7 @@
  */
 package org.traccar.model;
 
-import java.text.ParseException;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.traccar.Context;
 import org.traccar.config.Keys;
 import org.traccar.database.QueryIgnore;
@@ -25,7 +24,7 @@ import org.traccar.geofence.GeofenceGeometry;
 import org.traccar.geofence.GeofencePolygon;
 import org.traccar.geofence.GeofencePolyline;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.text.ParseException;
 
 public class Geofence extends ScheduledModel {
 

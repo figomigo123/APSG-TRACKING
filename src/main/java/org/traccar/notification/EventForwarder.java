@@ -19,11 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.traccar.Context;
 import org.traccar.config.Keys;
-import org.traccar.model.Device;
-import org.traccar.model.Event;
-import org.traccar.model.Geofence;
-import org.traccar.model.Maintenance;
-import org.traccar.model.Position;
+import org.traccar.model.*;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;

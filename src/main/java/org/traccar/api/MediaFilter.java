@@ -16,25 +16,19 @@
  */
 package org.traccar.api;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.traccar.Context;
 import org.traccar.Main;
 import org.traccar.api.resource.SessionResource;
 import org.traccar.database.StatisticsManager;
 import org.traccar.helper.Log;
 import org.traccar.model.Device;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class MediaFilter implements Filter {
 

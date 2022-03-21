@@ -29,7 +29,6 @@ import java.lang.management.RuntimeMXBean;
 import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Timer;
-
 public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);

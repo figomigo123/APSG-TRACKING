@@ -16,6 +16,12 @@
  */
 package org.traccar.reports;
 
+import org.jxls.util.JxlsHelper;
+import org.traccar.Context;
+import org.traccar.helper.UnitsConverter;
+import org.traccar.model.Position;
+import org.traccar.reports.model.SummaryReport;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-
-import org.jxls.util.JxlsHelper;
-import org.traccar.Context;
-import org.traccar.helper.UnitsConverter;
-import org.traccar.model.Position;
-import org.traccar.reports.model.SummaryReport;
 
 public final class Summary {
 

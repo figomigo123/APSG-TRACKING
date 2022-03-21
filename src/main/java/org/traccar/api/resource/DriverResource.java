@@ -16,13 +16,18 @@
  */
 package org.traccar.api.resource;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
+import org.traccar.Context;
 import org.traccar.api.ExtendedObjectResource;
+import org.traccar.api.resource.new_models.NewDriver;
+import org.traccar.database.BaseObjectManager;
 import org.traccar.model.Driver;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Path("drivers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,6 +36,19 @@ public class DriverResource extends ExtendedObjectResource<Driver> {
 
     public DriverResource() {
         super(Driver.class);
+    }
+
+    @Path("view")
+    @GET
+    public List<NewDriver> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+        BaseObjectManager<Driver> manager = Context.getManager(getBaseClass());
+        Collection<Driver> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        List<NewDriver> newDrivers = new ArrayList<>();
+        items.forEach(u -> {
+            NewDriver newDriver = new NewDriver(u);
+            newDrivers.add(newDriver);
+        });
+        return newDrivers;
     }
 
 }

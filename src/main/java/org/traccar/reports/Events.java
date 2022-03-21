@@ -16,23 +16,18 @@
  */
 package org.traccar.reports;
 
+import org.apache.poi.ss.util.WorkbookUtil;
+import org.traccar.Context;
+import org.traccar.model.*;
+import org.traccar.reports.model.DeviceReport;
+import org.traccar.reports.model.EventReport;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.*;
-
-import liquibase.license.LicenseService;
-import org.apache.poi.ss.util.WorkbookUtil;
-import org.traccar.Context;
-import org.traccar.model.Device;
-import org.traccar.model.Event;
-import org.traccar.model.Geofence;
-import org.traccar.model.Group;
-import org.traccar.model.Maintenance;
-import org.traccar.reports.model.DeviceReport;
-import org.traccar.reports.model.EventReport;
 
 public final class Events {
 

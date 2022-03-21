@@ -15,13 +15,18 @@
  */
 package org.traccar.api.resource;
 
+import org.traccar.Context;
 import org.traccar.api.ExtendedObjectResource;
+import org.traccar.api.resource.new_models.NewGeofence;
+import org.traccar.database.BaseObjectManager;
 import org.traccar.model.Geofence;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Path("geofences")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,5 +36,20 @@ public class GeofenceResource extends ExtendedObjectResource<Geofence> {
     public GeofenceResource() {
         super(Geofence.class);
     }
+
+
+    @Path("view")
+    @GET
+    public List<NewGeofence> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+        BaseObjectManager<Geofence> manager = Context.getManager(getBaseClass());
+        Collection<Geofence> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        List<NewGeofence> newGeofences = new ArrayList<>();
+        items.forEach(u -> {
+            NewGeofence newUser = new NewGeofence(u);
+            newGeofences.add(newUser);
+        });
+        return newGeofences;
+    }
+
 
 }

@@ -15,23 +15,22 @@
  */
 package org.traccar.api.resource;
 
-import java.util.Collection;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.traccar.Context;
 import org.traccar.api.ExtendedObjectResource;
+import org.traccar.api.resource.new_models.NewNotification;
+import org.traccar.database.BaseObjectManager;
 import org.traccar.model.Event;
 import org.traccar.model.Notification;
 import org.traccar.model.Typed;
 import org.traccar.notification.MessageException;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 @Path("notifications")
@@ -71,6 +70,20 @@ public class NotificationResource extends ExtendedObjectResource<Notification> {
             throws MessageException, InterruptedException {
         Context.getNotificatorManager().getNotificator(notificator).sendSync(getUserId(), new Event("test", 0), null);
         return Response.noContent().build();
+    }
+
+
+    @Path("view")
+    @GET
+    public List<NewNotification> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+        BaseObjectManager<Notification> manager = Context.getManager(getBaseClass());
+        Collection<Notification> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        List<NewNotification> newNotifications = new ArrayList<>();
+        items.forEach(u -> {
+            NewNotification newNotification = new NewNotification(u);
+            newNotifications.add(newNotification);
+        });
+        return newNotifications;
     }
 
 }

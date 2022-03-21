@@ -15,8 +15,6 @@
  */
 package org.traccar.model;
 
-import org.traccar.reports.model.EventReportBuilder;
-
 public class Message extends ExtendedModel {
 
     private long deviceId;

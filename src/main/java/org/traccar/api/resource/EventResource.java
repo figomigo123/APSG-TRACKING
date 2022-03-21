@@ -1,21 +1,15 @@
 package org.traccar.api.resource;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import org.traccar.Context;
 import org.traccar.api.BaseResource;
 import org.traccar.model.Event;
 import org.traccar.model.Geofence;
 import org.traccar.model.Maintenance;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.Collection;
 
 @Path("events")
 @Produces(MediaType.APPLICATION_JSON)

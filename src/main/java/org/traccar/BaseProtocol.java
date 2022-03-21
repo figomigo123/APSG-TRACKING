@@ -23,12 +23,7 @@ import org.traccar.helper.DataConverter;
 import org.traccar.model.Command;
 
 import java.net.SocketAddress;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class BaseProtocol implements Protocol {
 

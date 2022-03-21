@@ -33,13 +33,7 @@ import org.traccar.model.Position;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 public abstract class BaseProtocolDecoder extends ExtendedObjectDecoder {
 

@@ -16,10 +16,10 @@
  */
 package org.traccar.database;
 
+import org.traccar.model.Driver;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.traccar.model.Driver;
 
 public class DriversManager extends ExtendedObjectManager<Driver> {
 

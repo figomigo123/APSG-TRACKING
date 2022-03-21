@@ -16,15 +16,14 @@
  */
 package org.traccar.api;
 
-import java.sql.SQLException;
-import java.util.Collection;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.QueryParam;
-
 import org.traccar.Context;
 import org.traccar.database.BaseObjectManager;
 import org.traccar.model.BaseModel;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.QueryParam;
+import java.sql.SQLException;
+import java.util.Collection;
 
 public class SimpleObjectResource<T extends BaseModel> extends BaseObjectResource<T> {
 
@@ -33,7 +32,7 @@ public class SimpleObjectResource<T extends BaseModel> extends BaseObjectResourc
     }
 
     @GET
-    public Collection<T> get(
+    public Collection<T> getAll(
             @QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
         BaseObjectManager<T> manager = Context.getManager(getBaseClass());
         return manager.getItems(getSimpleManagerItems(manager, all, userId));

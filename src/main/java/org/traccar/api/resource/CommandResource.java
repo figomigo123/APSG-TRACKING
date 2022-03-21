@@ -19,22 +19,15 @@ package org.traccar.api.resource;
 
 import org.traccar.Context;
 import org.traccar.api.ExtendedObjectResource;
+import org.traccar.api.resource.new_models.NewCommand;
 import org.traccar.database.CommandsManager;
 import org.traccar.model.Command;
 import org.traccar.model.Typed;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.*;
 
 @Path("commands")
 @Produces(MediaType.APPLICATION_JSON)
@@ -54,6 +47,27 @@ public class CommandResource extends ExtendedObjectResource<Command> {
         result.retainAll(commandsManager.getSupportedCommands(deviceId));
         return commandsManager.getItems(result);
     }
+
+    @GET
+    @Path("view")
+    public Collection<NewCommand> getView(@QueryParam("deviceId") long deviceId) {
+        Context.getPermissionsManager().checkDevice(getUserId(), deviceId);
+        CommandsManager commandsManager = Context.getCommandsManager();
+        Set<Long> result = new HashSet<>(commandsManager.getUserItems(getUserId()));
+        Collection<Command> items = commandsManager.getItems(result);
+        List<NewCommand> newCommands = new ArrayList<>();
+        items.forEach(u -> {
+            NewCommand newCommand = new NewCommand(u);
+            newCommands.add(newCommand);
+        });
+        return newCommands;
+
+
+
+    }
+
+
+
 
     @POST
     @Path("send")
@@ -89,4 +103,7 @@ public class CommandResource extends ExtendedObjectResource<Command> {
             return Context.getCommandsManager().getAllCommandTypes();
         }
     }
+
+
+
 }

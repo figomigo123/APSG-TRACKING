@@ -16,24 +16,21 @@
  */
 package org.traccar.api.resource;
 
-import java.sql.SQLException;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.traccar.Context;
 import org.traccar.api.ExtendedObjectResource;
+import org.traccar.api.resource.new_models.NewAttribute;
+import org.traccar.database.BaseObjectManager;
+import org.traccar.handler.ComputedAttributesHandler;
 import org.traccar.model.Attribute;
 import org.traccar.model.Position;
-import org.traccar.handler.ComputedAttributesHandler;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Path("attributes/computed")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,6 +40,22 @@ public class AttributeResource extends ExtendedObjectResource<Attribute> {
     public AttributeResource() {
         super(Attribute.class);
     }
+
+
+    @Path("view")
+    @GET
+    public List<NewAttribute> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+        BaseObjectManager<Attribute> manager = Context.getManager(getBaseClass());
+        Collection<Attribute> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        List<NewAttribute> newAttributes = new ArrayList<>();
+        items.forEach(u -> {
+            NewAttribute newAttribute = new NewAttribute(u);
+            newAttributes.add(newAttribute);
+        });
+        return newAttributes;
+    }
+
+
 
     @POST
     @Path("test")

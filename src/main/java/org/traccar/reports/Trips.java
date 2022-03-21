@@ -16,13 +16,6 @@
  */
 package org.traccar.reports;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.SQLException;
-import java.util.*;
-
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.traccar.Context;
 import org.traccar.Main;
@@ -32,6 +25,13 @@ import org.traccar.model.Device;
 import org.traccar.model.Group;
 import org.traccar.reports.model.DeviceReport;
 import org.traccar.reports.model.TripReport;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.SQLException;
+import java.util.*;
 
 public final class Trips {
 

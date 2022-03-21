@@ -16,32 +16,19 @@
  */
 package org.traccar.api;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Set;
-
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
-
 import org.traccar.Context;
 import org.traccar.database.BaseObjectManager;
 import org.traccar.database.ExtendedObjectManager;
 import org.traccar.database.ManagableObjects;
 import org.traccar.database.SimpleObjectManager;
 import org.traccar.helper.LogAction;
-import org.traccar.model.BaseModel;
-import org.traccar.model.Calendar;
-import org.traccar.model.Command;
-import org.traccar.model.Device;
-import org.traccar.model.Group;
-import org.traccar.model.GroupedModel;
-import org.traccar.model.ScheduledModel;
-import org.traccar.model.User;
+import org.traccar.model.*;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Set;
 
 public abstract class BaseObjectResource<T extends BaseModel> extends BaseResource {
 
@@ -55,7 +42,7 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
         return baseClass;
     }
 
-    protected final Set<Long> getSimpleManagerItems(BaseObjectManager<T> manager, boolean all,  long userId) {
+    protected final Set<Long> getSimpleManagerItems(BaseObjectManager<T> manager, boolean all, long userId) {
         Set<Long> result;
         if (all) {
             if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
@@ -76,7 +63,7 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
 
     @Path("{id}")
     @GET
-    public Response getSingle(@PathParam( "id") long id) throws SQLException {
+    public Response getSingle(@PathParam("id") long id) throws SQLException {
         Context.getPermissionsManager().checkPermission(baseClass, getUserId(), id);
         BaseObjectManager<T> manager = Context.getManager(baseClass);
         T entity = manager.getById(id);
@@ -89,18 +76,19 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
 
     @POST
     public Response add(T entity) throws SQLException {
-        System.out.println("from BaseObjectResource poast .....................................");
         return addEntity(entity);
     }
 
     @Path("all")
     @POST
     public Response addAll(Collection<T> entitys) throws SQLException {
-        for(T entity:entitys){
-            System.out.println("from BaseObjectResource poast all ------------------------------------------------------------");
-       addEntity(entity);}
+        for (T entity : entitys) {
+            if (entity.getId() > 0 && getSingle(entity.getId()) != null) update(entity);
+            else addEntity(entity);
+        }
         return Response.ok(entitys).build();
     }
+
     public Response addEntity(T entity) throws SQLException {
         Context.getPermissionsManager().checkReadonly(getUserId());
         if (baseClass.equals(Device.class)) {
@@ -115,7 +103,6 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
             Context.getPermissionsManager().checkPermission(
                     Calendar.class, getUserId(), ((ScheduledModel) entity).getCalendarId());
         }
-
         BaseObjectManager<T> manager = Context.getManager(baseClass);
         manager.addItem(entity);
         LogAction.create(getUserId(), entity);
@@ -131,7 +118,6 @@ public abstract class BaseObjectResource<T extends BaseModel> extends BaseResour
         }
         return Response.ok(entity).build();
     }
-
 
 
     @Path("{id}")

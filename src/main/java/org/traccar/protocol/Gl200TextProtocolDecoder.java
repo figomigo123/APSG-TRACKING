@@ -15,11 +15,9 @@
  */
 package org.traccar.protocol;
 
-import org.traccar.BaseProtocolDecoder;
-import org.traccar.Context;
-import org.traccar.DeviceSession;
-import org.traccar.NetworkMessage;
-import org.traccar.Protocol;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import org.traccar.*;
 import org.traccar.config.Keys;
 import org.traccar.helper.BitUtil;
 import org.traccar.helper.Parser;
@@ -29,9 +27,6 @@ import org.traccar.model.CellTower;
 import org.traccar.model.Network;
 import org.traccar.model.Position;
 import org.traccar.model.WifiAccessPoint;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
 
 import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;

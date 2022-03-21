@@ -21,12 +21,7 @@ import org.traccar.helper.LogAction;
 import org.traccar.model.Server;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -37,7 +32,6 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServerResource extends BaseResource {
-
     @PermitAll
     @GET
     public Server get(@QueryParam("force") boolean force) throws SQLException {
@@ -77,5 +71,32 @@ public class ServerResource extends BaseResource {
             throw new RuntimeException("Reverse geocoding is not enabled");
         }
     }
+    @Path("maplayers")
+    @GET
+    public List<String> maplayer() {
+        return Arrays.asList(
+                "Open Street Map",
+                "Carto Basemaps",
+                "Auto Navi",
+                "Bing Maps Road",
+                "Bing Maps Aerial",
+                "Bing Maps Hybrid",
+                "Yandex Map",
+                "Yandex Satellite",
+                "Custom (XYZ)",
+                "Custom (ArcGIS)"
+        );
+    }
+ @Path("coordinates")
+    @GET
+    public List<String> coordinates() {
+        return Arrays.asList(
+                "Decimal Degrees",
+                "Degrees Decimal Minutes",
+                "Degrees  Minutes Seconds"
+        );
+    }
+
+
 
 }

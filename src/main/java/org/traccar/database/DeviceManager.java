@@ -15,28 +15,17 @@
  */
 package org.traccar.database;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.traccar.config.Config;
 import org.traccar.Context;
+import org.traccar.config.Config;
 import org.traccar.config.Keys;
-import org.traccar.model.Command;
-import org.traccar.model.Device;
-import org.traccar.model.DeviceState;
-import org.traccar.model.DeviceAccumulators;
-import org.traccar.model.Group;
-import org.traccar.model.Position;
-import org.traccar.model.Server;
+import org.traccar.model.*;
+
+import java.sql.SQLException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class DeviceManager extends BaseObjectManager<Device> implements IdentityManager, ManagableObjects {
 

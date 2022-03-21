@@ -17,9 +17,9 @@
 package org.traccar.protocol;
 
 import org.traccar.Context;
+import org.traccar.Protocol;
 import org.traccar.StringProtocolEncoder;
 import org.traccar.model.Command;
-import org.traccar.Protocol;
 
 import java.util.Date;
 

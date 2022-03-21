@@ -16,11 +16,11 @@
  */
 package org.traccar.database;
 
+import org.traccar.model.User;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.traccar.model.User;
 
 public class UsersManager extends SimpleObjectManager<User> {
 

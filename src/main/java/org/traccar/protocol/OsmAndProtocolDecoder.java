@@ -26,11 +26,7 @@ import org.traccar.DeviceSession;
 import org.traccar.Protocol;
 import org.traccar.database.CommandsManager;
 import org.traccar.helper.DateUtil;
-import org.traccar.model.CellTower;
-import org.traccar.model.Command;
-import org.traccar.model.Network;
-import org.traccar.model.Position;
-import org.traccar.model.WifiAccessPoint;
+import org.traccar.model.*;
 
 import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;

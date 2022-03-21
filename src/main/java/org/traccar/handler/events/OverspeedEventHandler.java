@@ -16,19 +16,15 @@
  */
 package org.traccar.handler.events;
 
-import java.util.Collections;
-import java.util.Map;
-
 import io.netty.channel.ChannelHandler;
 import org.traccar.config.Config;
 import org.traccar.config.Keys;
 import org.traccar.database.DeviceManager;
 import org.traccar.database.GeofenceManager;
-import org.traccar.model.Device;
-import org.traccar.model.DeviceState;
-import org.traccar.model.Event;
-import org.traccar.model.Geofence;
-import org.traccar.model.Position;
+import org.traccar.model.*;
+
+import java.util.Collections;
+import java.util.Map;
 
 @ChannelHandler.Sharable
 public class OverspeedEventHandler extends BaseEventHandler {

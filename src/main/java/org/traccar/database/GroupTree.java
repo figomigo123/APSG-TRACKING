@@ -18,12 +18,7 @@ package org.traccar.database;
 import org.traccar.model.Device;
 import org.traccar.model.Group;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GroupTree {
 

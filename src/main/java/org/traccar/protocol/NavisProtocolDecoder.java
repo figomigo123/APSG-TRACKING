@@ -31,9 +31,9 @@ import org.traccar.model.Position;
 
 import java.net.SocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Date;
 
 public class NavisProtocolDecoder extends BaseProtocolDecoder {
 

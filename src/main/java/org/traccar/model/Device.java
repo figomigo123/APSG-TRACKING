@@ -15,11 +15,11 @@
  */
 package org.traccar.model;
 
-import java.util.Date;
-import java.util.List;
-
 import org.traccar.database.QueryExtended;
 import org.traccar.database.QueryIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 public class Device extends GroupedModel {
 
