@@ -81,20 +81,29 @@ public class DeviceResource extends BaseObjectResource<Device> {
 
 
     @Path("all")
- @GET
+    @GET
     public Collection<Device> getAll() throws SQLException {
         DeviceManager deviceManager = Context.getDeviceManager();
         Set<Long> result;
 
-            if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
-                result = deviceManager.getAllItems();
-            } else {
-                Context.getPermissionsManager().checkManager(getUserId());
-                result = deviceManager.getManagedItems(getUserId());
-            }
+        if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
+            result = deviceManager.getAllItems();
+        } else {
+            Context.getPermissionsManager().checkManager(getUserId());
+            result = deviceManager.getManagedItems(getUserId());
+        }
 
         return deviceManager.getItems(result);
     }
+ public Collection<Device> getAllDevices() throws SQLException {
+        DeviceManager deviceManager = Context.getDeviceManager();
+        Set<Long> result = deviceManager.getAllItems();
+
+        return deviceManager.getItems(result);
+    }
+
+
+
 
     @Path("{id}/accumulators")
     @PUT
@@ -107,9 +116,6 @@ public class DeviceResource extends BaseObjectResource<Device> {
         LogAction.resetDeviceAccumulators(getUserId(), entity.getDeviceId());
         return Response.noContent().build();
     }
-
-
-
 
 
 }

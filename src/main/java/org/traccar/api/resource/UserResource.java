@@ -177,4 +177,6 @@ public class UserResource extends BaseObjectResource<User> {
         return Response.ok(entity).build();
     }
 
+
+
 }

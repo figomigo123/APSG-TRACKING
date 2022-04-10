@@ -28,9 +28,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 @Path("notifications")
@@ -51,7 +49,9 @@ public class NotificationResource extends ExtendedObjectResource<Notification> {
     @GET
     @Path("notificators")
     public Collection<Typed> getNotificators() {
-        return Context.getNotificatorManager().getAllNotificatorTypes();
+        Set<Typed> allNotificatorTypes = Context.getNotificatorManager().getAllNotificatorTypes();
+        for(Typed t:allNotificatorTypes) System.out.println(t.getType());
+        return allNotificatorTypes;
     }
 
     @POST
@@ -84,6 +84,51 @@ public class NotificationResource extends ExtendedObjectResource<Notification> {
             newNotifications.add(newNotification);
         });
         return newNotifications;
+    }
+ @Path("alarms")
+    @GET
+    public List<String> getAlarms() {
+      return Arrays.asList(
+     "GENERAL"
+     ,"SOS"
+     ,"VIBRATION"
+     ,"MOVEMENT"
+     ,"LOW SPEED"
+     ,"OVER SPEED"
+     ,"FALL DOWN"
+     ,"LOW POWER"
+     ,"LOW BATTERY"
+     ,"FAULT"
+     ,"POWER OFF"
+     ,"POWER ON"
+     ,"DOOR"
+     ,"LOCK"
+     ,"UNLOCK"
+     ,"GEOFENCE"
+     ,"GEOFENCE ENTER"
+     ,"GEOFENCE EXIT"
+     ,"GPS ANTENNA CUT"
+     ,"ACCIDENT"
+     ,"TOW"
+     ,"IDLE"
+     ,"HIGH RPM"
+     ,"ACCELERATION"
+     ,"BRAKING"
+     ,"CORNERING"
+     ,"LANE CHANGE"
+     ,"FATIGUE DRIVING"
+     ,"POWER CUT"
+     ,"POWER RESTORED"
+     ,"JAMMING"
+     ,"TEMPERATURE"
+     ,"PARKING"
+     ,"SHOCK"
+     ,"BONNET"
+     ,"FOOT BRAKE"
+     ,"FUEL LEAK"
+     ,"TAMPERING"       
+     ,"REMOVING" 
+      );
     }
 
 }

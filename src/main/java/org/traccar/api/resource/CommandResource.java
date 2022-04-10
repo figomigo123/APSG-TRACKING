@@ -22,6 +22,7 @@ import org.traccar.api.ExtendedObjectResource;
 import org.traccar.api.resource.new_models.NewCommand;
 import org.traccar.database.CommandsManager;
 import org.traccar.model.Command;
+import org.traccar.model.Device;
 import org.traccar.model.Typed;
 
 import javax.ws.rs.*;
@@ -61,12 +62,7 @@ public class CommandResource extends ExtendedObjectResource<Command> {
             newCommands.add(newCommand);
         });
         return newCommands;
-
-
-
     }
-
-
 
 
     @POST
@@ -89,11 +85,34 @@ public class CommandResource extends ExtendedObjectResource<Command> {
     }
 
     @GET
+    @Path("refreshall")
+    public String refreshAll() throws Exception {
+        Command command = new Command();
+        command.setTextChannel(true);
+        command.setType("custom");
+        command.getAttributes().put("data","getDeviceStatus");
+
+        DeviceResource deviceResource = new DeviceResource();
+        Collection<Device> all = deviceResource.getAllDevices();
+        for (Device device : all) {
+            command.setDeviceId(device.getId());
+            try{
+            Context.getCommandsManager().sendCommand(command);}
+            catch (Exception e){
+              // if ( e.getMessage().contains("Bad credentials"))return "{\"type\":\"SMS GateWay Bad credentials\"}";
+              // return e.getMessage();
+            }
+        }
+        return  "{\"type\":\"Refresh Command is sending to " + all.size() + " Devices ...\"}";
+    }
+
+    @GET
     @Path("types")
     public Collection<Typed> get(
             @QueryParam("deviceId") long deviceId,
             @QueryParam("protocol") String protocol,
             @QueryParam("textChannel") boolean textChannel) {
+        System.out.println("types get");
         if (deviceId != 0) {
             Context.getPermissionsManager().checkDevice(getUserId(), deviceId);
             return Context.getCommandsManager().getCommandTypes(deviceId, textChannel);
@@ -103,7 +122,6 @@ public class CommandResource extends ExtendedObjectResource<Command> {
             return Context.getCommandsManager().getAllCommandTypes();
         }
     }
-
 
 
 }

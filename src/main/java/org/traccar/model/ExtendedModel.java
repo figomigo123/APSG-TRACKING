@@ -124,4 +124,10 @@ public class ExtendedModel extends BaseModel {
         }
     }
 
+    @Override
+    public String toString() {
+        return "ExtendedModel{" +
+                "attributes=" + attributes.toString() +
+                "} " + super.toString();
+    }
 }

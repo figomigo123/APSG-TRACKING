@@ -97,6 +97,4 @@ public class ServerResource extends BaseResource {
         );
     }
 
-
-
 }

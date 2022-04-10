@@ -8,6 +8,7 @@ public class NewDriver extends NewBaseModel{
     public NewDriver(Driver driver) {
         this.identifier=driver.getUniqueId();
         this.name=driver.getName();
+        setId(driver.getId());
     }
 
     public String getIdentifier() {

@@ -17,6 +17,12 @@
     For list of available parameters see following page: https://www.traccar.org/configuration-file/
 
     -->
+<!--  notificator config-->
+    <entry key='notificator.types'>web,mail,traccar</entry>
+    <entry key='notificator.traccar.key'>eyJkYXRhIjozMDA4Mn0ucHJXR0g4cHQyM2t2bFVNanZLbStuMGl0K2ZBQ1ZJU2FTYml5dnVFcUswVQ</entry>
+
+
+<!-- end notificator config   -->
 
     <entry key='geocoder.enable'>true</entry>
     <entry key='geocoder.type'>nominatim</entry>

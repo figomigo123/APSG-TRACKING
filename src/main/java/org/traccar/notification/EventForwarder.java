@@ -96,6 +96,7 @@ public class EventForwarder {
             }
         }
         data.put(KEY_USERS, Context.getUsersManager().getItems(users));
+        System.out.println("///////////////////////////////////////////////////////////////////");
         return data;
     }
 

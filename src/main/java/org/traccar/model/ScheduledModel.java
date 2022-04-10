@@ -27,4 +27,12 @@ public class ScheduledModel extends ExtendedModel {
     public void setCalendarId(long calendarId) {
         this.calendarId = calendarId;
     }
+
+
+    @Override
+    public String toString() {
+        return "ScheduledModel{" +
+                "calendarId=" + calendarId +
+                "} " + super.toString();
+    }
 }

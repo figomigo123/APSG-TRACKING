@@ -15,6 +15,7 @@ public class NewUser extends NewBaseModel {
         if (user.getDisabled())
             disabled = "YES";
         else disabled = "NO";
+        setId(user.getId());
     }
 
     public NewUser() {

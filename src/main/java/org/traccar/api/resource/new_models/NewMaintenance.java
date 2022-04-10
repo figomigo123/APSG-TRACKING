@@ -10,6 +10,7 @@ public class NewMaintenance extends NewBaseModel{
         this.type = maintenance.getType();
         this.start = maintenance.getStart();
         this.period = maintenance.getPeriod();
+        setId(maintenance.getId());
     }
 
     private String type;

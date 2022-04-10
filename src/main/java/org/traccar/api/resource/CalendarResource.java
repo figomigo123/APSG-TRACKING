@@ -45,7 +45,7 @@ public class CalendarResource extends SimpleObjectResource<Calendar> {
         Collection<Calendar> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
         List<NewBaseModel> newBaseModels = new ArrayList<>();
         items.forEach(u -> {
-            NewBaseModel newUser = new NewBaseModel(u.getName());
+            NewBaseModel newUser = new NewBaseModel(u.getName(),u.getId());
             newBaseModels.add(newUser);
         });
         return newBaseModels;

@@ -28,4 +28,10 @@ public class BaseModel {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "BaseModel{" +
+                "id=" + id +
+                '}';
+    }
 }

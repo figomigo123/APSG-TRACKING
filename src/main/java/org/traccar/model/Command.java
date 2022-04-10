@@ -113,4 +113,11 @@ public class Command extends Message implements Cloneable {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "Command{" +
+                "textChannel=" + textChannel +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -68,4 +68,12 @@ public class Notification extends ScheduledModel {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "always=" + always +
+                ", type='" + type + '\'' +
+                ", notificators='" + notificators + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -28,4 +28,10 @@ public class GroupedModel extends ExtendedModel {
         this.groupId = groupId;
     }
 
+    @Override
+    public String toString() {
+        return "GroupedModel{" +
+                "groupId=" + groupId +
+                "} " + super.toString();
+    }
 }

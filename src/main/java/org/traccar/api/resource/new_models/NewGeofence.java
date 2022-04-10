@@ -8,6 +8,7 @@ public class NewGeofence extends NewBaseModel{
     public NewGeofence(Geofence geofence) {
         this.name=geofence.getName();
         this.description=geofence.getDescription();
+        setId(geofence.getId());
     }
 
     public String getDescription() {

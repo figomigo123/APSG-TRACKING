@@ -76,6 +76,8 @@ public abstract class BaseProtocol implements Protocol {
     public Collection<String> getSupportedTextCommands() {
         Set<String> commands = new HashSet<>(supportedTextCommands);
         commands.add(Command.TYPE_CUSTOM);
+        System.out.println("supportedTextCommands : ");
+        commands.forEach(a->{ System.out.println("- "+a);});
         return commands;
     }
 

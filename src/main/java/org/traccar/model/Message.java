@@ -37,7 +37,11 @@ public class Message extends ExtendedModel {
         this.type = type;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Message{" +
+                "deviceId=" + deviceId +
+                ", type='" + type + '\'' +
+                "} " + super.toString();
+    }
 }

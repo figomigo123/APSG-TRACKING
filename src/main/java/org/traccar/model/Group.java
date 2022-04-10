@@ -27,4 +27,10 @@ public class Group extends GroupedModel {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "name='" + name + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -7,14 +7,26 @@ public class NewNotification {
     String all_devices;
     String alarms;
     String channels;
+    private long id;
 
     public NewNotification(Notification notification) {
-        this.type_of_notification=notification.getType();
-       if(notification.getAlways()) this.all_devices="Yes";else this.all_devices="No";
-       this.alarms=notification.getString("alarms");
-       if(this.alarms==null)this.alarms="";
-       this.channels=notification.getNotificators();
+        this.type_of_notification = notification.getType();
+        if (notification.getAlways()) this.all_devices = "Yes";
+        else this.all_devices = "No";
+        this.alarms = notification.getString("alarms");
+        if (this.alarms == null) this.alarms = "";
+        this.channels = notification.getNotificators();
+        this.id = notification.getId();
 
+    }
+
+
+    public final long getId() {
+        return id;
+    }
+
+    public final void setId(long id) {
+        this.id = id;
     }
 
     public String getType_of_notification() {
