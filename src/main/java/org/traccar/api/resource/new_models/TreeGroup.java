@@ -10,7 +10,7 @@ public class TreeGroup implements Cloneable {
     long id, groupId;
     List<TreeGroup> treeGroups = new ArrayList<>();
     List<Device> devices = new ArrayList<>();
-int level;
+int level, online, offline,unknown;
 boolean haveDevices=false,build=false;
 
     public TreeGroup() {
@@ -37,12 +37,44 @@ boolean haveDevices=false,build=false;
         this.groupId = groupId;
     }
 
+    public void setNumbers(String status){
+        switch (status){
+            case "online":this.online++ ;break;
+            case "offline":this.offline++ ;break;
+            case "unknown":this.unknown++ ;break;
+        }
+    }
+
     public boolean isBuild() {
         return build;
     }
 
     public void setBuild(boolean build) {
         this.build = build;
+    }
+
+    public int getOnline() {
+        return online;
+    }
+
+    public void setOnline(int online) {
+        this.online = online;
+    }
+
+    public int getOffline() {
+        return offline;
+    }
+
+    public void setOffline(int offline) {
+        this.offline = offline;
+    }
+
+    public int getUnknown() {
+        return unknown;
+    }
+
+    public void setUnknown(int unknown) {
+        this.unknown = unknown;
     }
 
     public boolean isHaveDevices() {

@@ -90,7 +90,7 @@ public class CommandResource extends ExtendedObjectResource<Command> {
         Command command = new Command();
         command.setTextChannel(true);
         command.setType("custom");
-        command.getAttributes().put("data","getDeviceStatus");
+        command.getAttributes().put("data","singleReport");
 
         DeviceResource deviceResource = new DeviceResource();
         Collection<Device> all = deviceResource.getAllDevices();
@@ -103,7 +103,7 @@ public class CommandResource extends ExtendedObjectResource<Command> {
               // return e.getMessage();
             }
         }
-        return  "{\"type\":\"Refresh Command is sending to " + all.size() + " Devices ...\"}";
+        return  "{\"type\":\" Command is sending to " + all.size() + " Devices ...\"}";
     }
 
     @GET

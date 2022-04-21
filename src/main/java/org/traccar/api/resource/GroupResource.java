@@ -67,7 +67,6 @@ public class GroupResource extends SimpleObjectResource<Group> {
                                     String status) throws SQLException, CloneNotSupportedException {
         BaseObjectManager<Group> manager = Context.getManager(getBaseClass());
         Collection<Group> items = manager.getItems(getSimpleManagerItems(manager, true, 1L));
-
         List<TreeGroup> treeGroups = new ArrayList<>();
         List<TreeGroup> treeGroups2 = new ArrayList<>();
         if (items.size() > 0)
@@ -76,10 +75,12 @@ public class GroupResource extends SimpleObjectResource<Group> {
             });
         TreeGroup base = new TreeGroup("base", 0, 0);
         DeviceResource deviceResource = new DeviceResource();
-        Collection<Device> all = deviceResource.getAllDevices();
+        long userId=getUserId();
+        Collection<Device> all = deviceResource.getAllDevices2(userId);
         for (Device d : all)
             if (search == null || d.getName().toLowerCase().contains(search.toLowerCase())) {
                 if (status == null || status.equals("all") || d.getStatus().equals(status)) {
+                    base.setNumbers(d.getStatus());
                     if (d.getGroupId() == 0)
                         base.getDevices().add(d);
                     else
@@ -158,11 +159,6 @@ public class GroupResource extends SimpleObjectResource<Group> {
 
         for (TreeGroup treeGroup : treeGroups)
             if (treeGroup.isHaveDevices() && !treeGroup.isBuild()) base.getTreeGroups().add(treeGroup.clone());
-
-
-
-
-
         return base;
     }
 
@@ -188,6 +184,20 @@ public class GroupResource extends SimpleObjectResource<Group> {
         return null;
 
     }
-
+    @Path("d1")
+    @GET
+    public Collection<Device> getd1() throws SQLException {
+        DeviceResource deviceResource = new DeviceResource();
+        System.out.println("user : "+getUserId());
+        return deviceResource.getAllDevices();
+    }
+    @Path("d2")
+    @GET
+    public Collection<Device> getd2() throws SQLException {
+        DeviceResource deviceResource = new DeviceResource();
+        long u=getUserId();
+        System.out.println("user : "+u);
+        return deviceResource.getAllDevices2(u);
+    }
 
 }

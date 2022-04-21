@@ -101,6 +101,18 @@ public class DeviceResource extends BaseObjectResource<Device> {
 
         return deviceManager.getItems(result);
     }
+    public Collection<Device> getAllDevices2(long userId) throws SQLException {
+        DeviceManager deviceManager = Context.getDeviceManager();
+        Set<Long> result;
+        Context.getPermissionsManager().checkUser(userId, userId);
+        if (Context.getPermissionsManager().getUserAdmin(userId)) {
+            result = deviceManager.getAllUserItems(userId);
+        } else {
+            result = deviceManager.getUserItems(userId);
+        }
+
+        return deviceManager.getItems(result);
+    }
 
 
 
