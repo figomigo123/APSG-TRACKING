@@ -18,16 +18,19 @@ package org.traccar.api.resource.new_models;
 
 import org.traccar.model.Attribute;
 
-public class NewAttribute  {
-
-    public NewAttribute(Attribute attribute) {
-        this.description=attribute.getDescription();
-        this.attribute=attribute.getAttribute();
-        this.expression=attribute.getExpression();
-        this.type=attribute.getType();
-    }
+public class NewAttribute {
 
     private String description;
+    private String attribute;
+    private String expression;
+    private String type;
+
+    public NewAttribute(Attribute attribute) {
+        this.description = attribute.getDescription();
+        this.attribute = attribute.getAttribute();
+        this.expression = attribute.getExpression();
+        this.type = attribute.getType();
+    }
 
     public String getDescription() {
         return description;
@@ -37,8 +40,6 @@ public class NewAttribute  {
         this.description = description;
     }
 
-    private String attribute;
-
     public String getAttribute() {
         return attribute;
     }
@@ -47,8 +48,6 @@ public class NewAttribute  {
         this.attribute = attribute;
     }
 
-    private String expression;
-
     public String getExpression() {
         return expression;
     }
@@ -56,8 +55,6 @@ public class NewAttribute  {
     public void setExpression(String expression) {
         this.expression = expression;
     }
-
-    private String type;
 
     public String getType() {
         return type;

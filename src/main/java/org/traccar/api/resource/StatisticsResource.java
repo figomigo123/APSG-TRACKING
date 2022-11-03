@@ -56,7 +56,7 @@ public class StatisticsResource extends BaseResource {
     private Date getDate(@QueryParam("to") Date to) {
         Calendar c = Calendar.getInstance();
         c.setTime(to);
-      //  c.add(Calendar.DATE, 1);
+        //  c.add(Calendar.DATE, 1);
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 0);

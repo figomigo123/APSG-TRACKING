@@ -7,15 +7,29 @@ import java.util.Date;
 
 public class EventReport extends Message {
 
+    public static final String ALL_EVENTS = "allEvents";
+    public static final String TYPE_COMMAND_RESULT = "commandResult";
+    public static final String TYPE_DEVICE_ONLINE = "deviceOnline";
+    public static final String TYPE_DEVICE_UNKNOWN = "deviceUnknown";
+    public static final String TYPE_DEVICE_OFFLINE = "deviceOffline";
+    public static final String TYPE_DEVICE_INACTIVE = "deviceInactive";
+    public static final String TYPE_DEVICE_MOVING = "deviceMoving";
+    public static final String TYPE_DEVICE_STOPPED = "deviceStopped";
+    public static final String TYPE_DEVICE_OVERSPEED = "deviceOverspeed";
+    public static final String TYPE_DEVICE_FUEL_DROP = "deviceFuelDrop";
+    public static final String TYPE_GEOFENCE_ENTER = "geofenceEnter";
+    public static final String TYPE_GEOFENCE_EXIT = "geofenceExit";
+    public static final String TYPE_ALARM = "alarm";
+    public static final String TYPE_IGNITION_ON = "ignitionOn";
+    public static final String TYPE_IGNITION_OFF = "ignitionOff";
+    public static final String TYPE_MAINTENANCE = "maintenance";
+    public static final String TYPE_TEXT_MESSAGE = "textMessage";
+    public static final String TYPE_DRIVER_CHANGED = "driverChanged";
     private String deviceName;
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
+    private Date eventTime;
+    private long positionId;
+    private long geofenceId = 0;
+    private long maintenanceId = 0;
 
     public EventReport(String type, Position position) {
         setType(type);
@@ -42,36 +56,17 @@ public class EventReport extends Message {
         this.setType(type);
     }
 
-    public static final String ALL_EVENTS = "allEvents";
+    public static EventReportBuilder Builder() {
+        return new EventReportBuilder();
+    }
 
-    public static final String TYPE_COMMAND_RESULT = "commandResult";
+    public String getDeviceName() {
+        return deviceName;
+    }
 
-    public static final String TYPE_DEVICE_ONLINE = "deviceOnline";
-    public static final String TYPE_DEVICE_UNKNOWN = "deviceUnknown";
-    public static final String TYPE_DEVICE_OFFLINE = "deviceOffline";
-    public static final String TYPE_DEVICE_INACTIVE = "deviceInactive";
-
-    public static final String TYPE_DEVICE_MOVING = "deviceMoving";
-    public static final String TYPE_DEVICE_STOPPED = "deviceStopped";
-
-    public static final String TYPE_DEVICE_OVERSPEED = "deviceOverspeed";
-    public static final String TYPE_DEVICE_FUEL_DROP = "deviceFuelDrop";
-
-    public static final String TYPE_GEOFENCE_ENTER = "geofenceEnter";
-    public static final String TYPE_GEOFENCE_EXIT = "geofenceExit";
-
-    public static final String TYPE_ALARM = "alarm";
-
-    public static final String TYPE_IGNITION_ON = "ignitionOn";
-    public static final String TYPE_IGNITION_OFF = "ignitionOff";
-
-    public static final String TYPE_MAINTENANCE = "maintenance";
-
-    public static final String TYPE_TEXT_MESSAGE = "textMessage";
-
-    public static final String TYPE_DRIVER_CHANGED = "driverChanged";
-
-    private Date eventTime;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
     public Date getEventTime() {
         return eventTime;
@@ -81,8 +76,6 @@ public class EventReport extends Message {
         this.eventTime = eventTime;
     }
 
-    private long positionId;
-
     public long getPositionId() {
         return positionId;
     }
@@ -90,8 +83,6 @@ public class EventReport extends Message {
     public void setPositionId(long positionId) {
         this.positionId = positionId;
     }
-
-    private long geofenceId = 0;
 
     public long getGeofenceId() {
         return geofenceId;
@@ -101,19 +92,12 @@ public class EventReport extends Message {
         this.geofenceId = geofenceId;
     }
 
-    private long maintenanceId = 0;
-
     public long getMaintenanceId() {
         return maintenanceId;
     }
 
     public void setMaintenanceId(long maintenanceId) {
         this.maintenanceId = maintenanceId;
-    }
-
-    public static EventReportBuilder Builder()
-    {
-        return new  EventReportBuilder();
     }
 
 }

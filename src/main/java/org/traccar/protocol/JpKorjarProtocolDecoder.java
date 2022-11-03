@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class JpKorjarProtocolDecoder extends BaseProtocolDecoder {
 
-    public JpKorjarProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("KORJAR.PL,")
             .number("(d+),")                     // imei
@@ -51,6 +47,10 @@ public class JpKorjarProtocolDecoder extends BaseProtocolDecoder {
             .number("(x+) ")                     // lac
             .number("(x+),")                     // cid
             .compile();
+
+    public JpKorjarProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -36,22 +36,14 @@ import java.util.List;
 
 public class EgtsProtocolDecoder extends BaseProtocolDecoder {
 
-    public EgtsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
-    private boolean useObjectIdAsDeviceId = true;
-
     public static final int PT_RESPONSE = 0;
     public static final int PT_APPDATA = 1;
     public static final int PT_SIGNED_APPDATA = 2;
-
     public static final int SERVICE_AUTH = 1;
     public static final int SERVICE_TELEDATA = 2;
     public static final int SERVICE_COMMANDS = 4;
     public static final int SERVICE_FIRMWARE = 9;
     public static final int SERVICE_ECALL = 10;
-
     public static final int MSG_RECORD_RESPONSE = 0;
     public static final int MSG_TERM_IDENTITY = 1;
     public static final int MSG_MODULE_DATA = 2;
@@ -72,8 +64,12 @@ public class EgtsProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_ABS_LOOPIN_DATA = 26;
     public static final int MSG_LIQUID_LEVEL_SENSOR = 27;
     public static final int MSG_PASSENGERS_COUNTERS = 28;
-
+    private boolean useObjectIdAsDeviceId = true;
     private int packetId;
+
+    public EgtsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(
             Channel channel, int packetType, int index, int serviceType, int type, ByteBuf content) {

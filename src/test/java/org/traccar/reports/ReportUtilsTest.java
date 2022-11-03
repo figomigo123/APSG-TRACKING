@@ -1,20 +1,5 @@
 package org.traccar.reports;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TimeZone;
-
 import org.junit.Test;
 import org.traccar.BaseTest;
 import org.traccar.TestIdentityManager;
@@ -22,6 +7,13 @@ import org.traccar.model.Position;
 import org.traccar.reports.model.StopReport;
 import org.traccar.reports.model.TripReport;
 import org.traccar.reports.model.TripsConfig;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class ReportUtilsTest extends BaseTest {
 

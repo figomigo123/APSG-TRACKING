@@ -34,13 +34,6 @@ import java.util.List;
 
 public class ProgressProtocolDecoder extends BaseProtocolDecoder {
 
-    private long lastIndex;
-    private long newIndex;
-
-    public ProgressProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_NULL = 0;
     public static final int MSG_IDENT = 1;
     public static final int MSG_IDENT_FULL = 2;
@@ -50,6 +43,11 @@ public class ProgressProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_TEXT = 102;
     public static final int MSG_ALARM = 200;
     public static final int MSG_ALARM_RECIEVED = 201;
+    private long lastIndex;
+    private long newIndex;
+    public ProgressProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void requestArchive(Channel channel) {
         if (lastIndex == 0) {

@@ -32,15 +32,14 @@ import java.util.Calendar;
 
 public class UuxProtocolDecoder extends BaseProtocolDecoder {
 
-    public UuxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_GENERAL = 0x90;
     public static final int MSG_IMMOBILIZER = 0x9E;
     public static final int MSG_ACK = 0xD0;
     public static final int MSG_NACK = 0xF0;
     public static final int MSG_KEEPALIVE = 0xFF;
+    public UuxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int productCode, int protocolVersion, int type) {
         if (channel != null && BitUtil.check(protocolVersion, 7)) {

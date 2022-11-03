@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class PretraceProtocolDecoder extends BaseProtocolDecoder {
 
-    public PretraceProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .number("(d{15})")                   // imei
@@ -57,6 +53,10 @@ public class PretraceProtocolDecoder extends BaseProtocolDecoder {
             .text("^")
             .number("xx")                        // checksum
             .compile();
+
+    public PretraceProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

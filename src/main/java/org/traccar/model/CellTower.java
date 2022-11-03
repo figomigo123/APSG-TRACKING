@@ -22,6 +22,13 @@ import org.traccar.config.Keys;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CellTower {
 
+    private String radioType;
+    private Long cellId;
+    private Integer locationAreaCode;
+    private Integer mobileCountryCode;
+    private Integer mobileNetworkCode;
+    private Integer signalStrength;
+
     public static CellTower from(int mcc, int mnc, int lac, long cid) {
         CellTower cellTower = new CellTower();
         cellTower.setMobileCountryCode(mcc);
@@ -47,8 +54,6 @@ public class CellTower {
         return fromLacCid(lac, cid);
     }
 
-    private String radioType;
-
     public String getRadioType() {
         return radioType;
     }
@@ -56,8 +61,6 @@ public class CellTower {
     public void setRadioType(String radioType) {
         this.radioType = radioType;
     }
-
-    private Long cellId;
 
     public Long getCellId() {
         return cellId;
@@ -67,8 +70,6 @@ public class CellTower {
         this.cellId = cellId;
     }
 
-    private Integer locationAreaCode;
-
     public Integer getLocationAreaCode() {
         return locationAreaCode;
     }
@@ -76,8 +77,6 @@ public class CellTower {
     public void setLocationAreaCode(Integer locationAreaCode) {
         this.locationAreaCode = locationAreaCode;
     }
-
-    private Integer mobileCountryCode;
 
     public Integer getMobileCountryCode() {
         return mobileCountryCode;
@@ -87,8 +86,6 @@ public class CellTower {
         this.mobileCountryCode = mobileCountryCode;
     }
 
-    private Integer mobileNetworkCode;
-
     public Integer getMobileNetworkCode() {
         return mobileNetworkCode;
     }
@@ -96,8 +93,6 @@ public class CellTower {
     public void setMobileNetworkCode(Integer mobileNetworkCode) {
         this.mobileNetworkCode = mobileNetworkCode;
     }
-
-    private Integer signalStrength;
 
     public Integer getSignalStrength() {
         return signalStrength;

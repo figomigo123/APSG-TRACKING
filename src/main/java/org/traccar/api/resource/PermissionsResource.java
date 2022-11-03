@@ -18,6 +18,7 @@ package org.traccar.api.resource;
 
 import org.traccar.Context;
 import org.traccar.api.BaseResource;
+import org.traccar.database.GroupTree;
 import org.traccar.helper.LogAction;
 import org.traccar.model.Device;
 import org.traccar.model.Permission;
@@ -27,15 +28,12 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Path("permissions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PermissionsResource  extends BaseResource {
+public class PermissionsResource extends BaseResource {
 
     private void checkPermission(Permission permission, boolean link) {
         if (!link && permission.getOwnerClass().equals(User.class)
@@ -55,7 +53,7 @@ public class PermissionsResource  extends BaseResource {
 
     private void checkPermissionTypes(List<LinkedHashMap<String, Long>> entities) {
         Set<String> keys = null;
-        for (LinkedHashMap<String, Long> entity: entities) {
+        for (LinkedHashMap<String, Long> entity : entities) {
             if (keys != null & !entity.keySet().equals(keys)) {
                 throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).build());
             }
@@ -66,9 +64,10 @@ public class PermissionsResource  extends BaseResource {
     @Path("bulk")
     @POST
     public Response add(List<LinkedHashMap<String, Long>> entities) throws SQLException, ClassNotFoundException {
+
         Context.getPermissionsManager().checkReadonly(getUserId());
         checkPermissionTypes(entities);
-        for (LinkedHashMap<String, Long> entity: entities) {
+        for (LinkedHashMap<String, Long> entity : entities) {
             Permission permission = new Permission(entity);
             checkPermission(permission, true);
             Context.getDataManager().linkObject(permission.getOwnerClass(), permission.getOwnerId(),
@@ -84,6 +83,8 @@ public class PermissionsResource  extends BaseResource {
 
     @POST
     public Response add(LinkedHashMap<String, Long> entity) throws SQLException, ClassNotFoundException {
+        if ( entity.keySet().contains("groupId") &&   entity.keySet().contains("userId"))
+            addOrRemoveGroupDevices(entity.get("groupId"),entity.get("userId"),"add");
         return add(Collections.singletonList(entity));
     }
 
@@ -92,7 +93,7 @@ public class PermissionsResource  extends BaseResource {
     public Response remove(List<LinkedHashMap<String, Long>> entities) throws SQLException, ClassNotFoundException {
         Context.getPermissionsManager().checkReadonly(getUserId());
         checkPermissionTypes(entities);
-        for (LinkedHashMap<String, Long> entity: entities) {
+        for (LinkedHashMap<String, Long> entity : entities) {
             Permission permission = new Permission(entity);
             checkPermission(permission, false);
             Context.getDataManager().linkObject(permission.getOwnerClass(), permission.getOwnerId(),
@@ -108,7 +109,29 @@ public class PermissionsResource  extends BaseResource {
 
     @DELETE
     public Response remove(LinkedHashMap<String, Long> entity) throws SQLException, ClassNotFoundException {
+        if ( entity.keySet().contains("groupId") &&   entity.keySet().contains("userId"))
+            addOrRemoveGroupDevices(entity.get("groupId"),entity.get("userId"),"");
         return remove(Collections.singletonList(entity));
     }
+
+
+
+    public void addOrRemoveGroupDevices( long groupId,long userId,String key) throws SQLException, ClassNotFoundException {
+        Collection<Device> devices=  new GroupTree(Context.getGroupsManager().getItems(
+                Context.getGroupsManager().getAllItems()),
+                Context.getDeviceManager().getAllDevices()).getDevices(groupId);
+
+        for(Device d:devices){
+            LinkedHashMap<String, Long> en=new LinkedHashMap<>();
+            en.put("userId",userId);
+            en.put("deviceId",d.getId());
+            if(key.equals("add"))
+                add(Collections.singletonList(en));
+            else
+            remove(Collections.singletonList(en));
+        }
+
+    }
+
 
 }

@@ -34,10 +34,6 @@ import java.text.SimpleDateFormat;
 
 public class NoranProtocolDecoder extends BaseProtocolDecoder {
 
-    public NoranProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_UPLOAD_POSITION = 0x0008;
     public static final int MSG_UPLOAD_POSITION_NEW = 0x0032;
     public static final int MSG_CONTROL = 0x0002;
@@ -47,6 +43,9 @@ public class NoranProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_SHAKE_HAND_RESPONSE = 0x8000;
     public static final int MSG_IMAGE_SIZE = 0x0200;
     public static final int MSG_IMAGE_PACKET = 0x0201;
+    public NoranProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

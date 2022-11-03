@@ -102,15 +102,15 @@ public class HttpSmsClient implements SmsManager {
     public void sendMessageAsync(final String destAddress, final String message, final boolean command) {
         getRequestBuilder().async().post(
                 Entity.entity(preparePayload(destAddress, message), mediaType), new InvocationCallback<String>() {
-            @Override
-            public void completed(String s) {
-            }
+                    @Override
+                    public void completed(String s) {
+                    }
 
-            @Override
-            public void failed(Throwable throwable) {
-                LOGGER.warn("SMS send failed", throwable);
-            }
-        });
+                    @Override
+                    public void failed(Throwable throwable) {
+                        LOGGER.warn("SMS send failed", throwable);
+                    }
+                });
     }
 
 }

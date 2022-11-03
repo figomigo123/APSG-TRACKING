@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 
 public class TekProtocolDecoder extends BaseProtocolDecoder {
 
-    public TekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number(",d+,")
             .number("(dd)(dd)(dd).d,")           // time (hhmmss)
@@ -54,6 +50,10 @@ public class TekProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // satellites
             .any()
             .compile();
+
+    public TekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

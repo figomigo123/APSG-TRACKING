@@ -50,6 +50,10 @@ public class MainEventHandler extends ChannelInboundHandlerAdapter {
                 Context.getConfig().getString(Keys.LOGGER_ATTRIBUTES).split("[, ]")));
     }
 
+    private static String formatChannel(Channel channel) {
+        return String.format("[%s]", channel.id().asShortText());
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof Position) {
@@ -111,10 +115,6 @@ public class MainEventHandler extends ChannelInboundHandlerAdapter {
             Main.getInjector().getInstance(StatisticsManager.class)
                     .registerMessageStored(position.getDeviceId(), position.getProtocol());
         }
-    }
-
-    private static String formatChannel(Channel channel) {
-        return String.format("[%s]", channel.id().asShortText());
     }
 
     @Override

@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Gl100ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Gl100ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("+RESP:")
             .expression("GT...,")
@@ -55,6 +51,10 @@ public class Gl100ProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd),")             // time (hhmmss)
             .any()
             .compile();
+
+    public Gl100ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -33,10 +33,6 @@ import java.util.Date;
 
 public class CalAmpProtocolDecoder extends BaseProtocolDecoder {
 
-    public CalAmpProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_NULL = 0;
     public static final int MSG_ACK = 1;
     public static final int MSG_EVENT_REPORT = 2;
@@ -49,10 +45,12 @@ public class CalAmpProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_USER_DATA_ACC = 9;
     public static final int MSG_MINI_EVENT_REPORT = 10;
     public static final int MSG_MINI_USER_DATA = 11;
-
     public static final int SERVICE_UNACKNOWLEDGED = 0;
     public static final int SERVICE_ACKNOWLEDGED = 1;
     public static final int SERVICE_RESPONSE = 2;
+    public CalAmpProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, int type, int index, int result) {
         if (channel != null) {

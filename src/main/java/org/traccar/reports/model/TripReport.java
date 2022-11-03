@@ -20,6 +20,16 @@ public class TripReport extends BaseReport {
 
     private long startPositionId;
     private String deviceName;
+    private long endPositionId;
+    private double startLat;
+    private double startLon;
+    private double endLat;
+    private double endLon;
+    private String startAddress;
+    private String endAddress;
+    private long duration;
+    private String driverUniqueId;
+    private String driverName;
 
     @Override
     public String getDeviceName() {
@@ -39,8 +49,6 @@ public class TripReport extends BaseReport {
         this.startPositionId = startPositionId;
     }
 
-    private long endPositionId;
-
     public long getEndPositionId() {
         return endPositionId;
     }
@@ -48,8 +56,6 @@ public class TripReport extends BaseReport {
     public void setEndPositionId(long endPositionId) {
         this.endPositionId = endPositionId;
     }
-
-    private double startLat;
 
     public double getStartLat() {
         return startLat;
@@ -59,8 +65,6 @@ public class TripReport extends BaseReport {
         this.startLat = startLat;
     }
 
-    private double startLon;
-
     public double getStartLon() {
         return startLon;
     }
@@ -68,8 +72,6 @@ public class TripReport extends BaseReport {
     public void setStartLon(double startLon) {
         this.startLon = startLon;
     }
-
-    private double endLat;
 
     public double getEndLat() {
         return endLat;
@@ -79,8 +81,6 @@ public class TripReport extends BaseReport {
         this.endLat = endLat;
     }
 
-    private double endLon;
-
     public double getEndLon() {
         return endLon;
     }
@@ -88,8 +88,6 @@ public class TripReport extends BaseReport {
     public void setEndLon(double endLon) {
         this.endLon = endLon;
     }
-
-    private String startAddress;
 
     public String getStartAddress() {
         return startAddress;
@@ -99,8 +97,6 @@ public class TripReport extends BaseReport {
         this.startAddress = address;
     }
 
-    private String endAddress;
-
     public String getEndAddress() {
         return endAddress;
     }
@@ -108,8 +104,6 @@ public class TripReport extends BaseReport {
     public void setEndAddress(String address) {
         this.endAddress = address;
     }
-
-    private long duration;
 
     public long getDuration() {
         return duration;
@@ -119,8 +113,6 @@ public class TripReport extends BaseReport {
         this.duration = duration;
     }
 
-    private String driverUniqueId;
-
     public String getDriverUniqueId() {
         return driverUniqueId;
     }
@@ -128,8 +120,6 @@ public class TripReport extends BaseReport {
     public void setDriverUniqueId(String driverUniqueId) {
         this.driverUniqueId = driverUniqueId;
     }
-
-    private String driverName;
 
     public String getDriverName() {
         return driverName;

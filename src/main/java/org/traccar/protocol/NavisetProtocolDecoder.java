@@ -34,14 +34,13 @@ import java.util.List;
 
 public class NavisetProtocolDecoder extends BaseProtocolDecoder {
 
-    public NavisetProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_HEADER = 0b00;
     public static final int MSG_DATA = 0b01;
     public static final int MSG_RESPONSE = 0b10;
     public static final int MSG_RESERVE = 0b11;
+    public NavisetProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

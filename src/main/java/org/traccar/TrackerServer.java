@@ -32,10 +32,9 @@ public abstract class TrackerServer {
 
     private final boolean datagram;
     private final AbstractBootstrap bootstrap;
-
-    public boolean isDatagram() {
-        return datagram;
-    }
+    private final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private int port;
+    private String address;
 
     public TrackerServer(boolean datagram, String protocol) {
         this.datagram = datagram;
@@ -67,9 +66,11 @@ public abstract class TrackerServer {
         }
     }
 
-    protected abstract void addProtocolHandlers(PipelineBuilder pipeline);
+    public boolean isDatagram() {
+        return datagram;
+    }
 
-    private int port;
+    protected abstract void addProtocolHandlers(PipelineBuilder pipeline);
 
     public int getPort() {
         return port;
@@ -79,8 +80,6 @@ public abstract class TrackerServer {
         this.port = port;
     }
 
-    private String address;
-
     public String getAddress() {
         return address;
     }
@@ -88,8 +87,6 @@ public abstract class TrackerServer {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    private final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     public ChannelGroup getChannelGroup() {
         return channelGroup;

@@ -30,14 +30,13 @@ import java.util.Date;
 
 public class AdmProtocolDecoder extends BaseProtocolDecoder {
 
-    public AdmProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int CMD_RESPONSE_SIZE = 0x84;
     public static final int MSG_IMEI = 0x03;
     public static final int MSG_PHOTO = 0x0A;
     public static final int MSG_ADM5 = 0x01;
+    public AdmProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodeData(Channel channel, SocketAddress remoteAddress, ByteBuf buf, int type) {
 

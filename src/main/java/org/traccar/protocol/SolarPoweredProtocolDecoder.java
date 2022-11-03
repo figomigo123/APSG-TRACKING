@@ -30,11 +30,11 @@ import java.net.SocketAddress;
 
 public class SolarPoweredProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_ACTIVE_REPORTING = 0x11;
+
     public SolarPoweredProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_ACTIVE_REPORTING = 0x11;
 
     @Override
     protected Object decode(

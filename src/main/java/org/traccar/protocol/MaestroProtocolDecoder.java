@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class MaestroProtocolDecoder extends BaseProtocolDecoder {
 
-    public MaestroProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("@")
             .number("(d+),")                     // imei
@@ -56,6 +52,10 @@ public class MaestroProtocolDecoder extends BaseProtocolDecoder {
             .number(",(d+)").optional()          // adc
             .any()
             .compile();
+
+    public MaestroProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

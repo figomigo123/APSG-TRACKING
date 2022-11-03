@@ -32,6 +32,17 @@ import java.net.SocketAddress;
 
 public class AirComProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_LOGIN = 0xB1;
+    public static final int MSG_CONFIRMATION = 0x21;
+    public static final int MSG_ON_DEMAND = 0x81;
+    public static final int MSG_POSITION_UPLOAD = 0x80;
+    public static final int MSG_POSITION_REUPLOAD = 0x8E;
+    public static final int MSG_ALARM = 0x82;
+    public static final int MSG_ADMIN_NUMBER = 0x83;
+    public static final int MSG_SEND_TEXT = 0x84;
+    public static final int MSG_REPLY = 0x85;
+    public static final int MSG_SMS_ALARM_SWITCH = 0x86;
+    public static final int MSG_PERIPHERAL = 0xA3;
     public AirComProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -49,18 +60,6 @@ public class AirComProtocolDecoder extends BaseProtocolDecoder {
 
         return identifiers;
     }
-
-    public static final int MSG_LOGIN = 0xB1;
-    public static final int MSG_CONFIRMATION = 0x21;
-    public static final int MSG_ON_DEMAND = 0x81;
-    public static final int MSG_POSITION_UPLOAD = 0x80;
-    public static final int MSG_POSITION_REUPLOAD = 0x8E;
-    public static final int MSG_ALARM = 0x82;
-    public static final int MSG_ADMIN_NUMBER = 0x83;
-    public static final int MSG_SEND_TEXT = 0x84;
-    public static final int MSG_REPLY = 0x85;
-    public static final int MSG_SMS_ALARM_SWITCH = 0x86;
-    public static final int MSG_PERIPHERAL = 0xA3;
 
     private void decodeAlarmStatus(Position position, byte[] status) {
         if (BitUtil.check(status[0], 4)) {
@@ -83,7 +82,7 @@ public class AirComProtocolDecoder extends BaseProtocolDecoder {
             position.set(Position.KEY_ALARM, Position.ALARM_TEMPERATURE);
         } else if (BitUtil.check(status[2], 4)) {
             position.set(Position.KEY_ALARM, Position.ALARM_TAMPERING);
-        }  else if (BitUtil.check(status[2], 6)) {
+        } else if (BitUtil.check(status[2], 6)) {
             position.set(Position.KEY_ALARM, Position.ALARM_FATIGUE_DRIVING);
         } else if (BitUtil.check(status[2], 7)) {
             position.set(Position.KEY_ALARM, Position.ALARM_IDLE);
@@ -219,7 +218,7 @@ public class AirComProtocolDecoder extends BaseProtocolDecoder {
 
                 }
 
-            }  else {
+            } else {
 
                 buf.readUnsignedByte(); // overloaded state
                 buf.readUnsignedByte(); // logging status

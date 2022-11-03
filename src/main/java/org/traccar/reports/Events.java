@@ -18,7 +18,10 @@ package org.traccar.reports;
 
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.traccar.Context;
-import org.traccar.model.*;
+import org.traccar.api.resource.new_models.NewEvent;
+import org.traccar.model.Device;
+import org.traccar.model.Event;
+import org.traccar.model.Group;
 import org.traccar.reports.model.DeviceReport;
 import org.traccar.reports.model.EventReport;
 
@@ -35,11 +38,11 @@ public final class Events {
     }
 
     public static Collection<Event> getObjects(long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Collection<String> types, Date from, Date to) throws SQLException {
+                                               Collection<String> types, Date from, Date to) throws SQLException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<Event> result = new ArrayList<>();
 
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<Event> events = Context.getDataManager().getEvents(deviceId, from, to);
             boolean all = types.isEmpty() || types.contains(Event.ALL_EVENTS);
@@ -50,7 +53,7 @@ public final class Events {
                     if ((geofenceId == 0 || Context.getGeofenceManager().checkItemPermission(userId, geofenceId))
                             && (maintenanceId == 0
                             || Context.getMaintenancesManager().checkItemPermission(userId, maintenanceId))) {
-                       result.add(event);
+                        result.add(event);
                     }
                 }
             }
@@ -59,8 +62,94 @@ public final class Events {
     }
 
     public static void getExcel(OutputStream outputStream,
-            long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Collection<String> types, Date from, Date to) throws SQLException, IOException {
+                                long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
+                                Collection<String> types, Date from, Date to) throws SQLException, IOException {
+        ReportUtils.checkPeriodLimit(from, to);
+        List<EventReport> eventList = new LinkedList<>();
+        ArrayList<DeviceReport> devicesEvents = new ArrayList<>();
+        ArrayList<String> sheetNames = new ArrayList<>();
+        HashMap<Long, String> geofenceNames = new HashMap<>();
+        HashMap<Long, String> maintenanceNames = new HashMap<>();
+        String devicesNames = ",";
+        String groupsNames = "";
+        Collection<Long> deviceList= ReportUtils.getDeviceList(deviceIds, groupIds);
+        for (long deviceId : deviceList) {
+            Context.getPermissionsManager().checkDevice(userId, deviceId);
+        }
+
+
+        Collection<NewEvent> events = Context.getDataManager().getEvents2(deviceList,from,to,types);
+
+
+
+            List<EventReport> eventReports = new LinkedList<>();
+            for (NewEvent ev : events) {
+                String type = ev.getType();
+                type = type.replace("device", "");
+                if (type.equals("Unknown")) type = "Idle";
+                ev.setType(type);
+
+                EventReport eventReport=EventReport.Builder()
+                        .setDeviceName(ev.getDviceName())
+                        .setEventTime(ev.getEventTime())
+                        .setGeofenceId(ev.getGeofenceId())
+                        .setMaintenanceId(ev.getMaintenanceId())
+                        .setPositionId(ev.getPositionId())
+                        .DeviceId(ev.getDeviceId())
+                        .Type(ev.getType())
+                        .Build();
+                eventReport.setAttributes(ev.getAttributes());
+                eventReports.add(eventReport   );
+                if ( !devicesNames.contains(","+ev.getDviceName()+","))
+                    devicesNames = devicesNames + ev.getDviceName()+ "," ;
+                if (ev.getGroupId() != 0) {
+                    Group group = Context.getGroupsManager().getById(ev.getGroupId());
+                    if (group != null && !groupsNames.contains(group.getName())) {
+                        //deviceEvents.setGroupName(group.getName());
+                        groupsNames = groupsNames + "," + group.getName();
+                    }
+                }
+
+            }
+
+
+
+            eventList.addAll(eventReports);
+
+
+
+
+        if (devicesNames.length() > 1) {
+            devicesNames = devicesNames.substring(1, devicesNames.length());
+        }
+        if (groupsNames.length() > 1) {
+            groupsNames = groupsNames.substring(1, groupsNames.length());
+        }
+        DeviceReport deviceEvents = new DeviceReport();
+        deviceEvents.setDeviceName(devicesNames);
+        deviceEvents.setObjects(eventList);
+        deviceEvents.setGroupName(groupsNames);
+        devicesEvents.add(deviceEvents);
+
+        sheetNames.add(WorkbookUtil.createSafeSheetName("Events"));
+
+
+        String templatePath = Context.getConfig().getString("report.templatesPath",
+                "templates/export/");
+        try (InputStream inputStream = new FileInputStream(templatePath + "/events.xlsx")) {
+            org.jxls.common.Context jxlsContext = ReportUtils.initializeContext(userId);
+            jxlsContext.putVar("devices", devicesEvents);
+            jxlsContext.putVar("sheetNames", sheetNames);
+            jxlsContext.putVar("geofenceNames", geofenceNames);
+            jxlsContext.putVar("maintenanceNames", maintenanceNames);
+            jxlsContext.putVar("from", from);
+            jxlsContext.putVar("to", to);
+            ReportUtils.processTemplateWithSheets(inputStream, outputStream, jxlsContext);
+        }
+    }
+    public static void getExcel2(OutputStream outputStream,
+                                long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
+                                Collection<String> types, Date from, Date to) throws SQLException, IOException {
         ReportUtils.checkPeriodLimit(from, to);
         List<EventReport> eventList = new LinkedList<>();
         ArrayList<DeviceReport> devicesEvents = new ArrayList<>();
@@ -69,11 +158,12 @@ public final class Events {
         HashMap<Long, String> maintenanceNames = new HashMap<>();
         String devicesNames = "";
         String groupsNames = "";
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<Event> events = Context.getDataManager().getEvents(deviceId, from, to);
+
             boolean all = types.isEmpty() || types.contains(Event.ALL_EVENTS);
-            for (Iterator<Event> iterator = events.iterator(); iterator.hasNext();) {
+          /*  for (Iterator<Event> iterator = events.iterator(); iterator.hasNext(); ) {
                 Event event = iterator.next();
                 if (all || types.contains(event.getType())) {
                     long geofenceId = event.getGeofenceId();
@@ -100,14 +190,25 @@ public final class Events {
                 } else {
                     iterator.remove();
                 }
-            }
-           /* DeviceReport deviceEvents = new DeviceReport();*/
+            }*/
+            /* DeviceReport deviceEvents = new DeviceReport();*/
             Device device = Context.getIdentityManager().getById(deviceId);
             List<EventReport> eventReports = new LinkedList<>();
-            for (Event ev : events)
-            {
-
-                eventReports.add(EventReport.Builder()
+            for (Event ev : events) {
+                String type = ev.getType();
+                type = type.replace("device", "");
+                if (type.equals("Unknown")) type = "Idle";
+                ev.setType(type);
+                Map<String, Object> attributes = new LinkedHashMap<>();
+                attributes.put("alarm", "Sos");
+                attributes.put("alarm", "true");
+                attributes.put("alarm", "good");
+                ev.setAttributes(attributes);
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                System.out.println(device.getName());
+                System.out.println(ev.getAttributes().toString());
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                EventReport eventReport=EventReport.Builder()
                         .setDeviceName(device.getName())
                         .setEventTime(ev.getEventTime())
                         .setGeofenceId(ev.getGeofenceId())
@@ -115,18 +216,19 @@ public final class Events {
                         .setPositionId(ev.getPositionId())
                         .DeviceId(ev.getDeviceId())
                         .Type(ev.getType())
-                        .Build()
-                );
+                        .Build();
+                eventReport.setAttributes(ev.getAttributes());
+                eventReports.add(eventReport   );
 
             }
             //deviceEvents.setDeviceName(device.getName());
             //sheetNames.add(WorkbookUtil.createSafeSheetName(deviceEvents.getDeviceName()));
-            devicesNames = devicesNames+","+device.getName();
+            devicesNames = devicesNames + "," + device.getName();
             if (device.getGroupId() != 0) {
                 Group group = Context.getGroupsManager().getById(device.getGroupId());
-                if (group != null) {
+                if (group != null && !groupsNames.contains(group.getName())) {
                     //deviceEvents.setGroupName(group.getName());
-                    groupsNames = groupsNames+","+group.getName();
+                    groupsNames = groupsNames + "," + group.getName();
                 }
             }
             /*deviceEvents.setObjects(events);*/
@@ -134,12 +236,12 @@ public final class Events {
             eventList.addAll(eventReports);
 
         }
-        if(devicesNames.length() > 1)
-        {
+
+
+        if (devicesNames.length() > 1) {
             devicesNames = devicesNames.substring(1, devicesNames.length());
         }
-        if(groupsNames.length() > 1)
-        {
+        if (groupsNames.length() > 1) {
             groupsNames = groupsNames.substring(1, groupsNames.length());
         }
         DeviceReport deviceEvents = new DeviceReport();
@@ -147,9 +249,17 @@ public final class Events {
         deviceEvents.setObjects(eventList);
         deviceEvents.setGroupName(groupsNames);
         devicesEvents.add(deviceEvents);
+        System.out.println("======================================");
+        System.out.println("devicesNames: " + devicesNames);
+        System.out.println("eventList: " + eventList);
+        System.out.println("groupsNames: " + groupsNames);
+        System.out.println("deviceEvents: " + deviceEvents);
+        System.out.println("======================================");
+
+
+
         /*sheetNames.add(WorkbookUtil.createSafeSheetName(devicesNames));*/
         sheetNames.add(WorkbookUtil.createSafeSheetName("Events"));
-
 
 
         String templatePath = Context.getConfig().getString("report.templatesPath",

@@ -18,6 +18,14 @@ package org.traccar.geocoder;
 public class Address {
 
     private String postcode;
+    private String country;
+    private String state;
+    private String district;
+    private String settlement;
+    private String suburb;
+    private String street;
+    private String house;
+    private String formattedAddress;
 
     public String getPostcode() {
         return postcode;
@@ -27,8 +35,6 @@ public class Address {
         this.postcode = postcode;
     }
 
-    private String country;
-
     public String getCountry() {
         return country;
     }
@@ -36,8 +42,6 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
-
-    private String state;
 
     public String getState() {
         return state;
@@ -47,8 +51,6 @@ public class Address {
         this.state = state;
     }
 
-    private String district;
-
     public String getDistrict() {
         return district;
     }
@@ -56,8 +58,6 @@ public class Address {
     public void setDistrict(String district) {
         this.district = district;
     }
-
-    private String settlement;
 
     public String getSettlement() {
         return settlement;
@@ -67,8 +67,6 @@ public class Address {
         this.settlement = settlement;
     }
 
-    private String suburb;
-
     public String getSuburb() {
         return suburb;
     }
@@ -76,8 +74,6 @@ public class Address {
     public void setSuburb(String suburb) {
         this.suburb = suburb;
     }
-
-    private String street;
 
     public String getStreet() {
         return street;
@@ -87,8 +83,6 @@ public class Address {
         this.street = street;
     }
 
-    private String house;
-
     public String getHouse() {
         return house;
     }
@@ -96,8 +90,6 @@ public class Address {
     public void setHouse(String house) {
         this.house = house;
     }
-
-    private String formattedAddress;
 
     public String getFormattedAddress() {
         return formattedAddress;

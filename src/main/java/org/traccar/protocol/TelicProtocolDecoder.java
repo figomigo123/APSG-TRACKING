@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class TelicProtocolDecoder extends BaseProtocolDecoder {
 
-    public TelicProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("dddd")
             .number("(d{6}|d{15})")              // device id
@@ -56,6 +52,10 @@ public class TelicProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // battery
             .any()
             .compile();
+
+    public TelicProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int eventId) {
 

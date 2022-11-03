@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class DwayProtocolDecoder extends BaseProtocolDecoder {
 
-    public DwayProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("AA55,")
             .number("d+,")                       // index
@@ -55,6 +51,10 @@ public class DwayProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // driver
             .any()
             .compile();
+
+    public DwayProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

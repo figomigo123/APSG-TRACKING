@@ -31,10 +31,7 @@ import java.net.SocketAddress;
 
 public class CellocatorProtocolDecoder extends BaseProtocolDecoder {
 
-    public CellocatorProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
+    public static final int MSG_SERVER_ACKNOWLEDGE = 4;
     static final int MSG_CLIENT_STATUS = 0;
     static final int MSG_CLIENT_PROGRAMMING = 3;
     static final int MSG_CLIENT_SERIAL_LOG = 7;
@@ -42,7 +39,9 @@ public class CellocatorProtocolDecoder extends BaseProtocolDecoder {
     static final int MSG_CLIENT_MODULAR = 9;
     static final int MSG_CLIENT_MODULAR_EXT = 11;
 
-    public static final int MSG_SERVER_ACKNOWLEDGE = 4;
+    public CellocatorProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     public static ByteBuf encodeContent(int type, int uniqueId, int packetNumber, ByteBuf content) {
 

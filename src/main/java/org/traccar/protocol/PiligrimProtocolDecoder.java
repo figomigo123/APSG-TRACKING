@@ -35,6 +35,9 @@ import java.util.List;
 
 public class PiligrimProtocolDecoder extends BaseHttpProtocolDecoder {
 
+    public static final int MSG_GPS = 0xF1;
+    public static final int MSG_GPS_SENSORS = 0xF2;
+    public static final int MSG_EVENTS = 0xF3;
     public PiligrimProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -42,10 +45,6 @@ public class PiligrimProtocolDecoder extends BaseHttpProtocolDecoder {
     private void sendResponse(Channel channel, String message) {
         sendResponse(channel, HttpResponseStatus.OK, Unpooled.copiedBuffer(message, StandardCharsets.US_ASCII));
     }
-
-    public static final int MSG_GPS = 0xF1;
-    public static final int MSG_GPS_SENSORS = 0xF2;
-    public static final int MSG_EVENTS = 0xF3;
 
     @Override
     protected Object decode(

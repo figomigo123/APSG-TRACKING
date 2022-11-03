@@ -32,12 +32,30 @@ import java.util.regex.Pattern;
 
 public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
 
-    private Map<Byte, ByteBuf> photos = new HashMap<>();
-
-    public MeiligaoProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
+    public static final int MSG_HEARTBEAT = 0x0001;
+    public static final int MSG_SERVER = 0x0002;
+    public static final int MSG_LOGIN = 0x5000;
+    public static final int MSG_LOGIN_RESPONSE = 0x4000;
+    public static final int MSG_POSITION = 0x9955;
+    public static final int MSG_POSITION_LOGGED = 0x9016;
+    public static final int MSG_ALARM = 0x9999;
+    public static final int MSG_RFID = 0x9966;
+    public static final int MSG_RETRANSMISSION = 0x6688;
+    public static final int MSG_OBD_RT = 0x9901;
+    public static final int MSG_OBD_RTA = 0x9902;
+    public static final int MSG_TRACK_ON_DEMAND = 0x4101;
+    public static final int MSG_TRACK_BY_INTERVAL = 0x4102;
+    public static final int MSG_MOVEMENT_ALARM = 0x4106;
+    public static final int MSG_OUTPUT_CONTROL_1 = 0x4114;
+    public static final int MSG_OUTPUT_CONTROL_2 = 0x4115;
+    public static final int MSG_TIME_ZONE = 0x4132;
+    public static final int MSG_TAKE_PHOTO = 0x4151;
+    public static final int MSG_UPLOAD_PHOTO = 0x0800;
+    public static final int MSG_UPLOAD_PHOTO_RESPONSE = 0x8801;
+    public static final int MSG_DATA_PHOTO = 0x9988;
+    public static final int MSG_POSITION_IMAGE = 0x9977;
+    public static final int MSG_UPLOAD_COMPLETE = 0x0f80;
+    public static final int MSG_REBOOT_GPS = 0x4902;
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+)(dd)(dd).?d*,")         // time (hhmmss)
             .expression("([AV]),")               // validity
@@ -82,7 +100,6 @@ public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
-
     private static final Pattern PATTERN_RFID = new PatternBuilder()
             .number("|(dd)(dd)(dd),")            // time (hhmmss)
             .number("(dd)(dd)(dd),")             // date (ddmmyy)
@@ -91,7 +108,6 @@ public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)(dd.d+),")              // longitude
             .expression("([EW])")
             .compile();
-
     private static final Pattern PATTERN_OBD = new PatternBuilder()
             .number("(d+.d+),")                  // battery
             .number("(d+),")                     // rpm
@@ -109,7 +125,6 @@ public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // hard acceleration count
             .number("(d+)")                      // hard brake count
             .compile();
-
     private static final Pattern PATTERN_OBDA = new PatternBuilder()
             .number("(d+),")                     // total ignition
             .number("(d+.d+),")                  // total driving time
@@ -121,33 +136,32 @@ public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // total hard acceleration
             .number("(d+)")                      // total hard brake
             .compile();
+    private Map<Byte, ByteBuf> photos = new HashMap<>();
+    public MeiligaoProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
-    public static final int MSG_HEARTBEAT = 0x0001;
-    public static final int MSG_SERVER = 0x0002;
-    public static final int MSG_LOGIN = 0x5000;
-    public static final int MSG_LOGIN_RESPONSE = 0x4000;
-    public static final int MSG_POSITION = 0x9955;
-    public static final int MSG_POSITION_LOGGED = 0x9016;
-    public static final int MSG_ALARM = 0x9999;
-    public static final int MSG_RFID = 0x9966;
-    public static final int MSG_RETRANSMISSION = 0x6688;
+    private static void sendResponse(
+            Channel channel, SocketAddress remoteAddress, ByteBuf id, int type, ByteBuf msg) {
 
-    public static final int MSG_OBD_RT = 0x9901;
-    public static final int MSG_OBD_RTA = 0x9902;
+        if (channel != null) {
+            ByteBuf buf = Unpooled.buffer(
+                    2 + 2 + id.readableBytes() + 2 + msg.readableBytes() + 2 + 2);
 
-    public static final int MSG_TRACK_ON_DEMAND = 0x4101;
-    public static final int MSG_TRACK_BY_INTERVAL = 0x4102;
-    public static final int MSG_MOVEMENT_ALARM = 0x4106;
-    public static final int MSG_OUTPUT_CONTROL_1 = 0x4114;
-    public static final int MSG_OUTPUT_CONTROL_2 = 0x4115;
-    public static final int MSG_TIME_ZONE = 0x4132;
-    public static final int MSG_TAKE_PHOTO = 0x4151;
-    public static final int MSG_UPLOAD_PHOTO = 0x0800;
-    public static final int MSG_UPLOAD_PHOTO_RESPONSE = 0x8801;
-    public static final int MSG_DATA_PHOTO = 0x9988;
-    public static final int MSG_POSITION_IMAGE = 0x9977;
-    public static final int MSG_UPLOAD_COMPLETE = 0x0f80;
-    public static final int MSG_REBOOT_GPS = 0x4902;
+            buf.writeByte('@');
+            buf.writeByte('@');
+            buf.writeShort(buf.capacity());
+            buf.writeBytes(id);
+            buf.writeShort(type);
+            buf.writeBytes(msg);
+            msg.release();
+            buf.writeShort(Checksum.crc16(Checksum.CRC16_CCITT_FALSE, buf.nioBuffer()));
+            buf.writeByte('\r');
+            buf.writeByte('\n');
+
+            channel.writeAndFlush(new NetworkMessage(buf, remoteAddress));
+        }
+    }
 
     private DeviceSession identify(ByteBuf buf, Channel channel, SocketAddress remoteAddress) {
         StringBuilder builder = new StringBuilder();
@@ -176,28 +190,6 @@ public class MeiligaoProtocolDecoder extends BaseProtocolDecoder {
             return getDeviceSession(channel, remoteAddress, id, id + Checksum.luhn(Long.parseLong(id)));
         } else {
             return getDeviceSession(channel, remoteAddress, id);
-        }
-    }
-
-    private static void sendResponse(
-            Channel channel, SocketAddress remoteAddress, ByteBuf id, int type, ByteBuf msg) {
-
-        if (channel != null) {
-            ByteBuf buf = Unpooled.buffer(
-                    2 + 2 + id.readableBytes() + 2 + msg.readableBytes() + 2 + 2);
-
-            buf.writeByte('@');
-            buf.writeByte('@');
-            buf.writeShort(buf.capacity());
-            buf.writeBytes(id);
-            buf.writeShort(type);
-            buf.writeBytes(msg);
-            msg.release();
-            buf.writeShort(Checksum.crc16(Checksum.CRC16_CCITT_FALSE, buf.nioBuffer()));
-            buf.writeByte('\r');
-            buf.writeByte('\n');
-
-            channel.writeAndFlush(new NetworkMessage(buf, remoteAddress));
         }
     }
 

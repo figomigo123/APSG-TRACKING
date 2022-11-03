@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class RaveonProtocolDecoder extends BaseProtocolDecoder {
 
-    public RaveonProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$PRAVE,")
             .number("(d+),")                     // id
@@ -52,6 +48,10 @@ public class RaveonProtocolDecoder extends BaseProtocolDecoder {
             .expression("([PMACIVSX])?,")        // status
             .any()
             .compile();
+
+    public RaveonProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

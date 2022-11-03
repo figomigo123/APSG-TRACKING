@@ -59,17 +59,6 @@ public class WebServer {
 
     private Server server;
 
-    private void initServer(Config config) {
-
-        String address = config.getString(Keys.WEB_ADDRESS);
-        int port = config.getInteger(Keys.WEB_PORT);
-        if (address == null) {
-            server = new Server(port);
-        } else {
-            server = new Server(new InetSocketAddress(address, port));
-        }
-    }
-
     public WebServer(Config config) {
 
         initServer(config);
@@ -109,6 +98,17 @@ public class WebServer {
         }
     }
 
+    private void initServer(Config config) {
+
+        String address = config.getString(Keys.WEB_ADDRESS);
+        int port = config.getInteger(Keys.WEB_PORT);
+        if (address == null) {
+            server = new Server(port);
+        } else {
+            server = new Server(new InetSocketAddress(address, port));
+        }
+    }
+
     private void initClientProxy(Config config, HandlerList handlers) {
         int port = config.getInteger(Keys.PROTOCOL_PORT.withPrefix("osmand"));
         if (port != 0) {
@@ -134,13 +134,13 @@ public class WebServer {
         servletHolder.setInitParameter("resourceBase", new File(config.getString(Keys.WEB_PATH)).getAbsolutePath());
         servletHolder.setInitParameter("dirAllowed", "false");
         if (config.getBoolean(Keys.WEB_DEBUG)) {
-            servletHandler.setWelcomeFiles(new String[] {"debug.html", "index.html"});
+            servletHandler.setWelcomeFiles(new String[]{"debug.html", "index.html"});
         } else {
             String cache = config.getString(Keys.WEB_CACHE_CONTROL);
             if (cache != null && !cache.isEmpty()) {
                 servletHolder.setInitParameter("cacheControl", cache);
             }
-            servletHandler.setWelcomeFiles(new String[] {"release.html", "index.html"});
+            servletHandler.setWelcomeFiles(new String[]{"release.html", "index.html"});
         }
         servletHandler.addServlet(servletHolder, "/*");
     }

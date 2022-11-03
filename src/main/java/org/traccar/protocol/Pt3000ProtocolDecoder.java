@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Pt3000ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Pt3000ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("%(d+),")                    // imei
             .text("$GPRMC,")
@@ -47,6 +43,10 @@ public class Pt3000ProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
+
+    public Pt3000ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -25,6 +25,27 @@ import java.util.Date;
 public class User extends ExtendedModel {
 
     private String name;
+    private String login;
+    private String email;
+    private String phone;
+    private boolean readonly;
+    private boolean administrator;
+    private String map;
+    private double latitude;
+    private double longitude;
+    private int zoom;
+    private boolean twelveHourFormat;
+    private String coordinateFormat;
+    private boolean disabled;
+    private Date expirationTime;
+    private int deviceLimit;
+    private int userLimit;
+    private boolean deviceReadonly;
+    private String token;
+    private boolean limitCommands;
+    private String poiLayer;
+    private String hashedPassword;
+    private String salt;
 
     public String getName() {
         return name;
@@ -34,8 +55,6 @@ public class User extends ExtendedModel {
         this.name = name;
     }
 
-    private String login;
-
     public String getLogin() {
         return login;
     }
@@ -43,8 +62,6 @@ public class User extends ExtendedModel {
     public void setLogin(String login) {
         this.login = login;
     }
-
-    private String email;
 
     public String getEmail() {
         return email;
@@ -54,8 +71,6 @@ public class User extends ExtendedModel {
         this.email = email.trim();
     }
 
-    private String phone;
-
     public String getPhone() {
         return phone;
     }
@@ -63,8 +78,6 @@ public class User extends ExtendedModel {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    private boolean readonly;
 
     public boolean getReadonly() {
         return readonly;
@@ -74,8 +87,6 @@ public class User extends ExtendedModel {
         this.readonly = readonly;
     }
 
-    private boolean administrator;
-
     public boolean getAdministrator() {
         return administrator;
     }
@@ -83,8 +94,6 @@ public class User extends ExtendedModel {
     public void setAdministrator(boolean administrator) {
         this.administrator = administrator;
     }
-
-    private String map;
 
     public String getMap() {
         return map;
@@ -94,8 +103,6 @@ public class User extends ExtendedModel {
         this.map = map;
     }
 
-    private double latitude;
-
     public double getLatitude() {
         return latitude;
     }
@@ -103,8 +110,6 @@ public class User extends ExtendedModel {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-
-    private double longitude;
 
     public double getLongitude() {
         return longitude;
@@ -114,8 +119,6 @@ public class User extends ExtendedModel {
         this.longitude = longitude;
     }
 
-    private int zoom;
-
     public int getZoom() {
         return zoom;
     }
@@ -123,8 +126,6 @@ public class User extends ExtendedModel {
     public void setZoom(int zoom) {
         this.zoom = zoom;
     }
-
-    private boolean twelveHourFormat;
 
     public boolean getTwelveHourFormat() {
         return twelveHourFormat;
@@ -134,8 +135,6 @@ public class User extends ExtendedModel {
         this.twelveHourFormat = twelveHourFormat;
     }
 
-    private String coordinateFormat;
-
     public String getCoordinateFormat() {
         return coordinateFormat;
     }
@@ -143,8 +142,6 @@ public class User extends ExtendedModel {
     public void setCoordinateFormat(String coordinateFormat) {
         this.coordinateFormat = coordinateFormat;
     }
-
-    private boolean disabled;
 
     public boolean getDisabled() {
         return disabled;
@@ -154,8 +151,6 @@ public class User extends ExtendedModel {
         this.disabled = disabled;
     }
 
-    private Date expirationTime;
-
     public Date getExpirationTime() {
         return expirationTime;
     }
@@ -163,8 +158,6 @@ public class User extends ExtendedModel {
     public void setExpirationTime(Date expirationTime) {
         this.expirationTime = expirationTime;
     }
-
-    private int deviceLimit;
 
     public int getDeviceLimit() {
         return deviceLimit;
@@ -174,8 +167,6 @@ public class User extends ExtendedModel {
         this.deviceLimit = deviceLimit;
     }
 
-    private int userLimit;
-
     public int getUserLimit() {
         return userLimit;
     }
@@ -184,8 +175,6 @@ public class User extends ExtendedModel {
         this.userLimit = userLimit;
     }
 
-    private boolean deviceReadonly;
-
     public boolean getDeviceReadonly() {
         return deviceReadonly;
     }
@@ -193,8 +182,6 @@ public class User extends ExtendedModel {
     public void setDeviceReadonly(boolean deviceReadonly) {
         this.deviceReadonly = deviceReadonly;
     }
-
-    private String token;
 
     public String getToken() {
         return token;
@@ -211,8 +198,6 @@ public class User extends ExtendedModel {
         }
     }
 
-    private boolean limitCommands;
-
     public boolean getLimitCommands() {
         return limitCommands;
     }
@@ -220,8 +205,6 @@ public class User extends ExtendedModel {
     public void setLimitCommands(boolean limitCommands) {
         this.limitCommands = limitCommands;
     }
-
-    private String poiLayer;
 
     public String getPoiLayer() {
         return poiLayer;
@@ -244,8 +227,6 @@ public class User extends ExtendedModel {
         }
     }
 
-    private String hashedPassword;
-
     @JsonIgnore
     @QueryExtended
     public String getHashedPassword() {
@@ -255,8 +236,6 @@ public class User extends ExtendedModel {
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
-
-    private String salt;
 
     @JsonIgnore
     @QueryExtended

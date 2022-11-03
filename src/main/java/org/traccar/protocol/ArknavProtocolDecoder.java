@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class ArknavProtocolDecoder extends BaseProtocolDecoder {
 
-    public ArknavProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // imei
             .expression(".{6},")                 // id code
@@ -49,6 +45,10 @@ public class ArknavProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)-(dd)-(dd),")           // date (dd-mm-yy)
             .any()
             .compile();
+
+    public ArknavProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

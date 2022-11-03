@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class RstProtocolDecoder extends BaseProtocolDecoder {
 
-    public RstProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("RST;")
             .expression("([AL]);")               // archive
@@ -72,6 +68,10 @@ public class RstProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+
+    public RstProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

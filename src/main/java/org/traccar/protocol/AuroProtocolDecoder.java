@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class AuroProtocolDecoder extends BaseProtocolDecoder {
 
-    public AuroProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("M(dddd)")                   // index
             .number("Td+")                       // phone
@@ -53,6 +49,10 @@ public class AuroProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)")                      // battery
             .expression("([01])")                // charging
             .compile();
+
+    public AuroProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -195,6 +195,7 @@ public class SuntechProtocolDecoder extends BaseProtocolDecoder {
                 return null;
         }
     }
+
     private Position decode4(
             Channel channel, SocketAddress remoteAddress, String[] values) throws ParseException {
         int index = 0;

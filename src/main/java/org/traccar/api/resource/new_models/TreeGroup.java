@@ -6,21 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeGroup implements Cloneable {
-    String name;
+    String label;
     long id, groupId;
-    List<TreeGroup> treeGroups = new ArrayList<>();
+    List<TreeGroup> children = new ArrayList<>();
     List<Device> devices = new ArrayList<>();
-int level, online, offline,unknown;
-boolean haveDevices=false,build=false;
+    int level, online, offline, unknown;
+    boolean haveDevices = false, build = false;
 
     public TreeGroup() {
     }
 
+    public TreeGroup(String label, long id, long groupId) {
+        this.label = label;
+        this.id = id;
+        this.groupId = groupId;
+    }
+
     public List<TreeGroup> getLeaf(List<Long> path) {
-        for (TreeGroup t : treeGroups)
+        for (TreeGroup t : children)
             if (t.getId() == path.get(0))
                 if (path.size() == 1)
-                    return t.getTreeGroups();
+                    return t.getChildren();
                 else {
                     path.remove(0);
                     return t.getLeaf(path);
@@ -30,18 +36,17 @@ boolean haveDevices=false,build=false;
         return null;
     }
 
-
-    public TreeGroup(String name, long id, long groupId) {
-        this.name = name;
-        this.id = id;
-        this.groupId = groupId;
-    }
-
-    public void setNumbers(String status){
-        switch (status){
-            case "online":this.online++ ;break;
-            case "offline":this.offline++ ;break;
-            case "unknown":this.unknown++ ;break;
+    public void setNumbers(String status) {
+        switch (status) {
+            case "online":
+                this.online++;
+                break;
+            case "offline":
+                this.offline++;
+                break;
+            case "unknown":
+                this.unknown++;
+                break;
         }
     }
 
@@ -85,12 +90,12 @@ boolean haveDevices=false,build=false;
         this.haveDevices = haveDevices;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public long getId() {
@@ -109,12 +114,12 @@ boolean haveDevices=false,build=false;
         this.groupId = groupId;
     }
 
-    public List<TreeGroup> getTreeGroups() {
-        return treeGroups;
+    public List<TreeGroup> getChildren() {
+        return children;
     }
 
-    public void setTreeGroups(List<TreeGroup> treeGroups) {
-        this.treeGroups = treeGroups;
+    public void setChildren(List<TreeGroup> children) {
+        this.children = children;
     }
 
     public List<Device> getDevices() {
@@ -141,8 +146,8 @@ boolean haveDevices=false,build=false;
     @Override
     public String toString() {
         return "TreeGroup{" +
-                "name='" + name + '\'' +
-                ", treeGroups=" + treeGroups +
+                "name='" + label + '\'' +
+                ", treeGroups=" + children +
                 ", devices=" + devices +
                 '}';
     }

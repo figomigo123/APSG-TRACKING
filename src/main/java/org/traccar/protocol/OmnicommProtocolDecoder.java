@@ -37,14 +37,13 @@ import java.util.List;
 
 public class OmnicommProtocolDecoder extends BaseProtocolDecoder {
 
-    public OmnicommProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_IDENTIFICATION = 0x80;
     public static final int MSG_ARCHIVE_INQUIRY = 0x85;
     public static final int MSG_ARCHIVE_DATA = 0x86;
     public static final int MSG_REMOVE_ARCHIVE_INQUIRY = 0x87;
+    public OmnicommProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private OmnicommMessageOuterClass.OmnicommMessage parseProto(
             ByteBuf buf, int length) throws InvalidProtocolBufferException {

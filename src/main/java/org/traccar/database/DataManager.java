@@ -27,6 +27,7 @@ import liquibase.resource.ResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.traccar.Context;
+import org.traccar.api.resource.new_models.NewEvent;
 import org.traccar.config.Config;
 import org.traccar.config.Keys;
 import org.traccar.model.Calendar;
@@ -38,29 +39,21 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class DataManager {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataManager.class);
 
     public static final String ACTION_SELECT_ALL = "selectAll";
     public static final String ACTION_SELECT = "select";
     public static final String ACTION_INSERT = "insert";
     public static final String ACTION_UPDATE = "update";
     public static final String ACTION_DELETE = "delete";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataManager.class);
     private final Config config;
-
-    private DataSource dataSource;
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    private boolean generateQueries;
-
     private final boolean forceLdap;
+    private DataSource dataSource;
+    private boolean generateQueries;
 
     public DataManager(Config config) throws Exception {
         this.config = config;
@@ -69,46 +62,6 @@ public class DataManager {
 
         initDatabase();
         initDatabaseSchema();
-    }
-
-    private void initDatabase() throws Exception {
-
-        String driverFile = config.getString(Keys.DATABASE_DRIVER_FILE);
-        if (driverFile != null) {
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            try {
-                Method method = classLoader.getClass().getDeclaredMethod("addURL", URL.class);
-                method.setAccessible(true);
-                method.invoke(classLoader, new File(driverFile).toURI().toURL());
-            } catch (NoSuchMethodException e) {
-                Method method = classLoader.getClass()
-                        .getDeclaredMethod("appendToClassPathForInstrumentation", String.class);
-                method.setAccessible(true);
-                method.invoke(classLoader, driverFile);
-            }
-        }
-
-        String driver = config.getString(Keys.DATABASE_DRIVER);
-        if (driver != null) {
-            Class.forName(driver);
-        }
-
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName(driver);
-        hikariConfig.setJdbcUrl(config.getString(Keys.DATABASE_URL));
-        hikariConfig.setUsername(config.getString(Keys.DATABASE_USER));
-        hikariConfig.setPassword(config.getString(Keys.DATABASE_PASSWORD));
-        hikariConfig.setConnectionInitSql(config.getString(Keys.DATABASE_CHECK_CONNECTION));
-        hikariConfig.setIdleTimeout(600000);
-
-        int maxPoolSize = config.getInteger(Keys.DATABASE_MAX_POOL_SIZE);
-        if (maxPoolSize != 0) {
-            hikariConfig.setMaximumPoolSize(maxPoolSize);
-        }
-
-        generateQueries = config.getBoolean(Keys.DATABASE_GENERATE_QUERIES);
-
-        dataSource = new HikariDataSource(hikariConfig);
     }
 
     public static String constructObjectQuery(String action, Class<?> clazz, boolean extended) {
@@ -181,6 +134,102 @@ public class DataManager {
         }
     }
 
+    private static String getPermissionsTableName(Class<?> owner, Class<?> property) {
+        String propertyName = property.getSimpleName();
+        if (propertyName.equals("ManagedUser")) {
+            propertyName = "User";
+        }
+        return "tc_" + Introspector.decapitalize(owner.getSimpleName())
+                + "_" + Introspector.decapitalize(propertyName);
+    }
+
+    private static String getObjectsTableName(Class<?> clazz) {
+        String result = "tc_" + Introspector.decapitalize(clazz.getSimpleName());
+        // Add "s" ending if object name is not plural already
+        if (!result.endsWith("s")) {
+            result += "s";
+        }
+        return result;
+    }
+
+    public static Class<?> getClassByName(String name) throws ClassNotFoundException {
+        switch (name.toLowerCase().replace("id", "")) {
+            case "device":
+                return Device.class;
+            case "group":
+                return Group.class;
+            case "user":
+                return User.class;
+            case "manageduser":
+                return ManagedUser.class;
+            case "geofence":
+                return Geofence.class;
+            case "driver":
+                return Driver.class;
+            case "attribute":
+                return Attribute.class;
+            case "calendar":
+                return Calendar.class;
+            case "command":
+                return Command.class;
+            case "maintenance":
+                return Maintenance.class;
+            case "notification":
+                return Notification.class;
+            default:
+                throw new ClassNotFoundException();
+        }
+    }
+
+    private static String makeNameId(Class<?> clazz) {
+        String name = clazz.getSimpleName();
+        return Introspector.decapitalize(name) + (!name.contains("Id") ? "Id" : "");
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    private void initDatabase() throws Exception {
+
+        String driverFile = config.getString(Keys.DATABASE_DRIVER_FILE);
+        if (driverFile != null) {
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            try {
+                Method method = classLoader.getClass().getDeclaredMethod("addURL", URL.class);
+                method.setAccessible(true);
+                method.invoke(classLoader, new File(driverFile).toURI().toURL());
+            } catch (NoSuchMethodException e) {
+                Method method = classLoader.getClass()
+                        .getDeclaredMethod("appendToClassPathForInstrumentation", String.class);
+                method.setAccessible(true);
+                method.invoke(classLoader, driverFile);
+            }
+        }
+
+        String driver = config.getString(Keys.DATABASE_DRIVER);
+        if (driver != null) {
+            Class.forName(driver);
+        }
+
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(driver);
+        hikariConfig.setJdbcUrl(config.getString(Keys.DATABASE_URL));
+        hikariConfig.setUsername(config.getString(Keys.DATABASE_USER));
+        hikariConfig.setPassword(config.getString(Keys.DATABASE_PASSWORD));
+        hikariConfig.setConnectionInitSql(config.getString(Keys.DATABASE_CHECK_CONNECTION));
+        hikariConfig.setIdleTimeout(600000);
+
+        int maxPoolSize = config.getInteger(Keys.DATABASE_MAX_POOL_SIZE);
+        if (maxPoolSize != 0) {
+            hikariConfig.setMaximumPoolSize(maxPoolSize);
+        }
+
+        generateQueries = config.getBoolean(Keys.DATABASE_GENERATE_QUERIES);
+
+        dataSource = new HikariDataSource(hikariConfig);
+    }
+
     private String getQuery(String key) {
         String query = config.getString(key);
         if (query == null) {
@@ -237,24 +286,6 @@ public class DataManager {
             }
         }
         return query;
-    }
-
-    private static String getPermissionsTableName(Class<?> owner, Class<?> property) {
-        String propertyName = property.getSimpleName();
-        if (propertyName.equals("ManagedUser")) {
-            propertyName = "User";
-        }
-        return "tc_" + Introspector.decapitalize(owner.getSimpleName())
-                + "_" + Introspector.decapitalize(propertyName);
-    }
-
-    private static String getObjectsTableName(Class<?> clazz) {
-        String result = "tc_" + Introspector.decapitalize(clazz.getSimpleName());
-        // Add "s" ending if object name is not plural already
-        if (!result.endsWith("s")) {
-            result += "s";
-        }
-        return result;
     }
 
     private void initDatabaseSchema() throws LiquibaseException {
@@ -337,14 +368,63 @@ public class DataManager {
                 .setDate("to", to)
                 .executeQuery(Event.class);
     }
+
+    public Collection<NewEvent> getEvents2(Collection<Long> deviceId, Date from, Date to,Collection<String> types) throws SQLException {
+        Collection<NewEvent> events = null;
+        String ids[] = {""};
+        String ty[] = {""};
+        deviceId.forEach(x -> {
+            ids[0] += Long.toString(x);
+            ids[0] += ",";
+        });
+        String all = ids[0].substring(0, ids[0].length() - 1);
+        types.forEach(x -> {
+            if(x.equals("deviceIdle"))
+            ty[0] += "\""+("deviceUnknown")+"\"";
+           else ty[0] += "\""+(x)+"\"";
+            ty[0] += ",";
+        });
+        String alltyeps = ty[0].substring(0, ty[0].length() - 1);
+
+        String statment = "select tc_events.*,tc_devices.name,tc_devices.groupid FROM tc_events INNER JOIN tc_devices on tc_events.deviceid=tc_devices.id  " +
+                "where  tc_events.deviceid in (" + all + ") and tc_events.eventtime  BETWEEN '" + new Timestamp(from.getTime()) + "' and  '" +
+                new Timestamp(to.getTime())+ "'  ";//ORDER BY tc_events.eventtime ";
+
+        String statment2 = "select tc_events.*,tc_devices.name,tc_devices.groupid FROM tc_events INNER JOIN tc_devices on tc_events.deviceid=tc_devices.id  " +
+                "where  tc_events.deviceid in (" + all + ") and tc_events.type in (" + alltyeps + ") and tc_events.eventtime  BETWEEN '" + new Timestamp(from.getTime()) + "' and  '" +
+                new Timestamp(to.getTime())+ "' ";// ORDER BY tc_events.eventtime ";
+
+
+        if(types==null||types.size()==0||types.contains("allEvents")||types.contains("%"))
+            events = QueryBuilder.create(dataSource, statment)
+                    .executeQuery(NewEvent.class);
+        else
+            events = QueryBuilder.create(dataSource, statment2)
+                    .executeQuery(NewEvent.class);
+
+        return events;
+    }
+
     public Collection<Landmark> getUserLandmarks(long userid) throws SQLException {
         return QueryBuilder.create(dataSource, getQuery("database.selectLandmarks"))
                 .setLong("userid", userid)
                 .executeQuery(Landmark.class);
     }
+
     public Map<String, Long> getEventsCountByType() throws SQLException {
+
+
         return QueryBuilder.create(dataSource, getQuery("database.selectEventsByType"))
                 .getEventsCountByType();
+    }
+
+    public Long getEventsCount() throws SQLException {
+        String ss="SELECT  MAX(id)  FROM tc_events ";
+        Long l= QueryBuilder.create(dataSource, ss)
+                .getEventsCount();
+return l;
+
+
     }
 
     public Collection<Statistics> getStatistics(Date from, Date to) throws SQLException {
@@ -352,40 +432,6 @@ public class DataManager {
                 .setDate("from", from)
                 .setDate("to", to)
                 .executeQuery(Statistics.class);
-    }
-
-    public static Class<?> getClassByName(String name) throws ClassNotFoundException {
-        switch (name.toLowerCase().replace("id", "")) {
-            case "device":
-                return Device.class;
-            case "group":
-                return Group.class;
-            case "user":
-                return User.class;
-            case "manageduser":
-                return ManagedUser.class;
-            case "geofence":
-                return Geofence.class;
-            case "driver":
-                return Driver.class;
-            case "attribute":
-                return Attribute.class;
-            case "calendar":
-                return Calendar.class;
-            case "command":
-                return Command.class;
-            case "maintenance":
-                return Maintenance.class;
-            case "notification":
-                return Notification.class;
-            default:
-                throw new ClassNotFoundException();
-        }
-    }
-
-    private static String makeNameId(Class<?> clazz) {
-        String name = clazz.getSimpleName();
-        return Introspector.decapitalize(name) + (!name.contains("Id") ? "Id" : "");
     }
 
     public Collection<Permission> getPermissions(Class<? extends BaseModel> owner, Class<? extends BaseModel> property)
@@ -412,12 +458,36 @@ public class DataManager {
         return QueryBuilder.create(dataSource, getQuery(ACTION_SELECT_ALL, clazz))
                 .executeQuery(clazz);
     }
-    public <T extends Message> Collection<T> getEvents(Class<T> clazz) throws SQLException {
-        return QueryBuilder.create(dataSource, "SELECT * FROM tc_events")
-                .executeQuery(clazz);
+
+    public Collection<NewEvent> getEvents(long limit1, long limit2) throws SQLException {
+        Collection<NewEvent> events = null;
+        String statment = "select tc_events.*,tc_devices.name FROM tc_events INNER JOIN tc_devices on tc_events.deviceid=tc_devices.id  " +
+                "where tc_events.id >= " + limit1 + " and tc_events.id <= " + limit2 ;//+ "  ORDER BY eventtime DESC";
+        try {
+            events = QueryBuilder.create(dataSource, statment)
+                    .executeQuery(NewEvent.class);
+        } catch (Exception e) {
+            events = QueryBuilder.create(dataSource, statment)
+                    .executeQuery(NewEvent.class);
+        }
+        return events;
     }
+
+    public Collection<Event> getEvents7(long limit1, long limit2) throws SQLException {
+        Collection<Event> events = null;
+        String statment = "select tc_events.*,tc_devices.name FROM tc_events INNER JOIN tc_devices on tc_events.deviceid=tc_devices.id  " +
+                "where tc_events.id >= " + limit1 + " and tc_events.id <= " + limit2 + "  ORDER BY eventtime DESC";
+        try {
+            events = QueryBuilder.create(dataSource, statment)
+                    .executeQuery(Event.class);
+        } catch (Exception e) {
+            events = QueryBuilder.create(dataSource, statment)
+                    .executeQuery(Event.class);
+        }
+        return events;
+    }
+
     public void addObject(BaseModel entity) throws SQLException {
-        System.out.println(getQuery(ACTION_INSERT, entity.getClass()));
         entity.setId(QueryBuilder.create(dataSource, getQuery(ACTION_INSERT, entity.getClass()), true)
                 .setObject(entity)
                 .executeUpdate());

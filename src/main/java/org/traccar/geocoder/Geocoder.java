@@ -17,6 +17,8 @@ package org.traccar.geocoder;
 
 public interface Geocoder {
 
+    String getAddress(double latitude, double longitude, ReverseGeocoderCallback callback);
+
     interface ReverseGeocoderCallback {
 
         void onSuccess(String address);
@@ -24,7 +26,5 @@ public interface Geocoder {
         void onFailure(Throwable e);
 
     }
-
-    String getAddress(double latitude, double longitude, ReverseGeocoderCallback callback);
 
 }

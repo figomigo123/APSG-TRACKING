@@ -43,6 +43,8 @@ public class ExtendedObjectResource<T extends BaseModel> extends BaseObjectResou
             manager.refreshItems();
         }
 
+
+
         Set<Long> result = new HashSet<>(getSimpleManagerItems(manager, all, userId));
 
         if (groupId != 0) {

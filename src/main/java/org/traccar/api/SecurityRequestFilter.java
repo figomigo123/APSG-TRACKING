@@ -38,13 +38,16 @@ import java.sql.SQLException;
 
 public class SecurityRequestFilter implements ContainerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityRequestFilter.class);
-
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String BASIC_REALM = "Basic realm=\"api\"";
     public static final String X_REQUESTED_WITH = "X-Requested-With";
     public static final String XML_HTTP_REQUEST = "XMLHttpRequest";
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityRequestFilter.class);
+    @javax.ws.rs.core.Context
+    private HttpServletRequest request;
+    @javax.ws.rs.core.Context
+    private ResourceInfo resourceInfo;
 
     public static String[] decodeBasicAuth(String auth) {
         auth = auth.replaceFirst("[B|b]asic ", "");
@@ -54,12 +57,6 @@ public class SecurityRequestFilter implements ContainerRequestFilter {
         }
         return null;
     }
-
-    @javax.ws.rs.core.Context
-    private HttpServletRequest request;
-
-    @javax.ws.rs.core.Context
-    private ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {

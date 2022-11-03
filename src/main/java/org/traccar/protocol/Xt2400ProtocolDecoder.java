@@ -36,15 +36,6 @@ import java.util.regex.Pattern;
 
 public class Xt2400ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Xt2400ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-
-        String config = Context.getConfig().getString(Keys.PROTOCOL_CONFIG.withPrefix(getProtocolName()));
-        if (config != null) {
-            setConfig(config);
-        }
-    }
-
     private static final Map<Integer, Integer> TAG_LENGTH_MAP = new HashMap<>();
 
     static {
@@ -84,6 +75,17 @@ public class Xt2400ProtocolDecoder extends BaseProtocolDecoder {
         TAG_LENGTH_MAP.put(0xD0, 21);
     }
 
+    private final Map<Short, byte[]> formats = new HashMap<>();
+
+    public Xt2400ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+
+        String config = Context.getConfig().getString(Keys.PROTOCOL_CONFIG.withPrefix(getProtocolName()));
+        if (config != null) {
+            setConfig(config);
+        }
+    }
+
     private static int getTagLength(int tag) {
         Integer length = TAG_LENGTH_MAP.get(tag);
         if (length == null) {
@@ -91,8 +93,6 @@ public class Xt2400ProtocolDecoder extends BaseProtocolDecoder {
         }
         return length;
     }
-
-    private final Map<Short, byte[]> formats = new HashMap<>();
 
     public void setConfig(String configString) {
         Pattern pattern = Pattern.compile(":wycfg pcr\\[\\d+] ([0-9a-fA-F]{2})[0-9a-fA-F]{2}([0-9a-fA-F]+)");

@@ -34,10 +34,6 @@ import java.util.Date;
 
 public class RoboTrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public RoboTrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_ID = 0x00;
     public static final int MSG_ACK = 0x80;
     public static final int MSG_GPS = 0x03;
@@ -45,6 +41,9 @@ public class RoboTrackProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_IMAGE_START = 0x06;
     public static final int MSG_IMAGE_DATA = 0x07;
     public static final int MSG_IMAGE_END = 0x08;
+    public RoboTrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

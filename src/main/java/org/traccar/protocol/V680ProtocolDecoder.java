@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class V680ProtocolDecoder extends BaseProtocolDecoder {
 
-    public V680ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .groupBegin()
             .number("#(d+)#")                    // imei
@@ -52,6 +48,10 @@ public class V680ProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // time (hhmmss)
             .any()
             .compile();
+
+    public V680ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

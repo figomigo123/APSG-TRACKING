@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
 
 public class EskyProtocolDecoder extends BaseProtocolDecoder {
 
-    public EskyProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("..;")                   // header
             .number("d+;")
@@ -57,6 +53,10 @@ public class EskyProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // voltage
             .any()
             .compile();
+
+    public EskyProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

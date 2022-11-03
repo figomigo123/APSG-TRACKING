@@ -37,16 +37,14 @@ import java.util.List;
 
 public class AutoFonProtocolDecoder extends BaseProtocolDecoder {
 
-    public AutoFonProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x10;
     public static final int MSG_LOCATION = 0x11;
     public static final int MSG_HISTORY = 0x12;
-
     public static final int MSG_45_LOGIN = 0x41;
     public static final int MSG_45_LOCATION = 0x02;
+    public AutoFonProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static double convertCoordinate(int raw) {
         int degrees = raw / 1000000;

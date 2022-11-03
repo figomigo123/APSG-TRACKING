@@ -21,16 +21,16 @@ import javax.json.JsonObject;
 
 public class OpenCageGeocoder extends JsonGeocoder {
 
+    public OpenCageGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url, key), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url, String key) {
         if (url == null) {
             url = "https://api.opencagedata.com/geocode/v1";
         }
         url += "/json?q=%f,%f&no_annotations=1&key=" + key;
         return url;
-    }
-
-    public OpenCageGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url, key), cacheSize, addressFormat);
     }
 
     @Override

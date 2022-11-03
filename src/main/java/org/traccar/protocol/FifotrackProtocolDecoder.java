@@ -30,12 +30,6 @@ import java.util.regex.Pattern;
 
 public class FifotrackProtocolDecoder extends BaseProtocolDecoder {
 
-    private ByteBuf photo;
-
-    public FifotrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$$")
             .number("d+,")                       // length
@@ -65,7 +59,6 @@ public class FifotrackProtocolDecoder extends BaseProtocolDecoder {
             .expression(",([^*]*)").optional(2)  // sensors
             .any()
             .compile();
-
     private static final Pattern PATTERN_PHOTO = new PatternBuilder()
             .text("$$")
             .number("d+,")                       // length
@@ -76,7 +69,6 @@ public class FifotrackProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("xx")
             .compile();
-
     private static final Pattern PATTERN_PHOTO_DATA = new PatternBuilder()
             .text("$$")
             .number("d+,")                       // length
@@ -87,7 +79,6 @@ public class FifotrackProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // offset
             .number("(d+),")                     // size
             .compile();
-
     private static final Pattern PATTERN_RESULT = new PatternBuilder()
             .text("$$")
             .number("d+,")                       // length
@@ -97,6 +88,11 @@ public class FifotrackProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("xx")
             .compile();
+    private ByteBuf photo;
+
+    public FifotrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void requestPhoto(Channel channel, SocketAddress socketAddress, String imei, String file) {
         if (channel != null) {

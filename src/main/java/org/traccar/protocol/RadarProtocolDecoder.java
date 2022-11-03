@@ -32,11 +32,11 @@ import java.util.List;
 
 public class RadarProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_TRACKING = 0x4C;
+
     public RadarProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_TRACKING = 0x4C;
 
     @Override
     protected Object decode(

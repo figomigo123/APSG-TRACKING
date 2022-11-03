@@ -23,6 +23,14 @@ import java.util.Collection;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Network {
 
+    private Integer homeMobileCountryCode;
+    private Integer homeMobileNetworkCode;
+    private String radioType = "gsm";
+    private String carrier;
+    private Boolean considerIp = false;
+    private Collection<CellTower> cellTowers;
+    private Collection<WifiAccessPoint> wifiAccessPoints;
+
     public Network() {
     }
 
@@ -34,8 +42,6 @@ public class Network {
         addWifiAccessPoint(wifiAccessPoint);
     }
 
-    private Integer homeMobileCountryCode;
-
     public Integer getHomeMobileCountryCode() {
         return homeMobileCountryCode;
     }
@@ -43,8 +49,6 @@ public class Network {
     public void setHomeMobileCountryCode(Integer homeMobileCountryCode) {
         this.homeMobileCountryCode = homeMobileCountryCode;
     }
-
-    private Integer homeMobileNetworkCode;
 
     public Integer getHomeMobileNetworkCode() {
         return homeMobileNetworkCode;
@@ -54,8 +58,6 @@ public class Network {
         this.homeMobileNetworkCode = homeMobileNetworkCode;
     }
 
-    private String radioType = "gsm";
-
     public String getRadioType() {
         return radioType;
     }
@@ -63,8 +65,6 @@ public class Network {
     public void setRadioType(String radioType) {
         this.radioType = radioType;
     }
-
-    private String carrier;
 
     public String getCarrier() {
         return carrier;
@@ -74,8 +74,6 @@ public class Network {
         this.carrier = carrier;
     }
 
-    private Boolean considerIp = false;
-
     public Boolean getConsiderIp() {
         return considerIp;
     }
@@ -83,8 +81,6 @@ public class Network {
     public void setConsiderIp(Boolean considerIp) {
         this.considerIp = considerIp;
     }
-
-    private Collection<CellTower> cellTowers;
 
     public Collection<CellTower> getCellTowers() {
         return cellTowers;
@@ -100,8 +96,6 @@ public class Network {
         }
         cellTowers.add(cellTower);
     }
-
-    private Collection<WifiAccessPoint> wifiAccessPoints;
 
     public Collection<WifiAccessPoint> getWifiAccessPoints() {
         return wifiAccessPoints;

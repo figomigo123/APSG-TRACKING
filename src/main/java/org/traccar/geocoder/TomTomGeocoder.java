@@ -20,16 +20,16 @@ import javax.json.JsonObject;
 
 public class TomTomGeocoder extends JsonGeocoder {
 
+    public TomTomGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url, key), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url, String key) {
         if (url == null) {
             url = "https://api.tomtom.com/search/2/reverseGeocode/";
         }
         url += "%f,%f.json?key=" + key;
         return url;
-    }
-
-    public TomTomGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url, key), cacheSize, addressFormat);
     }
 
     @Override

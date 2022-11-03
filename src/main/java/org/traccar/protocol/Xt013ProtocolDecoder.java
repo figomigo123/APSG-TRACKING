@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Xt013ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Xt013ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("HI,d+").optional()
             .text("TK,")
@@ -56,6 +52,10 @@ public class Xt013ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d),")                      // charging
             .any()
             .compile();
+
+    public Xt013ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

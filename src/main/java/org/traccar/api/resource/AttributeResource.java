@@ -56,7 +56,6 @@ public class AttributeResource extends ExtendedObjectResource<Attribute> {
     }
 
 
-
     @POST
     @Path("test")
     public Response test(@QueryParam("deviceId") long deviceId, Attribute entity) {

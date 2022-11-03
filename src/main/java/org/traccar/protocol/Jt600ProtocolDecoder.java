@@ -35,6 +35,49 @@ import java.util.regex.Pattern;
 
 public class Jt600ProtocolDecoder extends BaseProtocolDecoder {
 
+    private static final Pattern PATTERN_W01 = new PatternBuilder()
+            .text("(")
+            .number("(d+),")                     // id
+            .text("W01,")                        // type
+            .number("(ddd)(dd.dddd),")           // longitude
+            .expression("([EW]),")
+            .number("(dd)(dd.dddd),")            // latitude
+            .expression("([NS]),")
+            .expression("([AV]),")               // validity
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .number("(d+),")                     // speed
+            .number("(d+),")                     // course
+            .number("(d+),")                     // power
+            .number("(d+),")                     // gps signal
+            .number("(d+),")                     // gsm signal
+            .number("(d+),")                     // alert type
+            .any()
+            .compile();
+    private static final Pattern PATTERN_U01 = new PatternBuilder()
+            .text("(")
+            .number("(d+),")                     // id
+            .number("(Udd),")                    // type
+            .number("d+,").optional()            // alarm
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .expression("([TF]),")               // validity
+            .number("(d+.d+),([NS]),")           // latitude
+            .number("(d+.d+),([EW]),")           // longitude
+            .number("(d+.?d*),")                 // speed
+            .number("(d+),")                     // course
+            .number("(d+),")                     // satellites
+            .number("(d+)%,")                    // battery
+            .expression("([01]+),")              // status
+            .number("(d+),")                     // cid
+            .number("(d+),")                     // lac
+            .number("(d+),")                     // gsm signal
+            .number("(d+),")                     // odometer
+            .number("(d+)")                      // serial number
+            .number(",(xx)").optional()          // checksum
+            .any()
+            .compile();
+
     public Jt600ProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -43,6 +86,39 @@ public class Jt600ProtocolDecoder extends BaseProtocolDecoder {
         int degrees = raw / 1000000;
         double minutes = (raw % 1000000) / 10000.0;
         return degrees + minutes / 60;
+    }
+
+    static boolean isLongFormat(ByteBuf buf, int flagIndex) {
+        return buf.getUnsignedByte(flagIndex) >> 4 == 0x7;
+    }
+
+    static void decodeBinaryLocation(ByteBuf buf, Position position) {
+
+        DateBuilder dateBuilder = new DateBuilder()
+                .setDay(BcdUtil.readInteger(buf, 2))
+                .setMonth(BcdUtil.readInteger(buf, 2))
+                .setYear(BcdUtil.readInteger(buf, 2))
+                .setHour(BcdUtil.readInteger(buf, 2))
+                .setMinute(BcdUtil.readInteger(buf, 2))
+                .setSecond(BcdUtil.readInteger(buf, 2));
+        position.setTime(dateBuilder.getDate());
+
+        double latitude = convertCoordinate(BcdUtil.readInteger(buf, 8));
+        double longitude = convertCoordinate(BcdUtil.readInteger(buf, 9));
+
+        byte flags = buf.readByte();
+        position.setValid((flags & 0x1) == 0x1);
+        if ((flags & 0x2) == 0) {
+            latitude = -latitude;
+        }
+        position.setLatitude(latitude);
+        if ((flags & 0x4) == 0) {
+            longitude = -longitude;
+        }
+        position.setLongitude(longitude);
+
+        position.setSpeed(BcdUtil.readInteger(buf, 2));
+        position.setCourse(buf.readUnsignedByte() * 2.0);
     }
 
     private void decodeStatus(Position position, ByteBuf buf) {
@@ -78,39 +154,6 @@ public class Jt600ProtocolDecoder extends BaseProtocolDecoder {
 
         buf.readUnsignedByte(); // reserved
 
-    }
-
-    static boolean isLongFormat(ByteBuf buf, int flagIndex) {
-        return buf.getUnsignedByte(flagIndex) >> 4 == 0x7;
-    }
-
-    static void decodeBinaryLocation(ByteBuf buf, Position position) {
-
-        DateBuilder dateBuilder = new DateBuilder()
-                .setDay(BcdUtil.readInteger(buf, 2))
-                .setMonth(BcdUtil.readInteger(buf, 2))
-                .setYear(BcdUtil.readInteger(buf, 2))
-                .setHour(BcdUtil.readInteger(buf, 2))
-                .setMinute(BcdUtil.readInteger(buf, 2))
-                .setSecond(BcdUtil.readInteger(buf, 2));
-        position.setTime(dateBuilder.getDate());
-
-        double latitude = convertCoordinate(BcdUtil.readInteger(buf, 8));
-        double longitude = convertCoordinate(BcdUtil.readInteger(buf, 9));
-
-        byte flags = buf.readByte();
-        position.setValid((flags & 0x1) == 0x1);
-        if ((flags & 0x2) == 0) {
-            latitude = -latitude;
-        }
-        position.setLatitude(latitude);
-        if ((flags & 0x4) == 0) {
-            longitude = -longitude;
-        }
-        position.setLongitude(longitude);
-
-        position.setSpeed(BcdUtil.readInteger(buf, 2));
-        position.setCourse(buf.readUnsignedByte() * 2.0);
     }
 
     private List<Position> decodeBinary(ByteBuf buf, Channel channel, SocketAddress remoteAddress) {
@@ -231,26 +274,6 @@ public class Jt600ProtocolDecoder extends BaseProtocolDecoder {
         return positions;
     }
 
-    private static final Pattern PATTERN_W01 = new PatternBuilder()
-            .text("(")
-            .number("(d+),")                     // id
-            .text("W01,")                        // type
-            .number("(ddd)(dd.dddd),")           // longitude
-            .expression("([EW]),")
-            .number("(dd)(dd.dddd),")            // latitude
-            .expression("([NS]),")
-            .expression("([AV]),")               // validity
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .number("(d+),")                     // speed
-            .number("(d+),")                     // course
-            .number("(d+),")                     // power
-            .number("(d+),")                     // gps signal
-            .number("(d+),")                     // gsm signal
-            .number("(d+),")                     // alert type
-            .any()
-            .compile();
-
     private Position decodeW01(String sentence, Channel channel, SocketAddress remoteAddress) {
 
         Parser parser = new Parser(PATTERN_W01, sentence);
@@ -282,30 +305,6 @@ public class Jt600ProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN_U01 = new PatternBuilder()
-            .text("(")
-            .number("(d+),")                     // id
-            .number("(Udd),")                    // type
-            .number("d+,").optional()            // alarm
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .expression("([TF]),")               // validity
-            .number("(d+.d+),([NS]),")           // latitude
-            .number("(d+.d+),([EW]),")           // longitude
-            .number("(d+.?d*),")                 // speed
-            .number("(d+),")                     // course
-            .number("(d+),")                     // satellites
-            .number("(d+)%,")                    // battery
-            .expression("([01]+),")              // status
-            .number("(d+),")                     // cid
-            .number("(d+),")                     // lac
-            .number("(d+),")                     // gsm signal
-            .number("(d+),")                     // odometer
-            .number("(d+)")                      // serial number
-            .number(",(xx)").optional()          // checksum
-            .any()
-            .compile();
 
     private Position decodeU01(String sentence, Channel channel, SocketAddress remoteAddress) {
 

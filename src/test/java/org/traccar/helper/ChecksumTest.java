@@ -39,9 +39,9 @@ public class ChecksumTest {
 
     @Test
     public void testModulo256() {
-        assertEquals(0x00, Checksum.modulo256(ByteBuffer.wrap(new byte[] {0x00})));
-        assertEquals(0x00, Checksum.modulo256(ByteBuffer.wrap(new byte[] {0x00, 0x00, 0x00})));
-        assertEquals(0xca, Checksum.modulo256(ByteBuffer.wrap(new byte[] {0x77, 0x77, 0x77, 0x77, 0x77, 0x77})));
+        assertEquals(0x00, Checksum.modulo256(ByteBuffer.wrap(new byte[]{0x00})));
+        assertEquals(0x00, Checksum.modulo256(ByteBuffer.wrap(new byte[]{0x00, 0x00, 0x00})));
+        assertEquals(0xca, Checksum.modulo256(ByteBuffer.wrap(new byte[]{0x77, 0x77, 0x77, 0x77, 0x77, 0x77})));
     }
 
     @Test

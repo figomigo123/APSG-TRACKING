@@ -110,10 +110,13 @@ public class UserResource extends BaseObjectResource<User> {
         return usersManager.getItems(result);
     }
 
-    @Path("/count")
+    static int x = 0;
+
+    @Path("/isadmin")
     @GET
-    public int getUsersCount(@QueryParam("map") String map) throws SQLException {
-        return 0;
+    public boolean getUsersType()  {
+        return (Context.getPermissionsManager().getUserAdmin(getUserId())) ;
+
     }
 
     @Override
@@ -176,7 +179,6 @@ public class UserResource extends BaseObjectResource<User> {
 
         return Response.ok(entity).build();
     }
-
 
 
 }

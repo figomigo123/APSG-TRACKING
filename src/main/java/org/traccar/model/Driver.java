@@ -19,6 +19,7 @@ package org.traccar.model;
 public class Driver extends ExtendedModel {
 
     private String name;
+    private String uniqueId;
 
     public String getName() {
         return name;
@@ -27,8 +28,6 @@ public class Driver extends ExtendedModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String uniqueId;
 
     public String getUniqueId() {
         return uniqueId;

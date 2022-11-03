@@ -35,26 +35,25 @@ import java.util.List;
 
 public class DmtProtocolDecoder extends BaseProtocolDecoder {
 
-    public DmtProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_HELLO = 0x00;
     public static final int MSG_HELLO_RESPONSE = 0x01;
     public static final int MSG_DATA_RECORD = 0x04;
     public static final int MSG_COMMIT = 0x05;
     public static final int MSG_COMMIT_RESPONSE = 0x06;
     public static final int MSG_DATA_RECORD_64 = 0x10;
-
     public static final int MSG_CANNED_REQUEST_1 = 0x14;
     public static final int MSG_CANNED_RESPONSE_1 = 0x15;
     public static final int MSG_CANNED_REQUEST_2 = 0x22;
     public static final int MSG_CANNED_RESPONSE_2 = 0x23;
+    public DmtProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int type, ByteBuf content) {
         if (channel != null) {
             ByteBuf response = Unpooled.buffer();
-            response.writeByte(0x02); response.writeByte(0x55); // header
+            response.writeByte(0x02);
+            response.writeByte(0x55); // header
             response.writeByte(type);
             response.writeShortLE(content != null ? content.readableBytes() : 0);
             if (content != null) {

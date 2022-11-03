@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class PluginProtocolDecoder extends BaseProtocolDecoder {
 
-    public PluginProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("[^0-9,]*,?")
             .number("([^,]+),")                  // device id
@@ -71,6 +67,10 @@ public class PluginProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+
+    public PluginProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

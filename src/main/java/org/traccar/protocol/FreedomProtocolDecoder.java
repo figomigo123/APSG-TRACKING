@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class FreedomProtocolDecoder extends BaseProtocolDecoder {
 
-    public FreedomProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("IMEI,")
             .number("(d+),")                     // imei
@@ -44,6 +40,10 @@ public class FreedomProtocolDecoder extends BaseProtocolDecoder {
             .text("Spd:").number("(d+.d+)")      // speed
             .any()
             .compile();
+
+    public FreedomProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -21,6 +21,10 @@ import javax.json.JsonString;
 
 public class GoogleGeocoder extends JsonGeocoder {
 
+    public GoogleGeocoder(String key, String language, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(key, language), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String key, String language) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f";
         if (key != null) {
@@ -30,10 +34,6 @@ public class GoogleGeocoder extends JsonGeocoder {
             url += "&language=" + language;
         }
         return url;
-    }
-
-    public GoogleGeocoder(String key, String language, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(key, language), cacheSize, addressFormat);
     }
 
     @Override
@@ -54,7 +54,8 @@ public class GoogleGeocoder extends JsonGeocoder {
 
                 String value = component.getString("short_name");
 
-                typesLoop: for (JsonString type : component.getJsonArray("types").getValuesAs(JsonString.class)) {
+                typesLoop:
+                for (JsonString type : component.getJsonArray("types").getValuesAs(JsonString.class)) {
 
                     switch (type.getString()) {
                         case "street_number":

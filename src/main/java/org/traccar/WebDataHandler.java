@@ -177,11 +177,34 @@ public class WebDataHandler extends BaseDataHandler {
         return request;
     }
 
+    @Override
+    protected Position handlePosition(Position position) {
+
+        AsyncRequestAndCallback request = new AsyncRequestAndCallback(position);
+        request.send();
+
+        return position;
+    }
+
+    private Map<String, Object> prepareJsonPayload(Position position) {
+
+        Map<String, Object> data = new HashMap<>();
+        Device device = identityManager.getById(position.getDeviceId());
+
+        data.put(KEY_POSITION, position);
+
+        if (device != null) {
+            data.put(KEY_DEVICE, device);
+        }
+
+        return data;
+    }
+
     class AsyncRequestAndCallback implements InvocationCallback<Response>, TimerTask {
 
+        private final Invocation.Builder requestBuilder;
         private int retries = 0;
         private Map<String, Object> payload;
-        private final Invocation.Builder requestBuilder;
         private MediaType mediaType = MediaType.APPLICATION_JSON_TYPE;
 
         AsyncRequestAndCallback(Position position) {
@@ -195,7 +218,7 @@ public class WebDataHandler extends BaseDataHandler {
 
             requestBuilder = client.target(formattedUrl).request();
             if (header != null && !header.isEmpty()) {
-                for (String line: header.split("\\r?\\n")) {
+                for (String line : header.split("\\r?\\n")) {
                     String[] values = line.split(":", 2);
                     String headerName = values[0].trim();
                     String headerValue = values[1].trim();
@@ -243,7 +266,7 @@ public class WebDataHandler extends BaseDataHandler {
 
         private void schedule() {
             Main.getInjector().getInstance(Timer.class).newTimeout(
-                this, retryDelay * (long) Math.pow(2, retries++), TimeUnit.MILLISECONDS);
+                    this, retryDelay * (long) Math.pow(2, retries++), TimeUnit.MILLISECONDS);
         }
 
         @Override
@@ -276,29 +299,6 @@ public class WebDataHandler extends BaseDataHandler {
             }
         }
 
-    }
-
-    @Override
-    protected Position handlePosition(Position position) {
-
-        AsyncRequestAndCallback request = new AsyncRequestAndCallback(position);
-        request.send();
-
-        return position;
-    }
-
-    private Map<String, Object> prepareJsonPayload(Position position) {
-
-        Map<String, Object> data = new HashMap<>();
-        Device device = identityManager.getById(position.getDeviceId());
-
-        data.put(KEY_POSITION, position);
-
-        if (device != null) {
-            data.put(KEY_DEVICE, device);
-        }
-
-        return data;
     }
 
 }

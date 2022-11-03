@@ -27,6 +27,23 @@ import java.util.regex.Pattern;
 
 public class GlobalSatProtocolDecoder extends BaseProtocolDecoder {
 
+    private static final Pattern PATTERN = new PatternBuilder()
+            .text("$")
+            .number("(d+),")                     // imei
+            .number("d+,")                       // mode
+            .number("(d+),")                     // fix
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .expression("([EW])")
+            .number("(ddd)(dd.d+),")             // longitude (dddmm.mmmm)
+            .expression("([NS])")
+            .number("(dd)(dd.d+),")              // latitude (ddmm.mmmm)
+            .number("(d+.?d*),")                 // altitude
+            .number("(d+.?d*),")                 // speed
+            .number("(d+.?d*)?,")                // course
+            .number("(d+)[,*]")                  // satellites
+            .number("(d+.?d*)")                  // hdop
+            .compile();
     private String format0;
     private String format1;
 
@@ -248,24 +265,6 @@ public class GlobalSatProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .text("$")
-            .number("(d+),")                     // imei
-            .number("d+,")                       // mode
-            .number("(d+),")                     // fix
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .expression("([EW])")
-            .number("(ddd)(dd.d+),")             // longitude (dddmm.mmmm)
-            .expression("([NS])")
-            .number("(dd)(dd.d+),")              // latitude (ddmm.mmmm)
-            .number("(d+.?d*),")                 // altitude
-            .number("(d+.?d*),")                 // speed
-            .number("(d+.?d*)?,")                // course
-            .number("(d+)[,*]")                  // satellites
-            .number("(d+.?d*)")                  // hdop
-            .compile();
 
     private Position decodeAlternative(Channel channel, SocketAddress remoteAddress, String sentence) {
 

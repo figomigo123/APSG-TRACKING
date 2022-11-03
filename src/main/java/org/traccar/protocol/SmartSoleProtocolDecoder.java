@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class SmartSoleProtocolDecoder extends BaseProtocolDecoder {
 
-    public SmartSoleProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("#GTXRP=")
             .number("(d+),")                     // imei
@@ -51,6 +47,10 @@ public class SmartSoleProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+),")                  // battery
             .number("(d+)")                      // status
             .compile();
+
+    public SmartSoleProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -21,61 +21,15 @@ import java.util.zip.CRC32;
 
 public final class Checksum {
 
+    public static final Algorithm CRC8_EGTS = new Algorithm(8, 0x31, 0xFF, false, false, 0x00);
+    public static final Algorithm CRC8_ROHC = new Algorithm(8, 0x07, 0xFF, true, true, 0x00);
+    public static final Algorithm CRC16_IBM = new Algorithm(16, 0x8005, 0x0000, true, true, 0x0000);
+    public static final Algorithm CRC16_X25 = new Algorithm(16, 0x1021, 0xFFFF, true, true, 0xFFFF);
+    public static final Algorithm CRC16_MODBUS = new Algorithm(16, 0x8005, 0xFFFF, true, true, 0x0000);
+    public static final Algorithm CRC16_CCITT_FALSE = new Algorithm(16, 0x1021, 0xFFFF, false, false, 0x0000);
+    public static final Algorithm CRC16_KERMIT = new Algorithm(16, 0x1021, 0x0000, true, true, 0x0000);
+    public static final Algorithm CRC16_XMODEM = new Algorithm(16, 0x1021, 0x0000, false, false, 0x0000);
     private Checksum() {
-    }
-
-    public static class Algorithm {
-
-        private final int poly;
-        private final int init;
-        private final boolean refIn;
-        private final boolean refOut;
-        private final int xorOut;
-        private final int[] table;
-
-        public Algorithm(int bits, int poly, int init, boolean refIn, boolean refOut, int xorOut) {
-            this.poly = poly;
-            this.init = init;
-            this.refIn = refIn;
-            this.refOut = refOut;
-            this.xorOut = xorOut;
-            this.table = bits == 8 ? initTable8() : initTable16();
-        }
-
-        private int[] initTable8() {
-            int[] table = new int[256];
-            int crc;
-            for (int i = 0; i < 256; i++) {
-                crc = i;
-                for (int j = 0; j < 8; j++) {
-                    boolean bit = (crc & 0x80) != 0;
-                    crc <<= 1;
-                    if (bit) {
-                        crc ^= poly;
-                    }
-                }
-                table[i] = crc & 0xFF;
-            }
-            return table;
-        }
-
-        private int[] initTable16() {
-            int[] table = new int[256];
-            int crc;
-            for (int i = 0; i < 256; i++) {
-                crc = i << 8;
-                for (int j = 0; j < 8; j++) {
-                    boolean bit = (crc & 0x8000) != 0;
-                    crc <<= 1;
-                    if (bit) {
-                        crc ^= poly;
-                    }
-                }
-                table[i] = crc & 0xFFFF;
-            }
-            return table;
-        }
-
     }
 
     private static int reverse(int value, int bits) {
@@ -116,16 +70,6 @@ public final class Checksum {
         }
         return (crc ^ algorithm.xorOut) & 0xFFFF;
     }
-
-    public static final Algorithm CRC8_EGTS = new Algorithm(8, 0x31, 0xFF, false, false, 0x00);
-    public static final Algorithm CRC8_ROHC = new Algorithm(8, 0x07, 0xFF, true, true, 0x00);
-
-    public static final Algorithm CRC16_IBM = new Algorithm(16, 0x8005, 0x0000, true, true, 0x0000);
-    public static final Algorithm CRC16_X25 = new Algorithm(16, 0x1021, 0xFFFF, true, true, 0xFFFF);
-    public static final Algorithm CRC16_MODBUS = new Algorithm(16, 0x8005, 0xFFFF, true, true, 0x0000);
-    public static final Algorithm CRC16_CCITT_FALSE = new Algorithm(16, 0x1021, 0xFFFF, false, false, 0x0000);
-    public static final Algorithm CRC16_KERMIT = new Algorithm(16, 0x1021, 0x0000, true, true, 0x0000);
-    public static final Algorithm CRC16_XMODEM = new Algorithm(16, 0x1021, 0x0000, false, false, 0x0000);
 
     public static int crc32(ByteBuffer buf) {
         CRC32 checksum = new CRC32();
@@ -198,6 +142,60 @@ public final class Checksum {
         }
 
         return (10 - (checksum % 10)) % 10;
+    }
+
+    public static class Algorithm {
+
+        private final int poly;
+        private final int init;
+        private final boolean refIn;
+        private final boolean refOut;
+        private final int xorOut;
+        private final int[] table;
+
+        public Algorithm(int bits, int poly, int init, boolean refIn, boolean refOut, int xorOut) {
+            this.poly = poly;
+            this.init = init;
+            this.refIn = refIn;
+            this.refOut = refOut;
+            this.xorOut = xorOut;
+            this.table = bits == 8 ? initTable8() : initTable16();
+        }
+
+        private int[] initTable8() {
+            int[] table = new int[256];
+            int crc;
+            for (int i = 0; i < 256; i++) {
+                crc = i;
+                for (int j = 0; j < 8; j++) {
+                    boolean bit = (crc & 0x80) != 0;
+                    crc <<= 1;
+                    if (bit) {
+                        crc ^= poly;
+                    }
+                }
+                table[i] = crc & 0xFF;
+            }
+            return table;
+        }
+
+        private int[] initTable16() {
+            int[] table = new int[256];
+            int crc;
+            for (int i = 0; i < 256; i++) {
+                crc = i << 8;
+                for (int j = 0; j < 8; j++) {
+                    boolean bit = (crc & 0x8000) != 0;
+                    crc <<= 1;
+                    if (bit) {
+                        crc ^= poly;
+                    }
+                }
+                table[i] = crc & 0xFFFF;
+            }
+            return table;
+        }
+
     }
 
 }

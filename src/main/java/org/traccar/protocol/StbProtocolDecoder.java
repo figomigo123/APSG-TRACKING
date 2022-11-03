@@ -28,23 +28,11 @@ import java.util.Date;
 
 public class StbProtocolDecoder extends BaseProtocolDecoder {
 
-    public StbProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 110;
     public static final int MSG_PROPERTY = 310;
     public static final int MSG_ALARM = 410;
-
-    public static class Response {
-        @JsonProperty("msgType")
-        private int type;
-        @JsonProperty("devId")
-        private String deviceId;
-        @JsonProperty("result")
-        private int result;
-        @JsonProperty("txnNo")
-        private String transaction;
+    public StbProtocolDecoder(Protocol protocol) {
+        super(protocol);
     }
 
     private void sendResponse(
@@ -143,6 +131,17 @@ public class StbProtocolDecoder extends BaseProtocolDecoder {
         }
 
         return null;
+    }
+
+    public static class Response {
+        @JsonProperty("msgType")
+        private int type;
+        @JsonProperty("devId")
+        private String deviceId;
+        @JsonProperty("result")
+        private int result;
+        @JsonProperty("txnNo")
+        private String transaction;
     }
 
 }

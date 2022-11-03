@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    private int position;
     private final Matcher matcher;
+    private int position;
 
     public Parser(Pattern pattern, String input) {
         matcher = pattern.matcher(input);
@@ -153,18 +153,6 @@ public class Parser {
         }
     }
 
-    public enum CoordinateFormat {
-        DEG_DEG,
-        DEG_HEM,
-        DEG_MIN_MIN,
-        DEG_MIN_HEM,
-        DEG_MIN_MIN_HEM,
-        HEM_DEG_MIN_MIN,
-        HEM_DEG,
-        HEM_DEG_MIN,
-        HEM_DEG_MIN_HEM
-    }
-
     public double nextCoordinate(CoordinateFormat format) {
         double coordinate;
         String hemisphere = null;
@@ -225,19 +213,6 @@ public class Parser {
 
     public double nextCoordinate() {
         return nextCoordinate(CoordinateFormat.DEG_MIN_HEM);
-    }
-
-    public enum DateTimeFormat {
-        HMS,
-        SMH,
-        HMS_YMD,
-        HMS_DMY,
-        SMH_YMD,
-        SMH_DMY,
-        DMY_HMS,
-        DMY_HMSS,
-        YMD_HMS,
-        YMD_HMSS,
     }
 
     public Date nextDateTime(DateTimeFormat format, String timeZone) {
@@ -343,6 +318,31 @@ public class Parser {
 
     public Date nextDateTime() {
         return nextDateTime(DateTimeFormat.YMD_HMS, null);
+    }
+
+    public enum CoordinateFormat {
+        DEG_DEG,
+        DEG_HEM,
+        DEG_MIN_MIN,
+        DEG_MIN_HEM,
+        DEG_MIN_MIN_HEM,
+        HEM_DEG_MIN_MIN,
+        HEM_DEG,
+        HEM_DEG_MIN,
+        HEM_DEG_MIN_HEM
+    }
+
+    public enum DateTimeFormat {
+        HMS,
+        SMH,
+        HMS_YMD,
+        HMS_DMY,
+        SMH_YMD,
+        SMH_DMY,
+        DMY_HMS,
+        DMY_HMSS,
+        YMD_HMS,
+        YMD_HMSS,
     }
 
 }

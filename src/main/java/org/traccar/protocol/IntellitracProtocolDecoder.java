@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class IntellitracProtocolDecoder extends BaseProtocolDecoder {
 
-    public IntellitracProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression(".+,").optional()
             .number("(d+),")                     // identifier
@@ -64,6 +60,10 @@ public class IntellitracProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+
+    public IntellitracProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

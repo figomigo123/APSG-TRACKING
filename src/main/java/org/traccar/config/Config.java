@@ -55,6 +55,10 @@ public class Config {
         }
     }
 
+    static String getEnvironmentVariableName(String key) {
+        return key.replaceAll("\\.", "_").replaceAll("(\\p{Lu})", "_$1").toUpperCase();
+    }
+
     public boolean hasKey(ConfigKey<?> key) {
         return hasKey(key.getKey());
     }
@@ -152,10 +156,6 @@ public class Config {
     @VisibleForTesting
     public void setString(ConfigKey<?> key, String value) {
         properties.put(key.getKey(), value);
-    }
-
-    static String getEnvironmentVariableName(String key) {
-        return key.replaceAll("\\.", "_").replaceAll("(\\p{Lu})", "_$1").toUpperCase();
     }
 
 }

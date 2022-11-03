@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 
 public class SupermateProtocolDecoder extends BaseProtocolDecoder {
 
-    public SupermateProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("d+:")                       // header
             .number("(d+):")                     // imei
@@ -57,6 +53,10 @@ public class SupermateProtocolDecoder extends BaseProtocolDecoder {
             .number("(x+)?")                     // odometer
             .any()
             .compile();
+
+    public SupermateProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

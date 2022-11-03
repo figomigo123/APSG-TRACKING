@@ -37,14 +37,13 @@ import java.util.*;
 
 public class Minifinder2ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Minifinder2ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_DATA = 0x01;
     public static final int MSG_CONFIGURATION = 0x02;
     public static final int MSG_SERVICES = 0x03;
     public static final int MSG_RESPONSE = 0x7F;
+    public Minifinder2ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int code) {
         if (BitUtil.check(code, 0)) {

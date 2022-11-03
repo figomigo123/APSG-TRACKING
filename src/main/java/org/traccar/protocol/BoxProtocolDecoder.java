@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class BoxProtocolDecoder extends BaseProtocolDecoder {
 
-    public BoxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("L,")
             .number("(dd)(dd)(dd)")              // date (yymmdd)
@@ -52,6 +48,10 @@ public class BoxProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.+)")
             .groupEnd("?")
             .compile();
+
+    public BoxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -26,25 +26,27 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Path("devices")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class DeviceResource extends BaseObjectResource<Device> {
 
+public class DeviceResource extends BaseObjectResource<Device> {
     public DeviceResource() {
         super(Device.class);
     }
+
+
+
 
     @GET
     public Collection<Device> get(
             @QueryParam("all") boolean all, @QueryParam("userId") long userId,
             @QueryParam("uniqueId") List<String> uniqueIds,
             @QueryParam("id") List<Long> deviceIds) throws SQLException {
+
+
         DeviceManager deviceManager = Context.getDeviceManager();
         Set<Long> result;
         if (all) {
@@ -55,14 +57,15 @@ public class DeviceResource extends BaseObjectResource<Device> {
                 result = deviceManager.getManagedItems(getUserId());
             }
         } else if (uniqueIds.isEmpty() && deviceIds.isEmpty()) {
-            if (userId == 0) {
-                userId = getUserId();
-            }
+            if (userId == 0)   userId = getUserId();
+
             Context.getPermissionsManager().checkUser(getUserId(), userId);
             if (Context.getPermissionsManager().getUserAdmin(getUserId())) {
                 result = deviceManager.getAllUserItems(userId);
             } else {
-                result = deviceManager.getUserItems(userId);
+               // result = deviceManager.getUserItems(userId);
+                result = deviceManager.getAllUserItems(userId);
+
             }
         } else {
             result = new HashSet<>();
@@ -76,9 +79,43 @@ public class DeviceResource extends BaseObjectResource<Device> {
                 result.add(deviceId);
             }
         }
-        return deviceManager.getItems(result);
+        Collection<Device> d= deviceManager.getItems(result);
+//System.out.println("devices : userId : "+getUserId()+ "    d: "+d.size());
+        return d;
     }
 
+    @Path("counters")
+    @GET()
+    public Map<String, Long> getcounters() throws SQLException {
+
+        Collection<Device> devices = getAllDevices2(0);
+
+        Map<String, Long> counters = new HashMap<>();
+        long onLine = 0l, offLine = 0l, idle = 0l, allD = 0l;
+        for (Device d : devices) {
+            if (d.getStatus().equalsIgnoreCase("online")) onLine++;
+            if (d.getStatus().equalsIgnoreCase("offline")) offLine++;
+            if (d.getStatus().equalsIgnoreCase("Unknown")) idle++;
+            System.out.println(d.getStatus());
+
+            allD++;
+
+        }
+        counters.put("allDevices", allD);
+        counters.put("onLine", onLine);
+        counters.put("offLine", offLine);
+        counters.put("idle", idle);
+
+
+        return counters;
+
+    }
+
+    @Path("view")
+    @GET
+    public Collection<Device> getView() throws SQLException {
+       return getAllDevices2(0);
+    }
 
     @Path("all")
     @GET
@@ -95,28 +132,27 @@ public class DeviceResource extends BaseObjectResource<Device> {
 
         return deviceManager.getItems(result);
     }
- public Collection<Device> getAllDevices() throws SQLException {
+
+    public Collection<Device> getAllDevices() throws SQLException {
         DeviceManager deviceManager = Context.getDeviceManager();
         Set<Long> result = deviceManager.getAllItems();
-
         return deviceManager.getItems(result);
     }
-    public Collection<Device> getAllDevices2(long userId) throws SQLException {
+
+    @Path("devices2")
+    @GET
+    public Collection<Device> getAllDevices2(@QueryParam("userId") long userId) throws SQLException {
+        if(userId==0)userId=getUserId();
         DeviceManager deviceManager = Context.getDeviceManager();
         Set<Long> result;
         Context.getPermissionsManager().checkUser(userId, userId);
         if (Context.getPermissionsManager().getUserAdmin(userId)) {
-            result = deviceManager.getAllUserItems(userId);
+            result = deviceManager.getAllItems();
         } else {
             result = deviceManager.getUserItems(userId);
         }
-
         return deviceManager.getItems(result);
     }
-
-
-
-
     @Path("{id}/accumulators")
     @PUT
     public Response updateAccumulators(DeviceAccumulators entity) throws SQLException {
@@ -128,6 +164,5 @@ public class DeviceResource extends BaseObjectResource<Device> {
         LogAction.resetDeviceAccumulators(getUserId(), entity.getDeviceId());
         return Response.noContent().build();
     }
-
 
 }

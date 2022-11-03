@@ -27,19 +27,21 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Timer;
+
 public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private static Injector injector;
 
-    public static Injector getInjector() {
-        return injector;
+    private Main() {
     }
 
-    private Main() {
+    public static Injector getInjector() {
+        return injector;
     }
 
     public static void logSystemInfo() {
@@ -104,6 +106,9 @@ public final class Main {
         } else {
             run(configFile);
         }
+
+
+
     }
 
     private static void scheduleHealthCheck() {

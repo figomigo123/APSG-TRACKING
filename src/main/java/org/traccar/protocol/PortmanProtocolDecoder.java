@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class PortmanProtocolDecoder extends BaseProtocolDecoder {
 
-    public PortmanProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_STANDARD = new PatternBuilder()
             .text("$PTMLA,")                     // header
             .expression("([^,]+),")              // id
@@ -54,6 +50,32 @@ public class PortmanProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // rssi
             .number("(?:G(d+)|[^,]*)")           // fuel
             .compile();
+    private static final Pattern PATTERN_EXTENDED = new PatternBuilder()
+            .text("$EXT,")                        // header
+            .expression("([^,]+),")              // id
+            .expression("([ABCL]),")             // validity
+            .number("(dd)(dd)(dd)")              // date (yymmdd)
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .expression("([NS])")
+            .number("(dd)(dd.d+)")               // latitude
+            .expression("([EW])")
+            .number("(d{2,3})(dd.d+),")          // longitude
+            .number("(d+),")                     // speed
+            .number("(d+),")                     // course
+            .number("(?:NA|C(-?d+)),")           // temperature
+            .number("(?:NA|F(d+)),")             // fuel
+            .number("(d+),")                     // satellites
+            .number("(d+),")                     // rssi
+            .number("(d+.d+),")                  // odometer
+            .number("(?:NA|(d+)),")              // card id
+            .number("(x{8}),")                   // status
+            .number("(d+)")                      // event
+            .any()
+            .compile();
+
+    public PortmanProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Object decodeStandard(Channel channel, SocketAddress remoteAddress, String sentence) {
 
@@ -88,29 +110,6 @@ public class PortmanProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN_EXTENDED = new PatternBuilder()
-            .text("$EXT,")                        // header
-            .expression("([^,]+),")              // id
-            .expression("([ABCL]),")             // validity
-            .number("(dd)(dd)(dd)")              // date (yymmdd)
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .expression("([NS])")
-            .number("(dd)(dd.d+)")               // latitude
-            .expression("([EW])")
-            .number("(d{2,3})(dd.d+),")          // longitude
-            .number("(d+),")                     // speed
-            .number("(d+),")                     // course
-            .number("(?:NA|C(-?d+)),")           // temperature
-            .number("(?:NA|F(d+)),")             // fuel
-            .number("(d+),")                     // satellites
-            .number("(d+),")                     // rssi
-            .number("(d+.d+),")                  // odometer
-            .number("(?:NA|(d+)),")              // card id
-            .number("(x{8}),")                   // status
-            .number("(d+)")                      // event
-            .any()
-            .compile();
 
     private Object decodeExtended(Channel channel, SocketAddress remoteAddress, String sentence) {
 

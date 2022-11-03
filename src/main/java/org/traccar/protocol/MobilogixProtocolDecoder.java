@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class MobilogixProtocolDecoder extends BaseProtocolDecoder {
 
-    public MobilogixProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("[")
             .number("(dddd)-(dd)-(dd) ")         // date (yyyymmdd)
@@ -54,6 +50,10 @@ public class MobilogixProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*)")                  // course
             .any()
             .compile();
+
+    public MobilogixProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

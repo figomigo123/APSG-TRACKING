@@ -1,9 +1,9 @@
 package org.traccar.handler;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.traccar.model.Position;
+
+import static org.junit.Assert.assertEquals;
 
 public class MotionHandlerTest {
 

@@ -142,6 +142,20 @@ public class Position extends Message {
     public static final String ALARM_FUEL_LEAK = "fuelLeak";
     public static final String ALARM_TAMPERING = "tampering";
     public static final String ALARM_REMOVING = "removing";
+    private String protocol;
+    private Date serverTime = new Date();
+    private Date deviceTime;
+    private Date fixTime;
+    private boolean outdated;
+    private boolean valid;
+    private double latitude;
+    private double longitude;
+    private double altitude; // value in meters
+    private double speed; // value in knots
+    private double course;
+    private String address;
+    private double accuracy;
+    private Network network;
 
     public Position() {
     }
@@ -151,8 +165,6 @@ public class Position extends Message {
         this.serverTime = new Date();
     }
 
-    private String protocol;
-
     public String getProtocol() {
         return protocol;
     }
@@ -160,8 +172,6 @@ public class Position extends Message {
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
-
-    private Date serverTime = new Date();
 
     public Date getServerTime() {
         return serverTime;
@@ -171,8 +181,6 @@ public class Position extends Message {
         this.serverTime = serverTime;
     }
 
-    private Date deviceTime;
-
     public Date getDeviceTime() {
         return deviceTime;
     }
@@ -180,8 +188,6 @@ public class Position extends Message {
     public void setDeviceTime(Date deviceTime) {
         this.deviceTime = deviceTime;
     }
-
-    private Date fixTime;
 
     public Date getFixTime() {
         return fixTime;
@@ -196,8 +202,6 @@ public class Position extends Message {
         setFixTime(time);
     }
 
-    private boolean outdated;
-
     @QueryIgnore
     public boolean getOutdated() {
         return outdated;
@@ -207,8 +211,6 @@ public class Position extends Message {
         this.outdated = outdated;
     }
 
-    private boolean valid;
-
     public boolean getValid() {
         return valid;
     }
@@ -216,8 +218,6 @@ public class Position extends Message {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
-    private double latitude;
 
     public double getLatitude() {
         return latitude;
@@ -227,8 +227,6 @@ public class Position extends Message {
         this.latitude = latitude;
     }
 
-    private double longitude;
-
     public double getLongitude() {
         return longitude;
     }
@@ -236,8 +234,6 @@ public class Position extends Message {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    private double altitude; // value in meters
 
     public double getAltitude() {
         return altitude;
@@ -247,8 +243,6 @@ public class Position extends Message {
         this.altitude = altitude;
     }
 
-    private double speed; // value in knots
-
     public double getSpeed() {
         return speed;
     }
@@ -256,8 +250,6 @@ public class Position extends Message {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
-
-    private double course;
 
     public double getCourse() {
         return course;
@@ -267,8 +259,6 @@ public class Position extends Message {
         this.course = course;
     }
 
-    private String address;
-
     public String getAddress() {
         return address;
     }
@@ -277,8 +267,6 @@ public class Position extends Message {
         this.address = address;
     }
 
-    private double accuracy;
-
     public double getAccuracy() {
         return accuracy;
     }
@@ -286,8 +274,6 @@ public class Position extends Message {
     public void setAccuracy(double accuracy) {
         this.accuracy = accuracy;
     }
-
-    private Network network;
 
     public Network getNetwork() {
         return network;

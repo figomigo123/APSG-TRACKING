@@ -36,20 +36,6 @@ public class NotificatorFirebase extends Notificator {
     private final String url;
     private final String key;
 
-    public static class Notification {
-        @JsonProperty("body")
-        private String body;
-        @JsonProperty("sound")
-        private String sound;
-    }
-
-    public static class Message {
-        @JsonProperty("registration_ids")
-        private String[] tokens;
-        @JsonProperty("notification")
-        private Notification notification;
-    }
-
     public NotificatorFirebase() {
         this(
                 "https://fcm.googleapis.com/fcm/send",
@@ -92,6 +78,20 @@ public class NotificatorFirebase extends Notificator {
     @Override
     public void sendAsync(long userId, Event event, Position position) {
         sendSync(userId, event, position);
+    }
+
+    public static class Notification {
+        @JsonProperty("body")
+        private String body;
+        @JsonProperty("sound")
+        private String sound;
+    }
+
+    public static class Message {
+        @JsonProperty("registration_ids")
+        private String[] tokens;
+        @JsonProperty("notification")
+        private Notification notification;
     }
 
 }

@@ -23,10 +23,6 @@ public abstract class StringProtocolEncoder extends BaseProtocolEncoder {
         super(protocol);
     }
 
-    public interface ValueFormatter {
-        String formatValue(String key, Object value);
-    }
-
     protected String formatCommand(Command command, String format, ValueFormatter valueFormatter, String... keys) {
 
         Object[] values = new String[keys.length];
@@ -54,6 +50,10 @@ public abstract class StringProtocolEncoder extends BaseProtocolEncoder {
 
     protected String formatCommand(Command command, String format, String... keys) {
         return formatCommand(command, format, null, keys);
+    }
+
+    public interface ValueFormatter {
+        String formatValue(String key, Object value);
     }
 
 }

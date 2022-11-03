@@ -48,6 +48,8 @@ public class SessionResource extends BaseResource {
     @PermitAll
     @GET
     public User get(@QueryParam("token") String token) throws SQLException, UnsupportedEncodingException {
+
+      //  System.out.println("session get :"+token );
         Long userId = (Long) request.getSession().getAttribute(USER_ID_KEY);
         if (userId == null) {
             Cookie[] cookies = request.getCookies();
@@ -107,6 +109,7 @@ public class SessionResource extends BaseResource {
     public Response remove() {
         LogAction.logout(getUserId());
         request.getSession().removeAttribute(USER_ID_KEY);
+        System.out.println("log out ok");
         return Response.noContent().build();
     }
 

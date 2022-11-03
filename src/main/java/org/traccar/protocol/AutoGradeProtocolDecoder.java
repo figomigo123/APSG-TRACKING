@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class AutoGradeProtocolDecoder extends BaseProtocolDecoder {
 
-    public AutoGradeProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .number("d{12}")                     // index
@@ -58,6 +54,10 @@ public class AutoGradeProtocolDecoder extends BaseProtocolDecoder {
             .number("O(xxxx)")
             .any()
             .compile();
+
+    public AutoGradeProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

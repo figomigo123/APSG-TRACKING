@@ -20,6 +20,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class WifiAccessPoint {
 
+    private String macAddress;
+    private Integer signalStrength;
+    private Integer channel;
+
     public static WifiAccessPoint from(String macAddress, int signalStrength) {
         WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
         wifiAccessPoint.setMacAddress(macAddress);
@@ -33,8 +37,6 @@ public class WifiAccessPoint {
         return wifiAccessPoint;
     }
 
-    private String macAddress;
-
     public String getMacAddress() {
         return macAddress;
     }
@@ -43,8 +45,6 @@ public class WifiAccessPoint {
         this.macAddress = macAddress;
     }
 
-    private Integer signalStrength;
-
     public Integer getSignalStrength() {
         return signalStrength;
     }
@@ -52,8 +52,6 @@ public class WifiAccessPoint {
     public void setSignalStrength(Integer signalStrength) {
         this.signalStrength = signalStrength;
     }
-
-    private Integer channel;
 
     public Integer getChannel() {
         return channel;

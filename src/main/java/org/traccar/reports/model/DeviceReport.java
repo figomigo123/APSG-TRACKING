@@ -23,6 +23,8 @@ import java.util.List;
 public class DeviceReport {
 
     private String deviceName;
+    private String groupName = "";
+    private List<?> objects;
 
     public String getDeviceName() {
         return deviceName;
@@ -32,8 +34,6 @@ public class DeviceReport {
         this.deviceName = deviceName;
     }
 
-    private String groupName = "";
-
     public String getGroupName() {
         return groupName;
     }
@@ -41,8 +41,6 @@ public class DeviceReport {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
-
-    private List<?> objects;
 
     public Collection<?> getObjects() {
         return objects;

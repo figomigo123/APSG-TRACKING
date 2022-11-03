@@ -19,16 +19,16 @@ import javax.json.JsonObject;
 
 public class GeocodeXyzGeocoder extends JsonGeocoder {
 
+    public GeocodeXyzGeocoder(String key, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(key), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String key) {
         String url = "https://geocode.xyz/%f,%f?geoit=JSON";
         if (key != null) {
             url += "&key=" + key;
         }
         return url;
-    }
-
-    public GeocodeXyzGeocoder(String key, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(key), cacheSize, addressFormat);
     }
 
     @Override

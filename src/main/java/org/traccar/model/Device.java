@@ -23,7 +23,20 @@ import java.util.List;
 
 public class Device extends GroupedModel {
 
+    public static final String STATUS_UNKNOWN = "unknown";
+    public static final String STATUS_ONLINE = "online";
+    public static final String STATUS_OFFLINE = "offline";
     private String name;
+    private String uniqueId;
+    private String status;
+    private Date lastUpdate;
+    private long positionId;
+    private List<Long> geofenceIds;
+    private String phone;
+    private String model;
+    private String contact;
+    private String category;
+    private boolean disabled;
 
     public String getName() {
         return name;
@@ -33,8 +46,6 @@ public class Device extends GroupedModel {
         this.name = name;
     }
 
-    private String uniqueId;
-
     public String getUniqueId() {
         return uniqueId;
     }
@@ -42,12 +53,6 @@ public class Device extends GroupedModel {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
-
-    public static final String STATUS_UNKNOWN = "unknown";
-    public static final String STATUS_ONLINE = "online";
-    public static final String STATUS_OFFLINE = "offline";
-
-    private String status;
 
     @QueryIgnore
     public String getStatus() {
@@ -57,8 +62,6 @@ public class Device extends GroupedModel {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    private Date lastUpdate;
 
     @QueryExtended
     public Date getLastUpdate() {
@@ -77,8 +80,6 @@ public class Device extends GroupedModel {
         }
     }
 
-    private long positionId;
-
     @QueryIgnore
     public long getPositionId() {
         return positionId;
@@ -87,8 +88,6 @@ public class Device extends GroupedModel {
     public void setPositionId(long positionId) {
         this.positionId = positionId;
     }
-
-    private List<Long> geofenceIds;
 
     @QueryIgnore
     public List<Long> getGeofenceIds() {
@@ -99,8 +98,6 @@ public class Device extends GroupedModel {
         this.geofenceIds = geofenceIds;
     }
 
-    private String phone;
-
     public String getPhone() {
         return phone;
     }
@@ -108,8 +105,6 @@ public class Device extends GroupedModel {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    private String model;
 
     public String getModel() {
         return model;
@@ -119,8 +114,6 @@ public class Device extends GroupedModel {
         this.model = model;
     }
 
-    private String contact;
-
     public String getContact() {
         return contact;
     }
@@ -128,8 +121,6 @@ public class Device extends GroupedModel {
     public void setContact(String contact) {
         this.contact = contact;
     }
-
-    private String category;
 
     public String getCategory() {
         return category;
@@ -139,8 +130,6 @@ public class Device extends GroupedModel {
         this.category = category;
     }
 
-    private boolean disabled;
-
     public boolean getDisabled() {
         return disabled;
     }
@@ -149,4 +138,21 @@ public class Device extends GroupedModel {
         this.disabled = disabled;
     }
 
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "name='" + name + '\'' +
+                ", uniqueId='" + uniqueId + '\'' +
+                ", status='" + status + '\'' +
+                ", lastUpdate=" + lastUpdate +
+                ", positionId=" + positionId +
+                ", geofenceIds=" + geofenceIds +
+                ", phone='" + phone + '\'' +
+                ", model='" + model + '\'' +
+                ", contact='" + contact + '\'' +
+                ", category='" + category + '\'' +
+                ", disabled=" + disabled +
+                "} " + super.toString();
+    }
 }

@@ -23,6 +23,20 @@ import org.traccar.database.QueryIgnore;
 public class Server extends ExtendedModel {
 
     private boolean registration;
+    private boolean readonly;
+    private boolean deviceReadonly;
+    private String map;
+    private String bingKey;
+    private String mapUrl;
+    private double latitude;
+    private double longitude;
+    private int zoom;
+    private boolean twelveHourFormat;
+    private boolean forceSettings;
+    private String coordinateFormat;
+    private boolean limitCommands;
+    private String poiLayer;
+    private String announcement;
 
     public boolean getRegistration() {
         return registration;
@@ -32,8 +46,6 @@ public class Server extends ExtendedModel {
         this.registration = registration;
     }
 
-    private boolean readonly;
-
     public boolean getReadonly() {
         return readonly;
     }
@@ -41,8 +53,6 @@ public class Server extends ExtendedModel {
     public void setReadonly(boolean readonly) {
         this.readonly = readonly;
     }
-
-    private boolean deviceReadonly;
 
     public boolean getDeviceReadonly() {
         return deviceReadonly;
@@ -52,8 +62,6 @@ public class Server extends ExtendedModel {
         this.deviceReadonly = deviceReadonly;
     }
 
-    private String map;
-
     public String getMap() {
         return map;
     }
@@ -61,8 +69,6 @@ public class Server extends ExtendedModel {
     public void setMap(String map) {
         this.map = map;
     }
-
-    private String bingKey;
 
     public String getBingKey() {
         return bingKey;
@@ -72,8 +78,6 @@ public class Server extends ExtendedModel {
         this.bingKey = bingKey;
     }
 
-    private String mapUrl;
-
     public String getMapUrl() {
         return mapUrl;
     }
@@ -81,8 +85,6 @@ public class Server extends ExtendedModel {
     public void setMapUrl(String mapUrl) {
         this.mapUrl = mapUrl;
     }
-
-    private double latitude;
 
     public double getLatitude() {
         return latitude;
@@ -92,8 +94,6 @@ public class Server extends ExtendedModel {
         this.latitude = latitude;
     }
 
-    private double longitude;
-
     public double getLongitude() {
         return longitude;
     }
@@ -101,8 +101,6 @@ public class Server extends ExtendedModel {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    private int zoom;
 
     public int getZoom() {
         return zoom;
@@ -112,8 +110,6 @@ public class Server extends ExtendedModel {
         this.zoom = zoom;
     }
 
-    private boolean twelveHourFormat;
-
     public boolean getTwelveHourFormat() {
         return twelveHourFormat;
     }
@@ -121,8 +117,6 @@ public class Server extends ExtendedModel {
     public void setTwelveHourFormat(boolean twelveHourFormat) {
         this.twelveHourFormat = twelveHourFormat;
     }
-
-    private boolean forceSettings;
 
     public boolean getForceSettings() {
         return forceSettings;
@@ -132,8 +126,6 @@ public class Server extends ExtendedModel {
         this.forceSettings = forceSettings;
     }
 
-    private String coordinateFormat;
-
     public String getCoordinateFormat() {
         return coordinateFormat;
     }
@@ -141,8 +133,6 @@ public class Server extends ExtendedModel {
     public void setCoordinateFormat(String coordinateFormat) {
         this.coordinateFormat = coordinateFormat;
     }
-
-    private boolean limitCommands;
 
     public boolean getLimitCommands() {
         return limitCommands;
@@ -152,8 +142,6 @@ public class Server extends ExtendedModel {
         this.limitCommands = limitCommands;
     }
 
-    private String poiLayer;
-
     public String getPoiLayer() {
         return poiLayer;
     }
@@ -161,8 +149,6 @@ public class Server extends ExtendedModel {
     public void setPoiLayer(String poiLayer) {
         this.poiLayer = poiLayer;
     }
-
-    private String announcement;
 
     public String getAnnouncement() {
         return announcement;

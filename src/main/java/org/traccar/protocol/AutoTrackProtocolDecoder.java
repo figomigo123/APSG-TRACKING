@@ -32,10 +32,6 @@ import java.util.Date;
 
 public class AutoTrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public AutoTrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN_REQUEST = 51;
     public static final int MSG_LOGIN_CONFIRM = 101;
     public static final int MSG_TELEMETRY_1 = 52;
@@ -43,6 +39,9 @@ public class AutoTrackProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_TELEMETRY_3 = 67;
     public static final int MSG_KEEP_ALIVE = 114;
     public static final int MSG_TELEMETRY_CONFIRM = 123;
+    public AutoTrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodeTelemetry(
             Channel channel, SocketAddress remoteAddress, DeviceSession deviceSession, ByteBuf buf) {

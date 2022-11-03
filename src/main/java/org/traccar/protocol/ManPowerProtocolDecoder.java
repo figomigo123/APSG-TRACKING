@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class ManPowerProtocolDecoder extends BaseProtocolDecoder {
 
-    public ManPowerProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("simei:")
             .number("(d+),")                     // imei
@@ -48,6 +44,10 @@ public class ManPowerProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*),")                 // speed
             .any()
             .compile();
+
+    public ManPowerProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

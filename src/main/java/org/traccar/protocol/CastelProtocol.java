@@ -22,6 +22,7 @@ import org.traccar.TrackerServer;
 import org.traccar.model.Command;
 
 import java.nio.ByteOrder;
+
 public class CastelProtocol extends BaseProtocol {
 
     public CastelProtocol() {

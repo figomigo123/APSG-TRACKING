@@ -29,13 +29,6 @@ import java.util.regex.Pattern;
 
 public class XexunProtocolDecoder extends BaseProtocolDecoder {
 
-    private final boolean full;
-
-    public XexunProtocolDecoder(Protocol protocol, boolean full) {
-        super(protocol);
-        this.full = full;
-    }
-
     private static final Pattern PATTERN_BASIC = new PatternBuilder()
             .expression("G[PN]RMC,")
             .number("(?:(dd)(dd)(dd))?.?d*,")    // time (hhmmss)
@@ -53,7 +46,6 @@ public class XexunProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .number("imei:(d+),")                // imei
             .compile();
-
     private static final Pattern PATTERN_FULL = new PatternBuilder()
             .any()
             .number("(d+),")                     // serial
@@ -64,6 +56,12 @@ public class XexunProtocolDecoder extends BaseProtocolDecoder {
             .number("[FL]:(d+.d+)V")             // power
             .any()
             .compile();
+    private final boolean full;
+
+    public XexunProtocolDecoder(Protocol protocol, boolean full) {
+        super(protocol);
+        this.full = full;
+    }
 
     private String decodeStatus(Position position, String value) {
         if (value != null) {

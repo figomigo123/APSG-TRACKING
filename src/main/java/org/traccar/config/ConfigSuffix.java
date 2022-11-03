@@ -24,7 +24,7 @@ public class ConfigSuffix<T> {
     private final T defaultValue;
 
     ConfigSuffix(String keySuffix, List<KeyType> types) {
-        this(keySuffix, types,  null);
+        this(keySuffix, types, null);
     }
 
     ConfigSuffix(String keySuffix, List<KeyType> types, T defaultValue) {

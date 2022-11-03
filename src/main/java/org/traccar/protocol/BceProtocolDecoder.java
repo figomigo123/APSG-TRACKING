@@ -36,17 +36,15 @@ import java.util.List;
 
 public class BceProtocolDecoder extends BaseProtocolDecoder {
 
-    public BceProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
-    private static final int DATA_TYPE = 7;
-
     public static final int MSG_ASYNC_STACK = 0xA5;
     public static final int MSG_STACK_COFIRM = 0x19;
     public static final int MSG_TIME_TRIGGERED = 0xA0;
     public static final int MSG_OUTPUT_CONTROL = 0x41;
     public static final int MSG_OUTPUT_CONTROL_ACK = 0xC1;
+    private static final int DATA_TYPE = 7;
+    public BceProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeMask1(ByteBuf buf, int mask, Position position) {
 

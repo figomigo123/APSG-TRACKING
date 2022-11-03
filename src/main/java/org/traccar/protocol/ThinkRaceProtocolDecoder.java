@@ -33,12 +33,11 @@ import java.util.Date;
 
 public class ThinkRaceProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_LOGIN = 0x80;
+    public static final int MSG_GPS = 0x90;
     public ThinkRaceProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_LOGIN = 0x80;
-    public static final int MSG_GPS = 0x90;
 
     private static double convertCoordinate(long raw, boolean negative) {
         long degrees = raw / 1000000;
@@ -71,7 +70,8 @@ public class ThinkRaceProtocolDecoder extends BaseProtocolDecoder {
                 DeviceSession deviceSession = getDeviceSession(channel, remoteAddress, imei);
                 if (deviceSession != null && channel != null) {
                     ByteBuf response = Unpooled.buffer();
-                    response.writeByte(0x48); response.writeByte(0x52); // header
+                    response.writeByte(0x48);
+                    response.writeByte(0x52); // header
                     response.writeBytes(id);
                     response.writeByte(0x2c); // separator
                     response.writeByte(type);

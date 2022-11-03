@@ -1,12 +1,10 @@
 package org.traccar.geofence;
 
-import java.text.ParseException;
-
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.text.ParseException;
+
+import static org.junit.Assert.*;
 
 public class GeofencePolygonTest {
 
@@ -33,7 +31,7 @@ public class GeofencePolygonTest {
         assertFalse(geofenceGeometry.containsPoint(55.75545, 37.61921));
 
     }
-    
+
     @Test
     public void testContainsPolygon180() throws ParseException {
         String test = "POLYGON ((66.9494 179.838, 66.9508 -179.8496, 66.8406 -180.0014))";
@@ -44,7 +42,7 @@ public class GeofencePolygonTest {
         assertFalse(geofenceGeometry.containsPoint(66.8368, -179.8792));
 
     }
-    
+
     @Test
     public void testContainsPolygon0() throws ParseException {
         String test = "POLYGON ((51.1966 -0.6207, 51.1897 0.4147, 50.9377 0.5136, 50.8675 -0.6082))";

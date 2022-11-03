@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class PathAwayProtocolDecoder extends BaseProtocolDecoder {
 
-    public PathAwayProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$PWS,")
             .number("d+,")                       // version
@@ -50,6 +46,10 @@ public class PathAwayProtocolDecoder extends BaseProtocolDecoder {
             .number("(-?d+.?d*),")               // course
             .any()
             .compile();
+
+    public PathAwayProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

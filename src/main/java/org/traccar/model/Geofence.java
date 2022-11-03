@@ -33,6 +33,9 @@ public class Geofence extends ScheduledModel {
     public static final String TYPE_GEOFENCE_POLYLINE = "geofencePolyline";
 
     private String name;
+    private String description;
+    private String area;
+    private GeofenceGeometry geometry;
 
     public String getName() {
         return name;
@@ -42,8 +45,6 @@ public class Geofence extends ScheduledModel {
         this.name = name;
     }
 
-    private String description;
-
     public String getDescription() {
         return description;
     }
@@ -51,8 +52,6 @@ public class Geofence extends ScheduledModel {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String area;
 
     public String getArea() {
         return area;
@@ -74,8 +73,6 @@ public class Geofence extends ScheduledModel {
 
         this.area = area;
     }
-
-    private GeofenceGeometry geometry;
 
     @QueryIgnore
     @JsonIgnore

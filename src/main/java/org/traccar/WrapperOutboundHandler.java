@@ -25,12 +25,12 @@ public class WrapperOutboundHandler implements ChannelOutboundHandler {
 
     private final ChannelOutboundHandler handler;
 
-    public ChannelOutboundHandler getWrappedHandler() {
-        return handler;
-    }
-
     public WrapperOutboundHandler(ChannelOutboundHandler handler) {
         this.handler = handler;
+    }
+
+    public ChannelOutboundHandler getWrappedHandler() {
+        return handler;
     }
 
     @Override

@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class AisProtocolDecoder extends BaseProtocolDecoder {
 
-    public AisProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("!AIVDM,")
             .number("(d+),")                     // count
@@ -44,6 +40,10 @@ public class AisProtocolDecoder extends BaseProtocolDecoder {
             .expression("([^,]+),")              // payload
             .any()
             .compile();
+
+    public AisProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodePayload(Channel channel, SocketAddress remoteAddress, BitBuffer buf) {
 

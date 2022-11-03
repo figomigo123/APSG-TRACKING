@@ -32,10 +32,7 @@ import java.util.regex.Pattern;
 
 public class EnforaProtocolDecoder extends BaseProtocolDecoder {
 
-    public EnforaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
+    public static final int IMEI_LENGTH = 15;
     private static final Pattern PATTERN = new PatternBuilder()
             .text("GPRMC,")
             .number("(dd)(dd)(dd).?d*,")         // time (hhmmss)
@@ -50,7 +47,9 @@ public class EnforaProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .compile();
 
-    public static final int IMEI_LENGTH = 15;
+    public EnforaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

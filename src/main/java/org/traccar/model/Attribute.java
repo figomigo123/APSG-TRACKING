@@ -19,6 +19,9 @@ package org.traccar.model;
 public class Attribute extends BaseModel {
 
     private String description;
+    private String attribute;
+    private String expression;
+    private String type;
 
     public String getDescription() {
         return description;
@@ -28,8 +31,6 @@ public class Attribute extends BaseModel {
         this.description = description;
     }
 
-    private String attribute;
-
     public String getAttribute() {
         return attribute;
     }
@@ -38,8 +39,6 @@ public class Attribute extends BaseModel {
         this.attribute = attribute;
     }
 
-    private String expression;
-
     public String getExpression() {
         return expression;
     }
@@ -47,8 +46,6 @@ public class Attribute extends BaseModel {
     public void setExpression(String expression) {
         this.expression = expression;
     }
-
-    private String type;
 
     public String getType() {
         return type;

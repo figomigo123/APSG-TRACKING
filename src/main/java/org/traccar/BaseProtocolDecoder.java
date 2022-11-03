@@ -46,6 +46,8 @@ public abstract class BaseProtocolDecoder extends ExtendedObjectDecoder {
     private final ConnectionManager connectionManager = Context.getConnectionManager();
     private final StatisticsManager statisticsManager;
     private final Protocol protocol;
+    private final Map<SocketAddress, DeviceSession> addressDeviceSessions = new HashMap<>(); // connectionless protocols
+    private DeviceSession channelDeviceSession; // connection-based protocols
 
     public BaseProtocolDecoder(Protocol protocol) {
         this.protocol = protocol;
@@ -91,9 +93,6 @@ public abstract class BaseProtocolDecoder extends ExtendedObjectDecoder {
         }
         return result;
     }
-
-    private DeviceSession channelDeviceSession; // connection-based protocols
-    private final Map<SocketAddress, DeviceSession> addressDeviceSessions = new HashMap<>(); // connectionless protocols
 
     private long findDeviceId(SocketAddress remoteAddress, String... uniqueIds) {
         if (uniqueIds.length > 0) {

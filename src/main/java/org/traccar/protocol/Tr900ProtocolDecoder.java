@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class Tr900ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Tr900ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number(">(d+),")                    // id
             .number("d+,")                       // period
@@ -54,6 +50,10 @@ public class Tr900ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // status
             .any()
             .compile();
+
+    public Tr900ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

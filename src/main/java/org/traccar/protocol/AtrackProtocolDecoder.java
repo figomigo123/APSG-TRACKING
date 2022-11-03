@@ -38,15 +38,50 @@ import java.util.regex.Pattern;
 public class AtrackProtocolDecoder extends BaseProtocolDecoder {
 
     private static final int MIN_DATA_LENGTH = 40;
-
-    private boolean longDate;
+    private static final Pattern PATTERN_INFO = new PatternBuilder()
+            .text("$INFO=")
+            .number("(d+),")                     // unit id
+            .expression("([^,]+),")              // model
+            .expression("([^,]+),")              // firmware version
+            .number("d+,")                       // imei
+            .number("d+,")                       // imsi
+            .number("d+,")                       // sim card id
+            .number("(d+),")                     // power
+            .number("(d+),")                     // battery
+            .number("(d+),")                     // satellites
+            .number("d+,")                       // gsm status
+            .number("(d+),")                     // rssi
+            .number("d+,")                       // connection status
+            .number("d+")                        // antenna status
+            .any()
+            .compile();
+    private static final Pattern PATTERN = new PatternBuilder()
+            .number("(d+),")                     // date and time
+            .number("d+,")                       // rtc date and time
+            .number("d+,")                       // device date and time
+            .number("(-?d+),")                   // longitude
+            .number("(-?d+),")                   // latitude
+            .number("(d+),")                     // course
+            .number("(d+),")                     // report id
+            .number("(d+.?d*),")                 // odometer
+            .number("(d+),")                     // hdop
+            .number("(d+),")                     // inputs
+            .number("(d+),")                     // speed
+            .number("(d+),")                     // outputs
+            .number("(d+),")                     // adc
+            .number("([^,]+)?,")                 // driver
+            .number("(d+),")                     // temp1
+            .number("(d+),")                     // temp2
+            .expression("[^,]*,")                // text message
+            .expression("(.*)")                  // custom data
+            .optional(2)
+            .compile();
     private final boolean decimalFuel;
+    private final Map<Integer, String> alarmMap = new HashMap<>();
+    private boolean longDate;
     private boolean custom;
     private String form;
-
     private ByteBuf photo;
-
-    private final Map<Integer, String> alarmMap = new HashMap<>();
 
     public AtrackProtocolDecoder(Protocol protocol) {
         super(protocol);
@@ -72,18 +107,6 @@ public class AtrackProtocolDecoder extends BaseProtocolDecoder {
         }
     }
 
-    public void setLongDate(boolean longDate) {
-        this.longDate = longDate;
-    }
-
-    public void setCustom(boolean custom) {
-        this.custom = custom;
-    }
-
-    public void setForm(String form) {
-        this.form = form;
-    }
-
     private static void sendResponse(Channel channel, SocketAddress remoteAddress, long rawId, int index) {
         if (channel != null) {
             ByteBuf response = Unpooled.buffer(12);
@@ -102,6 +125,18 @@ public class AtrackProtocolDecoder extends BaseProtocolDecoder {
         }
         buf.readByte();
         return result;
+    }
+
+    public void setLongDate(boolean longDate) {
+        this.longDate = longDate;
+    }
+
+    public void setCustom(boolean custom) {
+        this.custom = custom;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
     }
 
     private void decodeBeaconData(Position position, int mode, int mask, ByteBuf data) {
@@ -419,32 +454,14 @@ public class AtrackProtocolDecoder extends BaseProtocolDecoder {
         }
 
         if (cellTower.getMobileCountryCode() != null
-            && cellTower.getMobileNetworkCode() != null
-            && cellTower.getCellId() != null && cellTower.getCellId() != 0
-            && cellTower.getLocationAreaCode() != null) {
+                && cellTower.getMobileNetworkCode() != null
+                && cellTower.getCellId() != null && cellTower.getCellId() != 0
+                && cellTower.getLocationAreaCode() != null) {
             position.setNetwork(new Network(cellTower));
         } else if (cellTower.getSignalStrength() != null) {
             position.set(Position.KEY_RSSI, cellTower.getSignalStrength());
         }
     }
-
-    private static final Pattern PATTERN_INFO = new PatternBuilder()
-            .text("$INFO=")
-            .number("(d+),")                     // unit id
-            .expression("([^,]+),")              // model
-            .expression("([^,]+),")              // firmware version
-            .number("d+,")                       // imei
-            .number("d+,")                       // imsi
-            .number("d+,")                       // sim card id
-            .number("(d+),")                     // power
-            .number("(d+),")                     // battery
-            .number("(d+),")                     // satellites
-            .number("d+,")                       // gsm status
-            .number("(d+),")                     // rssi
-            .number("d+,")                       // connection status
-            .number("d+")                        // antenna status
-            .any()
-            .compile();
 
     private Position decodeInfo(Channel channel, SocketAddress remoteAddress, String sentence) {
 
@@ -485,28 +502,6 @@ public class AtrackProtocolDecoder extends BaseProtocolDecoder {
             return position;
         }
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .number("(d+),")                     // date and time
-            .number("d+,")                       // rtc date and time
-            .number("d+,")                       // device date and time
-            .number("(-?d+),")                   // longitude
-            .number("(-?d+),")                   // latitude
-            .number("(d+),")                     // course
-            .number("(d+),")                     // report id
-            .number("(d+.?d*),")                 // odometer
-            .number("(d+),")                     // hdop
-            .number("(d+),")                     // inputs
-            .number("(d+),")                     // speed
-            .number("(d+),")                     // outputs
-            .number("(d+),")                     // adc
-            .number("([^,]+)?,")                 // driver
-            .number("(d+),")                     // temp1
-            .number("(d+),")                     // temp2
-            .expression("[^,]*,")                // text message
-            .expression("(.*)")                  // custom data
-            .optional(2)
-            .compile();
 
     private List<Position> decodeText(Channel channel, SocketAddress remoteAddress, String sentence) {
 

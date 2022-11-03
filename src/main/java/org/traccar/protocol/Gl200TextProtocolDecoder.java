@@ -41,13 +41,6 @@ import java.util.regex.Pattern;
 
 public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
 
-    private final boolean ignoreFixTime;
-
-    public Gl200TextProtocolDecoder(Protocol protocol) {
-        super(protocol);
-        ignoreFixTime = Context.getConfig().getBoolean(Keys.PROTOCOL_IGNORE_FIX_TIME.withPrefix(getProtocolName()));
-    }
-
     private static final Pattern PATTERN_ACK = new PatternBuilder()
             .text("+ACK:GT")
             .expression("...,")                  // type
@@ -59,7 +52,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // counter
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_INF = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GTINF,")
             .number("[0-9A-Z]{2}xxxx,")          // protocol version
@@ -100,7 +92,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // counter
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_VER = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GTVER,")
             .number("[0-9A-Z]{2}xxxx,")          // protocol version
@@ -114,7 +105,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // counter
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_LOCATION = new PatternBuilder()
             .number("(d{1,2}.?d?)?,")            // hdop
             .number("(d{1,3}.d)?,")              // speed
@@ -136,7 +126,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd()
             .number("(?:d+|(d+.d))?,")           // odometer
             .compile();
-
     private static final Pattern PATTERN_OBD = new PatternBuilder()
             .text("+RESP:GTOBD,")
             .number("[0-9A-Z]{2}xxxx,")          // protocol version
@@ -171,7 +160,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_FRI = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GT...,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -216,7 +204,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_ERI = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GTERI,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -254,7 +241,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_IGN = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GTIG[NF],")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -270,7 +256,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_LSW = new PatternBuilder()
             .text("+RESP:").expression("GT[LT]SW,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -285,7 +270,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_IDA = new PatternBuilder()
             .text("+RESP:GTIDA,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -303,7 +287,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_WIF = new PatternBuilder()
             .text("+RESP:GTWIF,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -318,7 +301,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_GSM = new PatternBuilder()
             .text("+RESP:GTGSM,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -331,7 +313,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_PNA = new PatternBuilder()
             .text("+RESP:GT").expression("P[NF]A,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -343,7 +324,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF):GT...,")
             .number("(?:[0-9A-Z]{2}xxxx)?,")     // protocol version
@@ -365,7 +345,6 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
-
     private static final Pattern PATTERN_BASIC = new PatternBuilder()
             .text("+").expression("(?:RESP|BUFF)").text(":")
             .expression("GT...,")
@@ -392,6 +371,12 @@ public class Gl200TextProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx)")                    // count number
             .text("$").optional()
             .compile();
+    private final boolean ignoreFixTime;
+
+    public Gl200TextProtocolDecoder(Protocol protocol) {
+        super(protocol);
+        ignoreFixTime = Context.getConfig().getBoolean(Keys.PROTOCOL_IGNORE_FIX_TIME.withPrefix(getProtocolName()));
+    }
 
     private Object decodeAck(Channel channel, SocketAddress remoteAddress, String sentence, String type) {
         Parser parser = new Parser(PATTERN_ACK, sentence);

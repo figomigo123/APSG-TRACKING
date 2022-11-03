@@ -37,10 +37,6 @@ import java.util.TimeZone;
 
 public class HuabaoProtocolDecoder extends BaseProtocolDecoder {
 
-    public HuabaoProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_GENERAL_RESPONSE = 0x8001;
     public static final int MSG_GENERAL_RESPONSE_2 = 0x4401;
     public static final int MSG_HEARTBEAT = 0x0002;
@@ -55,8 +51,11 @@ public class HuabaoProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_OIL_CONTROL = 0XA006;
     public static final int MSG_TIME_SYNC_REQUEST = 0x0109;
     public static final int MSG_TIME_SYNC_RESPONSE = 0x8109;
-
     public static final int RESULT_SUCCESS = 0;
+
+    public HuabaoProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     public static ByteBuf formatMessage(int type, ByteBuf id, boolean shortIndex, ByteBuf data) {
         ByteBuf buf = Unpooled.buffer();

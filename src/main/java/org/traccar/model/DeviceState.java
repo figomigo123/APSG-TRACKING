@@ -19,53 +19,49 @@ package org.traccar.model;
 public class DeviceState {
 
     private Boolean motionState;
-
-    public void setMotionState(boolean motionState) {
-        this.motionState = motionState;
-    }
+    private Position motionPosition;
+    private Boolean overspeedState;
+    private Position overspeedPosition;
+    private long overspeedGeofenceId;
 
     public Boolean getMotionState() {
         return motionState;
     }
 
-    private Position motionPosition;
-
-    public void setMotionPosition(Position motionPosition) {
-        this.motionPosition = motionPosition;
+    public void setMotionState(boolean motionState) {
+        this.motionState = motionState;
     }
 
     public Position getMotionPosition() {
         return motionPosition;
     }
 
-    private Boolean overspeedState;
-
-    public void setOverspeedState(boolean overspeedState) {
-        this.overspeedState = overspeedState;
+    public void setMotionPosition(Position motionPosition) {
+        this.motionPosition = motionPosition;
     }
 
     public Boolean getOverspeedState() {
         return overspeedState;
     }
 
-    private Position overspeedPosition;
-
-    public void setOverspeedPosition(Position overspeedPosition) {
-        this.overspeedPosition = overspeedPosition;
+    public void setOverspeedState(boolean overspeedState) {
+        this.overspeedState = overspeedState;
     }
 
     public Position getOverspeedPosition() {
         return overspeedPosition;
     }
 
-    private long overspeedGeofenceId;
-
-    public void setOverspeedGeofenceId(long overspeedGeofenceId) {
-        this.overspeedGeofenceId = overspeedGeofenceId;
+    public void setOverspeedPosition(Position overspeedPosition) {
+        this.overspeedPosition = overspeedPosition;
     }
 
     public long getOverspeedGeofenceId() {
         return overspeedGeofenceId;
+    }
+
+    public void setOverspeedGeofenceId(long overspeedGeofenceId) {
+        this.overspeedGeofenceId = overspeedGeofenceId;
     }
 
 }

@@ -18,8 +18,9 @@ package org.traccar.api.resource;
 import org.traccar.Context;
 import org.traccar.api.SimpleObjectResource;
 import org.traccar.api.resource.new_models.NewBaseModel;
-import org.traccar.api.resource.new_models.TreeGroup;
+import org.traccar.api.resource.new_models.NewChild;
 import org.traccar.database.BaseObjectManager;
+import org.traccar.database.GroupTree;
 import org.traccar.model.Device;
 import org.traccar.model.Group;
 
@@ -28,7 +29,6 @@ import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Path("groups")
@@ -42,17 +42,16 @@ public class GroupResource extends SimpleObjectResource<Group> {
 
     @Path("all")
     @GET
-    public Collection<Group> get(
-            @QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+    public Collection<Group> get() throws SQLException {
         BaseObjectManager<Group> manager = Context.getManager(getBaseClass());
-        return manager.getItems(getSimpleManagerItems(manager, all, userId));
+        return manager.getItems(manager.getAllItems());
     }
 
     @Path("view")
     @GET
-    public List<NewBaseModel> getView(@QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
+    public List<NewBaseModel> getView() throws SQLException {
         BaseObjectManager<Group> manager = Context.getManager(getBaseClass());
-        Collection<Group> items = manager.getItems(getSimpleManagerItems(manager, all, userId));
+        Collection<Group> items = manager.getItems(manager.getAllItems());
         List<NewBaseModel> newBaseModels = new ArrayList<>();
         items.forEach(u -> {
             NewBaseModel newUser = new NewBaseModel(u.getName(), u.getId());
@@ -62,142 +61,66 @@ public class GroupResource extends SimpleObjectResource<Group> {
     }
 
 
+    @Path("test")
+    @GET
+    public Collection<Group> test(@QueryParam("e") long e) {
+        return new GroupTree(Context.getGroupsManager().getItems(
+                Context.getGroupsManager().getAllItems()),
+                Context.getDeviceManager().getAllDevices()).getGroups(e);
+    }
 
-    public List<TreeGroup> getTree2( String search,
-                                    String status) throws SQLException, CloneNotSupportedException {
+    @Path("nodess2")
+    @GET
+    public List<NewChild> getNodessTree2(@QueryParam("status") String status,
+                                         @QueryParam("search") String search) throws SQLException {
+        List<NewChild> level1 = new ArrayList<>();
         BaseObjectManager<Group> manager = Context.getManager(getBaseClass());
-        Collection<Group> items = manager.getItems(getSimpleManagerItems(manager, true, 1L));
-        List<TreeGroup> treeGroups = new ArrayList<>();
-        List<TreeGroup> treeGroups2 = new ArrayList<>();
-        if (items.size() > 0)
-            items.forEach(t -> {
-                treeGroups.add(new TreeGroup(t.getName(), t.getId(), t.getGroupId()));
-            });
-        TreeGroup base = new TreeGroup("base", 0, 0);
+        Collection<Group> groups = manager.getItems(manager.getAllItems());
+
         DeviceResource deviceResource = new DeviceResource();
-        long userId=getUserId();
-        Collection<Device> all = deviceResource.getAllDevices2(userId);
-        for (Device d : all)
-            if (search == null || d.getName().toLowerCase().contains(search.toLowerCase())) {
-                if (status == null || status.equals("all") || d.getStatus().equals(status)) {
-                    base.setNumbers(d.getStatus());
-                    if (d.getGroupId() == 0)
-                        base.getDevices().add(d);
-                    else
-                        for (TreeGroup t : treeGroups)
-                            if (t.getId() == d.getGroupId()) {
-                                t.getDevices().add(d);
-                                t.setHaveDevices(true);
-                            }
+        long userId = getUserId();
+        List<Device> devices  = new ArrayList(deviceResource.getAllDevices2(userId));
+        List<NewChild> level2 = new ArrayList<>();
+
+
+        for (int i=0;i< devices.size();i++){
+            Device d = devices.get(i);
+            if ((!status.equals("all") && !status.equals(d.getStatus()))||
+                    (!search.equals("") && !d.getName().contains(search))){ devices.remove(d);i--;}
+            else if(d.getGroupId() == 0) {
+            NewChild n2 = new NewChild(d.getName(), d.getStatus(), "device", true, d.getId(), d.getGroupId());
+            n2.setDevices(d);
+            level1.add(n2);
+        }}
+        for (Group g : groups) {
+            if (g.getGroupId() == 0) continue;
+            NewChild n1 = new NewChild(g.getName(), "", "", false, g.getId(), g.getGroupId());
+            for (Device d : devices)
+                if (d.getGroupId() == g.getId()) {
+                    NewChild n2 = new NewChild(d.getName(), d.getStatus(), "device", true, d.getId(), d.getGroupId());
+                    n2.setDevices(d);
+                    n1.getChildren().add(n2);
+                }
+            if (n1.getChildren().size() > 0)
+                level2.add(n1);
+        }
+        for (Group g : groups) {
+            if (g.getGroupId() > 0) continue;
+            NewChild n1 = new NewChild(g.getName(), "", "", false, g.getId(), g.getGroupId());
+            for (Device d : devices) {
+                if (d.getGroupId() == g.getId()) {
+                    NewChild n2 = new NewChild(d.getName(), d.getStatus(), "device", true, d.getId(), d.getGroupId());
+                    n2.setDevices(d);
+                    n1.getChildren().add(n2);
                 }
             }
-
-
-        List<StringBuilder> pathes = new ArrayList<>();
-        for (int i = 0; i < treeGroups.size(); i++)
-            if (treeGroups.get(i).getGroupId() == 0) {
-                treeGroups.get(i).setLevel(1);
-                base.getTreeGroups().add(treeGroups.get(i).clone());
-                pathes.add(new StringBuilder(Long.toString(treeGroups.get(i).getId())));
-                treeGroups2.add(treeGroups.get(i).clone());
-                treeGroups.remove(treeGroups.get(i));
-                i--;
-            }
-        while (treeGroups.size() > 0) {
-            for (StringBuilder s : pathes) {
-                if (treeGroups.size() == 0) break;
-                String[] ss = s.toString().split("-");
-                for (String item : ss)
-                    if (item.equals(Long.toString(treeGroups.get(0).getGroupId()))) {
-                        List<Long> pp = new ArrayList<>();
-                        for (String value : ss) {
-                            long l = Long.parseLong(value);
-                            pp.add(l);
-                            if (l == treeGroups.get(0).getGroupId()) break;
-                        }
-                        treeGroups.get(0).setLevel(pp.size() + 1);
-                        List<TreeGroup> leaf = base.getLeaf(pp);
-                        if (leaf == null) return getTree2(search, status);
-                        leaf.add(treeGroups.get(0));
-                        s.append("-").append(treeGroups.get(0).getId());
-                        treeGroups2.add(treeGroups.get(0).clone());
-                        treeGroups.remove(0);
-                        break;
-                    }
-            }
-            Collections.shuffle(treeGroups);
+            for (NewChild n : level2)
+                if (n.getGroupId() == g.getId() && n.getChildren().size() > 0)
+                    n1.getChildren().add(n);
+            if (n1.getChildren().size() > 0)
+                level1.add(n1);
         }
-        for (TreeGroup t : treeGroups2) t.setTreeGroups(new ArrayList<>());
-        base.setTreeGroups(new ArrayList<>());
-        treeGroups2.add(base);
-        return treeGroups2;
-    }
-
-    @Path("tree")
-    @GET
-    public TreeGroup getTree3(
-            @QueryParam(value = "search") String search,
-            @QueryParam(value = "status") String status
-    ) throws SQLException, CloneNotSupportedException {
-        List<TreeGroup> treeGroups = getTree2(search, status);
-        List<TreeGroup> treeGroups2 = new ArrayList<>();
-        for (TreeGroup t : treeGroups) treeGroups2.add(t.clone());
-        TreeGroup base = treeGroups.get(treeGroups.size() - 1);
-
-
-        TreeGroup t;
-
-        while (treeGroups.size() > 0 && (t = getHaveDevices(treeGroups)) != null) {
-            if (t.getGroupId() == 0) base.getTreeGroups().add(t);
-            else {
-                TreeGroup t2 = getRoot(treeGroups, t.getGroupId());
-                t2.getTreeGroups().add(t);
-                t2.setHaveDevices(true);
-            }
-
-        }
-
-        for (TreeGroup treeGroup : treeGroups)
-            if (treeGroup.isHaveDevices() && !treeGroup.isBuild()) base.getTreeGroups().add(treeGroup.clone());
-        return base;
-    }
-
-
-    TreeGroup getHaveDevices(List<TreeGroup> treeGroups) throws CloneNotSupportedException {
-        //System.out.println("treeGroups size: "+treeGroups.size());
-        for (TreeGroup treeGroup : treeGroups)
-            if (treeGroup.isHaveDevices() && !treeGroup.isBuild()) {
-                treeGroup.setBuild(true);
-                return treeGroup.clone();
-
-            }
-
-
-        return null;
-
-    }
-
-    TreeGroup getRoot(List<TreeGroup> treeGroups, long treeGroupId) {
-        for (TreeGroup t : treeGroups)
-            if (t.getId() == treeGroupId) return t;
-
-        return null;
-
-    }
-    @Path("d1")
-    @GET
-    public Collection<Device> getd1() throws SQLException {
-        DeviceResource deviceResource = new DeviceResource();
-        System.out.println("user : "+getUserId());
-        return deviceResource.getAllDevices();
-    }
-    @Path("d2")
-    @GET
-    public Collection<Device> getd2() throws SQLException {
-        DeviceResource deviceResource = new DeviceResource();
-        long u=getUserId();
-        System.out.println("user : "+u);
-        return deviceResource.getAllDevices2(u);
+        return level1;
     }
 
 }

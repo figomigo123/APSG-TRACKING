@@ -25,6 +25,16 @@ import java.util.Date;
 
 public class DateParameterConverterProvider implements ParamConverterProvider {
 
+    @Override
+    public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
+        if (Date.class.equals(rawType)) {
+            @SuppressWarnings("unchecked")
+            ParamConverter<T> paramConverter = (ParamConverter<T>) new DateParameterConverter();
+            return paramConverter;
+        }
+        return null;
+    }
+
     public static class DateParameterConverter implements ParamConverter<Date> {
 
         @Override
@@ -37,16 +47,6 @@ public class DateParameterConverterProvider implements ParamConverterProvider {
             return value != null ? DateUtil.formatDate(value) : null;
         }
 
-    }
-
-    @Override
-    public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
-        if (Date.class.equals(rawType)) {
-            @SuppressWarnings("unchecked")
-            ParamConverter<T> paramConverter = (ParamConverter<T>) new DateParameterConverter();
-            return paramConverter;
-        }
-        return null;
     }
 
 }

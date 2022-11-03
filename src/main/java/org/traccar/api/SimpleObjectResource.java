@@ -35,6 +35,7 @@ public class SimpleObjectResource<T extends BaseModel> extends BaseObjectResourc
     public Collection<T> getAll(
             @QueryParam("all") boolean all, @QueryParam("userId") long userId) throws SQLException {
         BaseObjectManager<T> manager = Context.getManager(getBaseClass());
+       // System.out.println("SimpleObjectResource : baseclass => "+getBaseClass());
         return manager.getItems(getSimpleManagerItems(manager, all, userId));
     }
 

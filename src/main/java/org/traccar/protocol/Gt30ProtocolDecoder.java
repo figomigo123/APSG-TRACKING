@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Gt30ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Gt30ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$$")
             .number("x{4}")                      // length
@@ -53,6 +49,10 @@ public class Gt30ProtocolDecoder extends BaseProtocolDecoder {
             .number("|(-?d+)")                   // altitude
             .number("x{4}")                      // checksum
             .compile();
+
+    public Gt30ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

@@ -30,15 +30,14 @@ import java.util.Date;
 
 public class RecodaProtocolDecoder extends BaseProtocolDecoder {
 
-    public RecodaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_HEARTBEAT = 0x00001001;
     public static final int MSG_REQUEST_RESPONSE = 0x20000001;
     public static final int MSG_SIGNAL_LINK_REGISTRATION = 0x20001001;
     public static final int MSG_EVENT_NOTICE = 0x20002001;
     public static final int MSG_GPS_DATA = 0x20001011;
+    public RecodaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

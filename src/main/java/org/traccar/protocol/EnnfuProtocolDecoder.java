@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class EnnfuProtocolDecoder extends BaseProtocolDecoder {
 
-    public EnnfuProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("Ennfu:")
             .number("(d+),")                     // imei
@@ -50,6 +46,10 @@ public class EnnfuProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+),")                  // battery level
             .number("(Vd.dd)")                   // firmware version
             .compile();
+
+    public EnnfuProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

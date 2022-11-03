@@ -64,18 +64,18 @@ public class GeocoderHandler extends ChannelInboundHandlerAdapter {
 
                 geocoder.getAddress(position.getLatitude(), position.getLongitude(),
                         new Geocoder.ReverseGeocoderCallback() {
-                    @Override
-                    public void onSuccess(String address) {
-                        position.setAddress(address);
-                        ctx.fireChannelRead(position);
-                    }
+                            @Override
+                            public void onSuccess(String address) {
+                                position.setAddress(address);
+                                ctx.fireChannelRead(position);
+                            }
 
-                    @Override
-                    public void onFailure(Throwable e) {
-                        LOGGER.warn("Geocoding failed", e);
-                        ctx.fireChannelRead(position);
-                    }
-                });
+                            @Override
+                            public void onFailure(Throwable e) {
+                                LOGGER.warn("Geocoding failed", e);
+                                ctx.fireChannelRead(position);
+                            }
+                        });
             } else {
                 ctx.fireChannelRead(position);
             }

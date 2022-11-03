@@ -32,16 +32,15 @@ import java.util.Date;
 
 public class ThinkPowerProtocolDecoder extends BaseProtocolDecoder {
 
-    public ThinkPowerProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN_REQUEST = 0x01;
     public static final int MSG_LOGIN_RESPONSE = 0x02;
     public static final int MSG_HEARTBEAT_REQUEST = 0x03;
     public static final int MSG_HEARTBEAT_RESPONSE = 0x04;
     public static final int MSG_RECORD_REPORT = 0x05;
     public static final int MSG_RECORD_RESPONSE = 0x06;
+    public ThinkPowerProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int type, int index, ByteBuf content) {
         if (channel != null) {

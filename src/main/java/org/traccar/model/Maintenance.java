@@ -19,6 +19,9 @@ package org.traccar.model;
 public class Maintenance extends ExtendedModel {
 
     private String name;
+    private String type;
+    private double start;
+    private double period;
 
     public String getName() {
         return name;
@@ -28,8 +31,6 @@ public class Maintenance extends ExtendedModel {
         this.name = name;
     }
 
-    private String type;
-
     public String getType() {
         return type;
     }
@@ -38,8 +39,6 @@ public class Maintenance extends ExtendedModel {
         this.type = type;
     }
 
-    private double start;
-
     public double getStart() {
         return start;
     }
@@ -47,8 +46,6 @@ public class Maintenance extends ExtendedModel {
     public void setStart(double start) {
         this.start = start;
     }
-
-    private double period;
 
     public double getPeriod() {
         return period;

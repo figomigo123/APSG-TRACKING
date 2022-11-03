@@ -29,12 +29,7 @@ import java.util.regex.Pattern;
 
 public class VtfmsProtocolDecoder extends BaseProtocolDecoder {
 
-    private static final String[] DIRECTIONS = new String[] {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
-
-    public VtfmsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
+    private static final String[] DIRECTIONS = new String[]{"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .number("(d{15}),")                  // imei
@@ -75,6 +70,10 @@ public class VtfmsProtocolDecoder extends BaseProtocolDecoder {
             .text(")")
             .number("ddd")                       // checksum
             .compile();
+
+    public VtfmsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

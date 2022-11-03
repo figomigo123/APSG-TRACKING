@@ -37,6 +37,6 @@ public abstract class Notificator {
     }
 
     public abstract void sendSync(long userId, Event event, Position position)
-        throws MessageException, InterruptedException;
+            throws MessageException, InterruptedException;
 
 }

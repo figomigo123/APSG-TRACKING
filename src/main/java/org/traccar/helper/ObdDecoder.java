@@ -22,12 +22,11 @@ import java.util.Map;
 
 public final class ObdDecoder {
 
-    private ObdDecoder() {
-    }
-
     private static final int MODE_CURRENT = 0x01;
     private static final int MODE_FREEZE_FRAME = 0x02;
     private static final int MODE_CODES = 0x03;
+    private ObdDecoder() {
+    }
 
     public static Map.Entry<String, Object> decode(int mode, String value) {
         switch (mode) {

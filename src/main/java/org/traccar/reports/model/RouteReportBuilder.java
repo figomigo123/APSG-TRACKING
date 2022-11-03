@@ -130,14 +130,22 @@ public class RouteReportBuilder extends Message {
     public static final String ALARM_TAMPERING = "tampering";
     public static final String ALARM_REMOVING = "removing";
     private String deviceName;
+    private String protocol;
+    private Date serverTime = new Date();
+    private Date deviceTime;
+    private Date fixTime;
+    private boolean outdated;
+    private boolean valid;
+    private double latitude;
+    private double longitude;
+    private double altitude; // value in meters
+    private double speed; // value in knots
+    private double course;
+    private String address;
+    private double accuracy;
+    private Network network;
 
     public RouteReportBuilder() {
-    }
-
-    public RouteReportBuilder setDeviceName(String name)
-    {
-        this.deviceName = name;
-        return this;
     }
 
     public RouteReportBuilder(String protocol) {
@@ -145,29 +153,25 @@ public class RouteReportBuilder extends Message {
         this.serverTime = new Date();
     }
 
-    private String protocol;
+    public RouteReportBuilder setDeviceName(String name) {
+        this.deviceName = name;
+        return this;
+    }
 
     public RouteReportBuilder setProtocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
 
-    private Date serverTime = new Date();
     public RouteReportBuilder setServerTime(Date serverTime) {
         this.serverTime = serverTime;
         return this;
     }
 
-    private Date deviceTime;
-
-
-
     public RouteReportBuilder setDeviceTime(Date deviceTime) {
         this.deviceTime = deviceTime;
         return this;
     }
-
-    private Date fixTime;
 
     public Date getFixTime() {
         return fixTime;
@@ -184,98 +188,60 @@ public class RouteReportBuilder extends Message {
         return this;
     }
 
-    private boolean outdated;
-
     public RouteReportBuilder setOutdated(boolean outdated) {
         this.outdated = outdated;
         return this;
 
     }
 
-    private boolean valid;
-
-
-
     public RouteReportBuilder setValid(boolean valid) {
         this.valid = valid;
         return this;
     }
-
-    private double latitude;
-
-
 
     public RouteReportBuilder setLatitude(double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    private double longitude;
-
-
-
     public RouteReportBuilder setLongitude(double longitude) {
         this.longitude = longitude;
         return this;
     }
-
-    private double altitude; // value in meters
-
-
 
     public RouteReportBuilder setAltitude(double altitude) {
         this.altitude = altitude;
         return this;
     }
 
-    private double speed; // value in knots
-
-
-
     public RouteReportBuilder setSpeed(double speed) {
         this.speed = speed;
-        return  this;
+        return this;
 
     }
-
-    private double course;
-
-
 
     public RouteReportBuilder setCourse(double course) {
         this.course = course;
         return this;
     }
 
-    private String address;
-
-
-
     public RouteReportBuilder setAddress(String address) {
         this.address = address;
         return this;
     }
-
-    private double accuracy;
-
-
 
     public RouteReportBuilder setAccuracy(double accuracy) {
         this.accuracy = accuracy;
         return this;
     }
 
-    private Network network;
-
-
-
     public RouteReportBuilder setNetwork(Network network) {
         this.network = network;
         return this;
     }
-    public  RouteReport Build()
-    {
-        return new RouteReport(this.protocol, this.serverTime,this.deviceTime, this.fixTime, this.outdated, this.valid, this.latitude,this.longitude, this.altitude, this.speed, this.course, this.address, this.accuracy, this.network, this.deviceName);
+
+    public RouteReport Build() {
+        return new RouteReport(this.protocol, this.serverTime, this.deviceTime, this.fixTime, this.outdated, this.valid, this.latitude, this.longitude, this.altitude, this.speed, this.course, this.address, this.accuracy, this.network, this.deviceName);
     }
 
     @Override

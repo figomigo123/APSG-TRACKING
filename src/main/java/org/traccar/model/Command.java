@@ -81,13 +81,13 @@ public class Command extends Message implements Cloneable {
     public static final String KEY_PHONE = "phone";
     public static final String KEY_SERVER = "server";
     public static final String KEY_PORT = "port";
+    private boolean textChannel;
+    private String description;
 
     @Override
     public Command clone() throws CloneNotSupportedException {
         return (Command) super.clone();
     }
-
-    private boolean textChannel;
 
     public boolean getTextChannel() {
         return textChannel;
@@ -102,8 +102,6 @@ public class Command extends Message implements Cloneable {
     public long getDeviceId() {
         return super.getDeviceId();
     }
-
-    private String description;
 
     public String getDescription() {
         return description;

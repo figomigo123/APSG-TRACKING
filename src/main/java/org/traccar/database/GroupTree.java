@@ -22,66 +22,6 @@ import java.util.*;
 
 public class GroupTree {
 
-    private static class TreeNode {
-
-        private Group group;
-        private Device device;
-        private Collection<TreeNode> children = new HashSet<>();
-
-        TreeNode(Group group) {
-            this.group = group;
-        }
-
-        TreeNode(Device device) {
-            this.device = device;
-        }
-
-        @Override
-        public int hashCode() {
-            if (group != null) {
-                return (int) group.getId();
-            } else {
-                return (int) device.getId();
-            }
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof TreeNode)) {
-                return false;
-            }
-            TreeNode other = (TreeNode) obj;
-            if (other == this) {
-                return true;
-            }
-            if (group != null && other.group != null) {
-                return group.getId() == other.group.getId();
-            } else if (device != null && other.device != null) {
-                return device.getId() == other.device.getId();
-            }
-            return false;
-        }
-
-        public Group getGroup() {
-            return group;
-        }
-
-        public Device getDevice() {
-            return device;
-        }
-
-        public void setParent(TreeNode parent) {
-            if (parent != null) {
-                parent.children.add(this);
-            }
-        }
-
-        public Collection<TreeNode> getChildren() {
-            return children;
-        }
-
-    }
-
     private final Map<Long, TreeNode> groupMap = new HashMap<>();
 
     public GroupTree(Collection<Group> groups, Collection<Device> devices) {
@@ -143,4 +83,80 @@ public class GroupTree {
         }
     }
 
+    private static class TreeNode {
+
+        private Group group;
+        private Device device;
+        private Collection<TreeNode> children = new HashSet<>();
+
+        TreeNode(Group group) {
+            this.group = group;
+        }
+
+        TreeNode(Device device) {
+            this.device = device;
+        }
+
+        @Override
+        public int hashCode() {
+            if (group != null) {
+                return (int) group.getId();
+            } else {
+                return (int) device.getId();
+            }
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof TreeNode)) {
+                return false;
+            }
+            TreeNode other = (TreeNode) obj;
+            if (other == this) {
+                return true;
+            }
+            if (group != null && other.group != null) {
+                return group.getId() == other.group.getId();
+            } else if (device != null && other.device != null) {
+                return device.getId() == other.device.getId();
+            }
+            return false;
+        }
+
+        public Group getGroup() {
+            return group;
+        }
+
+        public Device getDevice() {
+            return device;
+        }
+
+        public void setParent(TreeNode parent) {
+            if (parent != null) {
+                parent.children.add(this);
+            }
+        }
+
+        public Collection<TreeNode> getChildren() {
+            return children;
+        }
+
+
+        @Override
+        public String toString() {
+            return "TreeNode{" +
+                    "group=" + group +
+                    ", device=" + device +
+                    ", children=" + children +
+                    '}';
+        }
+    }
+
+
+    @Override
+    public String toString() {
+        return "GroupTree{" +
+                "groupMap=" + groupMap +
+                '}';
+    }
 }

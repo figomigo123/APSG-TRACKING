@@ -31,12 +31,6 @@ import java.util.regex.Pattern;
 
 public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
 
-    private final Map<Integer, ByteBuf> photos = new HashMap<>();
-
-    public Gt06ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x01;
     public static final int MSG_GPS = 0x10;
     public static final int MSG_LBS = 0x11;
@@ -91,6 +85,35 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_BMS_2 = 0x40;
     public static final int MSG_MULTIMEDIA_2 = 0x41;
     public static final int MSG_ALARM = 0x95;
+    private static final Pattern PATTERN_FUEL = new PatternBuilder()
+            .text("!AIOIL,")
+            .number("d+,")                       // device address
+            .number("d+.d+,")                    // output value
+            .number("(d+.d+),")                  // temperature
+            .expression("[^,]+,")                // version
+            .number("dd")                        // back wave
+            .number("d")                         // software status code
+            .number("d,")                        // hardware status code
+            .number("(d+.d+),")                  // measured value
+            .expression("[01],")                 // movement status
+            .number("d+,")                       // excited wave times
+            .number("xx")                        // checksum
+            .compile();
+    private static final Pattern PATTERN_LOCATION = new PatternBuilder()
+            .text("Current position!")
+            .number("Lat:([NS])(d+.d+),")        // latitude
+            .number("Lon:([EW])(d+.d+),")        // longitude
+            .text("Course:").number("(d+.d+),")  // course
+            .text("Speed:").number("(d+.d+),")   // speed
+            .text("DateTime:")
+            .number("(dddd)-(dd)-(dd) +")        // date
+            .number("(dd):(dd):(dd)")            // time
+            .compile();
+    private final Map<Integer, ByteBuf> photos = new HashMap<>();
+
+    public Gt06ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static boolean isSupported(int type) {
         return hasGps(type) || hasLbs(type) || hasStatus(type);
@@ -167,40 +190,6 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
         }
     }
 
-    private void sendResponse(Channel channel, boolean extended, int type, int index, ByteBuf content) {
-        if (channel != null) {
-            ByteBuf response = Unpooled.buffer();
-            int length = 5 + (content != null ? content.readableBytes() : 0);
-            if (extended) {
-                response.writeShort(0x7979);
-                response.writeShort(length);
-            } else {
-                response.writeShort(0x7878);
-                response.writeByte(length);
-            }
-            response.writeByte(type);
-            if (content != null) {
-                response.writeBytes(content);
-                content.release();
-            }
-            response.writeShort(index);
-            response.writeShort(Checksum.crc16(Checksum.CRC16_X25,
-                    response.nioBuffer(2, response.writerIndex() - 2)));
-            response.writeByte('\r');
-            response.writeByte('\n');
-            channel.writeAndFlush(new NetworkMessage(response, channel.remoteAddress()));
-        }
-    }
-
-    private void sendPhotoRequest(Channel channel, int pictureId) {
-        ByteBuf photo = photos.get(pictureId);
-        ByteBuf content = Unpooled.buffer();
-        content.writeInt(pictureId);
-        content.writeInt(photo.writerIndex());
-        content.writeShort(Math.min(photo.writableBytes(), 1024));
-        sendResponse(channel, false, MSG_X1_PHOTO_DATA, 0, content);
-    }
-
     public static boolean decodeGps(Position position, ByteBuf buf, boolean hasLength, TimeZone timezone) {
         return decodeGps(position, buf, hasLength, true, true, timezone);
     }
@@ -248,6 +237,40 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
         }
 
         return true;
+    }
+
+    private void sendResponse(Channel channel, boolean extended, int type, int index, ByteBuf content) {
+        if (channel != null) {
+            ByteBuf response = Unpooled.buffer();
+            int length = 5 + (content != null ? content.readableBytes() : 0);
+            if (extended) {
+                response.writeShort(0x7979);
+                response.writeShort(length);
+            } else {
+                response.writeShort(0x7878);
+                response.writeByte(length);
+            }
+            response.writeByte(type);
+            if (content != null) {
+                response.writeBytes(content);
+                content.release();
+            }
+            response.writeShort(index);
+            response.writeShort(Checksum.crc16(Checksum.CRC16_X25,
+                    response.nioBuffer(2, response.writerIndex() - 2)));
+            response.writeByte('\r');
+            response.writeByte('\n');
+            channel.writeAndFlush(new NetworkMessage(response, channel.remoteAddress()));
+        }
+    }
+
+    private void sendPhotoRequest(Channel channel, int pictureId) {
+        ByteBuf photo = photos.get(pictureId);
+        ByteBuf content = Unpooled.buffer();
+        content.writeInt(pictureId);
+        content.writeInt(photo.writerIndex());
+        content.writeShort(Math.min(photo.writableBytes(), 1024));
+        sendResponse(channel, false, MSG_X1_PHOTO_DATA, 0, content);
     }
 
     private boolean decodeLbs(Position position, ByteBuf buf, boolean hasLength) {
@@ -363,21 +386,6 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
         }
     }
 
-    private static final Pattern PATTERN_FUEL = new PatternBuilder()
-            .text("!AIOIL,")
-            .number("d+,")                       // device address
-            .number("d+.d+,")                    // output value
-            .number("(d+.d+),")                  // temperature
-            .expression("[^,]+,")                // version
-            .number("dd")                        // back wave
-            .number("d")                         // software status code
-            .number("d,")                        // hardware status code
-            .number("(d+.d+),")                  // measured value
-            .expression("[01],")                 // movement status
-            .number("d+,")                       // excited wave times
-            .number("xx")                        // checksum
-            .compile();
-
     private Position decodeFuelData(Position position, String sentence) {
         Parser parser = new Parser(PATTERN_FUEL, sentence);
         if (!parser.matches()) {
@@ -389,17 +397,6 @@ public class Gt06ProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN_LOCATION = new PatternBuilder()
-            .text("Current position!")
-            .number("Lat:([NS])(d+.d+),")        // latitude
-            .number("Lon:([EW])(d+.d+),")        // longitude
-            .text("Course:").number("(d+.d+),")  // course
-            .text("Speed:").number("(d+.d+),")   // speed
-            .text("DateTime:")
-            .number("(dddd)-(dd)-(dd) +")        // date
-            .number("(dd):(dd):(dd)")            // time
-            .compile();
 
     private Position decodeLocationString(Position position, String sentence) {
         Parser parser = new Parser(PATTERN_LOCATION, sentence);

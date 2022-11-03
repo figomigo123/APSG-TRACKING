@@ -21,16 +21,16 @@ import javax.json.JsonObject;
 
 public class MapQuestGeocoder extends JsonGeocoder {
 
+    public MapQuestGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url, key), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url, String key) {
         if (url == null) {
             url = "http://www.mapquestapi.com/geocoding/v1/reverse";
         }
         url += "?key=" + key + "&location=%f,%f";
         return url;
-    }
-
-    public MapQuestGeocoder(String url, String key, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url, key), cacheSize, addressFormat);
     }
 
     @Override

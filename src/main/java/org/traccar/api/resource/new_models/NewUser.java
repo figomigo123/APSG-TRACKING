@@ -4,7 +4,7 @@ import org.traccar.model.User;
 
 public class NewUser extends NewBaseModel {
 
-    String  email, administrator, disabled;
+    String email, administrator, disabled;
 
     public NewUser(User user) {
         name = user.getName();
@@ -21,15 +21,6 @@ public class NewUser extends NewBaseModel {
     public NewUser() {
     }
 
-
-    public void setAdministrator(String administrator) {
-        this.administrator = administrator;
-    }
-
-    public void setDisabled(String disabled) {
-        this.disabled = disabled;
-    }
-
     public String getName() {
         return name;
     }
@@ -42,7 +33,15 @@ public class NewUser extends NewBaseModel {
         return administrator;
     }
 
+    public void setAdministrator(String administrator) {
+        this.administrator = administrator;
+    }
+
     public String getDisabled() {
         return disabled;
+    }
+
+    public void setDisabled(String disabled) {
+        this.disabled = disabled;
     }
 }

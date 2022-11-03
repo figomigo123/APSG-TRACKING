@@ -28,13 +28,6 @@ import java.util.regex.Pattern;
 
 public class EsealProtocolDecoder extends BaseProtocolDecoder {
 
-    private final String config;
-
-    public EsealProtocolDecoder(Protocol protocol) {
-        super(protocol);
-        config = Context.getConfig().getString(Keys.PROTOCOL_CONFIG.withPrefix(getProtocolName()));
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("##S,")
             .expression("[^,]+,")                // device type
@@ -58,6 +51,12 @@ public class EsealProtocolDecoder extends BaseProtocolDecoder {
             .number("(-?d+),")                   // rssi
             .text("E##")
             .compile();
+    private final String config;
+
+    public EsealProtocolDecoder(Protocol protocol) {
+        super(protocol);
+        config = Context.getConfig().getString(Keys.PROTOCOL_CONFIG.withPrefix(getProtocolName()));
+    }
 
     private void sendResponse(Channel channel, String prefix, String type, String payload) {
         if (channel != null) {

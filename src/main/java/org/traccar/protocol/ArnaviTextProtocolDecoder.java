@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class ArnaviTextProtocolDecoder extends BaseProtocolDecoder {
 
-    public ArnaviTextProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$AV,")
             .number("Vd,")                       // type
@@ -62,6 +58,10 @@ public class ArnaviTextProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
+
+    public ArnaviTextProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -2,12 +2,12 @@ package org.traccar.api.resource.new_models;
 
 import org.traccar.model.Geofence;
 
-public class NewGeofence extends NewBaseModel{
+public class NewGeofence extends NewBaseModel {
     String description;
 
     public NewGeofence(Geofence geofence) {
-        this.name=geofence.getName();
-        this.description=geofence.getDescription();
+        this.name = geofence.getName();
+        this.description = geofence.getDescription();
         setId(geofence.getId());
     }
 

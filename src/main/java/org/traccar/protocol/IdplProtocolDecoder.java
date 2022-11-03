@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class IdplProtocolDecoder extends BaseProtocolDecoder {
 
-    public IdplProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*ID")                         // start of frame
             .number("(d+),")                     // command code
@@ -59,6 +55,10 @@ public class IdplProtocolDecoder extends BaseProtocolDecoder {
             .expression("([L|R]),")              // message type
             .number("(x{4})#")                   // crc
             .compile();
+
+    public IdplProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

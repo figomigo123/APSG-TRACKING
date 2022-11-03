@@ -30,12 +30,7 @@ import java.util.regex.Pattern;
 
 public class LaipacProtocolDecoder extends BaseProtocolDecoder {
 
-    public LaipacProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final String DEFAULT_DEVICE_PASSWORD = "00000000";
-
     private static final Pattern PATTERN_EAVSYS = new PatternBuilder()
             .text("$EAVSYS,")
             .expression("([^,]+),")              // identifier
@@ -46,7 +41,6 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("(xx)")                      // checksum
             .compile();
-
     private static final Pattern PATTERN_AVRMC = new PatternBuilder()
             .text("$AVRMC,")
             .expression("([^,]+),")              // identifier
@@ -75,6 +69,10 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("(xx)")                      // checksum
             .compile();
+
+    public LaipacProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(String event) {
         switch (event) {
@@ -174,7 +172,7 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
         }
 
         DeviceSession deviceSession =
-            getDeviceSession(channel, remoteAddress, parser.next());
+                getDeviceSession(channel, remoteAddress, parser.next());
         if (deviceSession == null) {
             return null;
         }
@@ -200,7 +198,7 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
         }
 
         DeviceSession deviceSession =
-            getDeviceSession(channel, remoteAddress, parser.next());
+                getDeviceSession(channel, remoteAddress, parser.next());
         if (deviceSession == null) {
             return null;
         }
@@ -250,7 +248,7 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
             sendAcknowledge(status, event, checksum, channel, remoteAddress);
 
             String devicePassword = Context.getIdentityManager()
-                .getDevicePassword(deviceSession.getDeviceId(), getProtocolName(), DEFAULT_DEVICE_PASSWORD);
+                    .getDevicePassword(deviceSession.getDeviceId(), getProtocolName(), DEFAULT_DEVICE_PASSWORD);
             sendEventResponse(event, devicePassword, channel, remoteAddress);
         }
 
@@ -259,7 +257,7 @@ public class LaipacProtocolDecoder extends BaseProtocolDecoder {
 
     @Override
     protected Object decode(
-        Channel channel, SocketAddress remoteAddress, Object msg) throws Exception {
+            Channel channel, SocketAddress remoteAddress, Object msg) throws Exception {
 
         String sentence = (String) msg;
 

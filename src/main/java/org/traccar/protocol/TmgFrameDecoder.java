@@ -30,9 +30,9 @@ public class TmgFrameDecoder extends BaseFrameDecoder {
         int guessedIndex = buffer.indexOf(buffer.readerIndex(), buffer.writerIndex(), (byte) '$');
         while (guessedIndex != -1 && buffer.writerIndex() - guessedIndex >= 5) {
             if (buffer.getByte(guessedIndex + 4) == ','
-                        && isLetter(buffer.getByte(guessedIndex + 1))
-                        && isLetter(buffer.getByte(guessedIndex + 2))
-                        && isLetter(buffer.getByte(guessedIndex + 3))) {
+                    && isLetter(buffer.getByte(guessedIndex + 1))
+                    && isLetter(buffer.getByte(guessedIndex + 2))
+                    && isLetter(buffer.getByte(guessedIndex + 3))) {
                 return guessedIndex;
             }
             guessedIndex = buffer.indexOf(guessedIndex + 1, buffer.writerIndex(), (byte) '$');

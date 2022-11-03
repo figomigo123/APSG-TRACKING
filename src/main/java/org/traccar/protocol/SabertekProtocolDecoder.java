@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 
 public class SabertekProtocolDecoder extends BaseProtocolDecoder {
 
-    public SabertekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text(",")
             .number("(d+),")                     // id
@@ -61,6 +57,10 @@ public class SabertekProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // satellites
             .number("(d+),")                     // odometer
             .compile();
+
+    public SabertekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class CguardProtocolDecoder extends BaseProtocolDecoder {
 
-    public CguardProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_NV = new PatternBuilder()
             .text("NV:")
             .number("(dd)(dd)(dd) ")             // date (yymmdd)
@@ -44,13 +40,16 @@ public class CguardProtocolDecoder extends BaseProtocolDecoder {
             .number(":(?:NAN|(d+.?d*))")         // course
             .number(":(?:NAN|(d+.?d*))").optional() // altitude
             .compile();
-
     private static final Pattern PATTERN_BC = new PatternBuilder()
             .text("BC:")
             .number("(dd)(dd)(dd) ")             // date (yymmdd)
             .number("(dd)(dd)(dd):")             // time (hhmmss)
             .expression("(.+)")                  // data
             .compile();
+
+    public CguardProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodePosition(DeviceSession deviceSession, String sentence) {
 

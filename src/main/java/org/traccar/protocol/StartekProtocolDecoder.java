@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
 
 public class StartekProtocolDecoder extends BaseProtocolDecoder {
 
-    public StartekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("&&")
             .expression(".")                     // index
@@ -44,7 +40,6 @@ public class StartekProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.+)")                  // content
             .number("xx")                        // checksum
             .compile();
-
     private static final Pattern PATTERN_POSITION = new PatternBuilder()
             .number("xxx,")                      // command
             .number("(d+),")                     // event
@@ -81,6 +76,10 @@ public class StartekProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .groupEnd("?")
             .compile();
+
+    public StartekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

@@ -38,6 +38,10 @@ public class ServerManager {
     private final List<TrackerServer> serverList = new LinkedList<>();
     private final Map<String, BaseProtocol> protocolList = new ConcurrentHashMap<>();
 
+    public ServerManager() throws IOException, URISyntaxException, ReflectiveOperationException {
+        loadPackage("org.traccar.protocol");
+    }
+
     private void loadPackage(String packageName) throws IOException, URISyntaxException, ReflectiveOperationException {
 
         List<String> names = new LinkedList<>();
@@ -59,7 +63,7 @@ public class ServerManager {
             File folder = new File(new URI(packageUrl.toString()));
             File[] files = folder.listFiles();
             if (files != null) {
-                for (File actual: files) {
+                for (File actual : files) {
                     String entryName = actual.getName();
                     names.add(entryName.substring(0, entryName.lastIndexOf('.')));
                 }
@@ -77,16 +81,12 @@ public class ServerManager {
         }
     }
 
-    public ServerManager() throws IOException, URISyntaxException, ReflectiveOperationException {
-        loadPackage("org.traccar.protocol");
-    }
-
     public BaseProtocol getProtocol(String name) {
         return protocolList.get(name);
     }
 
     public void start() throws Exception {
-        for (TrackerServer server: serverList) {
+        for (TrackerServer server : serverList) {
             try {
                 server.start();
             } catch (BindException e) {
@@ -96,7 +96,7 @@ public class ServerManager {
     }
 
     public void stop() {
-        for (TrackerServer server: serverList) {
+        for (TrackerServer server : serverList) {
             server.stop();
         }
         GlobalTimer.release();

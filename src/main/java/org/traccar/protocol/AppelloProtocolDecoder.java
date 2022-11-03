@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class AppelloProtocolDecoder extends BaseProtocolDecoder {
 
-    public AppelloProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("FOLLOWIT,")                   // brand
             .number("(d+),")                     // imei
@@ -50,6 +46,10 @@ public class AppelloProtocolDecoder extends BaseProtocolDecoder {
             .expression("([FL]),")               // gps state
             .any()
             .compile();
+
+    public AppelloProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -55,7 +55,7 @@ public final class Stops {
             Date from, Date to) throws SQLException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<StopReport> result = new ArrayList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             result.addAll(detectStops(deviceId, from, to));
         }
@@ -71,34 +71,31 @@ public final class Stops {
         String devicesNames = "";
         String groupsNames = "";
         List<StopReport> stopReportList = new LinkedList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<StopReport> stops = detectStops(deviceId, from, to);
 
             Device device = Context.getIdentityManager().getById(deviceId);
             //deviceStops.setDeviceName(device.getName());
             //sheetNames.add(WorkbookUtil.createSafeSheetName(deviceStops.getDeviceName()));
-            devicesNames = devicesNames+","+device.getName();
+            devicesNames = devicesNames + "," + device.getName();
             if (device.getGroupId() != 0) {
                 Group group = Context.getGroupsManager().getById(device.getGroupId());
                 if (group != null) {
-                   // deviceStops.setGroupName(group.getName());
-                    groupsNames = groupsNames+','+group.getName();
+                    // deviceStops.setGroupName(group.getName());
+                    groupsNames = groupsNames + ',' + group.getName();
                 }
             }
-            for(StopReport s :stops)
-            {
+            for (StopReport s : stops) {
                 s.setDeviceName(device.getName());
             }
             stopReportList.addAll(stops);
         }
 
-        if(devicesNames.length() > 1)
-        {
+        if (devicesNames.length() > 1) {
             devicesNames = devicesNames.substring(1, devicesNames.length());
         }
-        if(groupsNames.length() > 1)
-        {
+        if (groupsNames.length() > 1) {
             groupsNames = groupsNames.substring(1, groupsNames.length());
         }
         DeviceReport deviceStops = new DeviceReport();

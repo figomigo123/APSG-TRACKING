@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class T55ProtocolDecoder extends BaseProtocolDecoder {
 
-    public T55ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_GPRMC = new PatternBuilder()
             .text("$GPRMC,")
             .number("(dd)(dd)(dd).?d*,")         // time (hhmmss)
@@ -56,7 +52,6 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .number("((?:,d+)+)?")               // parameters
             .any()
             .compile();
-
     private static final Pattern PATTERN_GPGGA = new PatternBuilder()
             .text("$GPGGA,")
             .number("(dd)(dd)(dd).?d*,")         // time (hhmmss)
@@ -66,7 +61,6 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .expression("([EW]),")
             .any()
             .compile();
-
     private static final Pattern PATTERN_GPRMA = new PatternBuilder()
             .text("$GPRMA,")
             .expression("([AV]),")               // validity
@@ -78,7 +72,6 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*)?,")                // course
             .any()
             .compile();
-
     private static final Pattern PATTERN_TRCCR = new PatternBuilder()
             .text("$TRCCR,")
             .number("(dddd)(dd)(dd)")            // date (yyyymmdd)
@@ -92,7 +85,6 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*),")                 // battery
             .any()
             .compile();
-
     private static final Pattern PATTERN_GPIOP = new PatternBuilder()
             .text("$GPIOP,")
             .number("[01]{8},")                  // inputs
@@ -105,7 +97,6 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+)")                   // battery
             .any()
             .compile();
-
     private static final Pattern PATTERN_QZE = new PatternBuilder()
             .text("QZE,")
             .number("(d{15}),")                  // imei
@@ -119,15 +110,18 @@ public class T55ProtocolDecoder extends BaseProtocolDecoder {
             .expression("([AV]),")               // validity
             .expression("([01])")                // ignition
             .compile();
-
     private Position position = null;
+
+    public T55ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodeGprmc(
             DeviceSession deviceSession, String sentence, SocketAddress remoteAddress, Channel channel) {
 
         if (deviceSession != null && channel != null && !(channel instanceof DatagramChannel)
                 && Context.getIdentityManager().lookupAttributeBoolean(
-                        deviceSession.getDeviceId(), getProtocolName() + ".ack", false, false, true)) {
+                deviceSession.getDeviceId(), getProtocolName() + ".ack", false, false, true)) {
             channel.writeAndFlush(new NetworkMessage("OK1\r\n", remoteAddress));
         }
 

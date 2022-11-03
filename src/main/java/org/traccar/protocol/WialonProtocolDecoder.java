@@ -34,10 +34,6 @@ import java.util.regex.Pattern;
 
 public class WialonProtocolDecoder extends BaseProtocolDecoder {
 
-    public WialonProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_ANY = new PatternBuilder()
             .expression("([^#]*)?")              // imei
             .text("#")                           // start byte
@@ -45,7 +41,6 @@ public class WialonProtocolDecoder extends BaseProtocolDecoder {
             .text("#")                           // separator
             .expression("(.*)")                  // message
             .compile();
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(dd)(dd)(dd);")             // date (ddmmyy)
             .number("(dd)(dd)(dd);")             // time (hhmmss)
@@ -66,6 +61,10 @@ public class WialonProtocolDecoder extends BaseProtocolDecoder {
             .expression("(?:NA|(.*))")           // params
             .groupEnd("?")
             .compile();
+
+    public WialonProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, String type, Integer number) {
         if (channel != null) {

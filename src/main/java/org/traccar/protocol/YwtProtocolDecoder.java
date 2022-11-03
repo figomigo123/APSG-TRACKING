@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class YwtProtocolDecoder extends BaseProtocolDecoder {
 
-    public YwtProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("%(..),")                // type
             .number("(d+):")                     // unit identifier
@@ -52,6 +48,10 @@ public class YwtProtocolDecoder extends BaseProtocolDecoder {
             .expression("([-0-9a-fA-F]+)")       // status
             .any()
             .compile();
+
+    public YwtProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

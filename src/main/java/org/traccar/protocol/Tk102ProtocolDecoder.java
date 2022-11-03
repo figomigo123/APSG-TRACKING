@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 
 public class Tk102ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Tk102ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN_REQUEST = 0x80;
     public static final int MSG_LOGIN_REQUEST_2 = 0x21;
     public static final int MSG_LOGIN_RESPONSE = 0x00;
@@ -44,10 +40,8 @@ public class Tk102ProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_HEARTBEAT_RESPONSE = 0xFF;
     public static final int MSG_REPORT_ONCE = 0x90;
     public static final int MSG_REPORT_INTERVAL = 0x93;
-
     public static final int MODE_GPRS = 0x30;
     public static final int MODE_GPRS_SMS = 0x33;
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .expression("[A-Z]+")
@@ -60,6 +54,10 @@ public class Tk102ProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .text(")")
             .compile();
+
+    public Tk102ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int type, ByteBuf dataSequence, ByteBuf content) {
         if (channel != null) {
@@ -92,7 +90,7 @@ public class Tk102ProtocolDecoder extends BaseProtocolDecoder {
 
             String id;
             if (type == MSG_LOGIN_REQUEST) {
-                id =  data.toString(StandardCharsets.US_ASCII);
+                id = data.toString(StandardCharsets.US_ASCII);
             } else {
                 id = data.copy(1, 15).toString(StandardCharsets.US_ASCII);
             }

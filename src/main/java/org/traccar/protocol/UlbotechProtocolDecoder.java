@@ -35,10 +35,6 @@ import java.util.regex.Pattern;
 
 public class UlbotechProtocolDecoder extends BaseProtocolDecoder {
 
-    public UlbotechProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final short DATA_GPS = 0x01;
     private static final short DATA_LBS = 0x02;
     private static final short DATA_STATUS = 0x03;
@@ -54,6 +50,19 @@ public class UlbotechProtocolDecoder extends BaseProtocolDecoder {
     private static final short DATA_VIN = 0x0D;
     private static final short DATA_RFID = 0x0E;
     private static final short DATA_EVENT = 0x10;
+    private static final Pattern PATTERN = new PatternBuilder()
+            .text("*TS")
+            .number("dd,")                       // protocol version
+            .number("(d{15}),")                  // device id
+            .number("(dd)(dd)(dd)")              // time
+            .number("(dd)(dd)(dd),")             // date
+            .expression("([^#]+)")               // command
+            .text("#")
+            .compile();
+
+    public UlbotechProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeObd(Position position, ByteBuf buf, int length) {
 
@@ -158,16 +167,6 @@ public class UlbotechProtocolDecoder extends BaseProtocolDecoder {
             }
         }
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .text("*TS")
-            .number("dd,")                       // protocol version
-            .number("(d{15}),")                  // device id
-            .number("(dd)(dd)(dd)")              // time
-            .number("(dd)(dd)(dd),")             // date
-            .expression("([^#]+)")               // command
-            .text("#")
-            .compile();
 
     private Object decodeText(Channel channel, SocketAddress remoteAddress, String sentence) {
 

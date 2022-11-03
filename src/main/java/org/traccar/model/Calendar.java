@@ -35,6 +35,8 @@ import java.util.Date;
 public class Calendar extends ExtendedModel {
 
     private String name;
+    private byte[] data;
+    private net.fortuna.ical4j.model.Calendar calendar;
 
     public String getName() {
         return name;
@@ -43,8 +45,6 @@ public class Calendar extends ExtendedModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    private byte[] data;
 
     public byte[] getData() {
         return data.clone();
@@ -55,8 +55,6 @@ public class Calendar extends ExtendedModel {
         calendar = builder.build(new ByteArrayInputStream(data));
         this.data = data.clone();
     }
-
-    private net.fortuna.ical4j.model.Calendar calendar;
 
     @QueryIgnore
     @JsonIgnore

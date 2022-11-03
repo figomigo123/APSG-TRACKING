@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class GotopProtocolDecoder extends BaseProtocolDecoder {
 
-    public GotopProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // imei
             .expression("[^,]+,")                // type
@@ -46,6 +42,10 @@ public class GotopProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)?")                     // course
             .any()
             .compile();
+
+    public GotopProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

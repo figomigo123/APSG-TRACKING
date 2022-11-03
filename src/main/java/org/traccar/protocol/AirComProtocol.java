@@ -1,4 +1,3 @@
-
 package org.traccar.protocol;
 
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;

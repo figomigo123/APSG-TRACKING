@@ -40,18 +40,18 @@ public class SpeedLimitHandler extends ChannelInboundHandlerAdapter {
             final Position position = (Position) message;
             speedLimitProvider.getSpeedLimit(position.getLatitude(), position.getLongitude(),
                     new SpeedLimitProvider.SpeedLimitProviderCallback() {
-                @Override
-                public void onSuccess(double speedLimit) {
-                    position.set(Position.KEY_SPEED_LIMIT, speedLimit);
-                    ctx.fireChannelRead(position);
-                }
+                        @Override
+                        public void onSuccess(double speedLimit) {
+                            position.set(Position.KEY_SPEED_LIMIT, speedLimit);
+                            ctx.fireChannelRead(position);
+                        }
 
-                @Override
-                public void onFailure(Throwable e) {
-                    LOGGER.warn("Speed limit provider failed", e);
-                    ctx.fireChannelRead(position);
-                }
-            });
+                        @Override
+                        public void onFailure(Throwable e) {
+                            LOGGER.warn("Speed limit provider failed", e);
+                            ctx.fireChannelRead(position);
+                        }
+                    });
         } else {
             ctx.fireChannelRead(message);
         }

@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class TrakMateProtocolDecoder extends BaseProtocolDecoder {
 
-    public TrakMateProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_SRT = new PatternBuilder()
             .text("^TMSRT|")
             .expression("([^ ]+)|")              // uid
@@ -43,7 +39,6 @@ public class TrakMateProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+)|")                  // Hardware ver
             .any()
             .compile();
-
     private static final Pattern PATTERN_PER = new PatternBuilder()
             .text("^TM")
             .expression("...|")                  // type
@@ -74,7 +69,6 @@ public class TrakMateProtocolDecoder extends BaseProtocolDecoder {
             .number("([01])|")                   // live or cache
             .any()
             .compile();
-
     private static final Pattern PATTERN_ALT = new PatternBuilder()
             .text("^TMALT|")
             .expression("([^ ]+)|")              // uid
@@ -89,6 +83,10 @@ public class TrakMateProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+)|")                  // heading
             .any()
             .compile();
+
+    public TrakMateProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

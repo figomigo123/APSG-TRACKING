@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class EasyTrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public EasyTrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*").expression("..,")         // manufacturer
             .number("(d+),")                     // imei
@@ -62,7 +58,6 @@ public class EasyTrackProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
-
     private static final Pattern PATTERN_CELL = new PatternBuilder()
             .text("*").expression("..,")         // manufacturer
             .number("(d+),")                     // imei
@@ -74,6 +69,10 @@ public class EasyTrackProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // mnc
             .any()
             .compile();
+
+    public EasyTrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(long status) {
         if ((status & 0x02000000) != 0) {

@@ -25,6 +25,10 @@ import java.io.IOException;
 
 public class SanitizerModule extends SimpleModule {
 
+    public SanitizerModule() {
+        addSerializer(new SanitizerSerializer());
+    }
+
     public static class SanitizerSerializer extends StdSerializer<String> {
 
         protected SanitizerSerializer() {
@@ -36,10 +40,6 @@ public class SanitizerModule extends SimpleModule {
             gen.writeString(Encode.forHtml(value));
         }
 
-    }
-
-    public SanitizerModule() {
-        addSerializer(new SanitizerSerializer());
     }
 
 }

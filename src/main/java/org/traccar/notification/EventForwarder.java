@@ -31,28 +31,25 @@ import java.util.Set;
 public class EventForwarder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventForwarder.class);
-
-    private final String url;
-    private final String header;
-
-    public EventForwarder() {
-        url = Context.getConfig().getString(Keys.EVENT_FORWARD_URL);
-        header = Context.getConfig().getString(Keys.EVENT_FORWARD_HEADERS);
-    }
-
     private static final String KEY_POSITION = "position";
     private static final String KEY_EVENT = "event";
     private static final String KEY_GEOFENCE = "geofence";
     private static final String KEY_DEVICE = "device";
     private static final String KEY_MAINTENANCE = "maintenance";
     private static final String KEY_USERS = "users";
+    private final String url;
+    private final String header;
+    public EventForwarder() {
+        url = Context.getConfig().getString(Keys.EVENT_FORWARD_URL);
+        header = Context.getConfig().getString(Keys.EVENT_FORWARD_HEADERS);
+    }
 
     public final void forwardEvent(Event event, Position position, Set<Long> users) {
 
         Invocation.Builder requestBuilder = Context.getClient().target(url).request();
 
         if (header != null && !header.isEmpty()) {
-            for (String line: header.split("\\r?\\n")) {
+            for (String line : header.split("\\r?\\n")) {
                 String[] values = line.split(":", 2);
                 requestBuilder.header(values[0].trim(), values[1].trim());
             }

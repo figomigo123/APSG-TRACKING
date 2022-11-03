@@ -30,29 +30,6 @@ public final class PatternUtil {
     private PatternUtil() {
     }
 
-    public static class MatchResult {
-        private String patternMatch;
-        private String patternTail;
-        private String stringMatch;
-        private String stringTail;
-
-        public String getPatternMatch() {
-            return patternMatch;
-        }
-
-        public String getPatternTail() {
-            return patternTail;
-        }
-
-        public String getStringMatch() {
-            return stringMatch;
-        }
-
-        public String getStringTail() {
-            return stringTail;
-        }
-    }
-
     public static MatchResult checkPattern(String pattern, String input) {
 
         if (!ManagementFactory.getRuntimeMXBean().getInputArguments().toString().contains("-agentlib:jdwp")) {
@@ -76,6 +53,29 @@ public final class PatternUtil {
         }
 
         return result;
+    }
+
+    public static class MatchResult {
+        private String patternMatch;
+        private String patternTail;
+        private String stringMatch;
+        private String stringTail;
+
+        public String getPatternMatch() {
+            return patternMatch;
+        }
+
+        public String getPatternTail() {
+            return patternTail;
+        }
+
+        public String getStringMatch() {
+            return stringMatch;
+        }
+
+        public String getStringTail() {
+            return stringTail;
+        }
     }
 
 }

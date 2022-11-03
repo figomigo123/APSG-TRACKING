@@ -38,17 +38,6 @@ public abstract class BasePipelineFactory extends ChannelInitializer<Channel> {
         }
     }
 
-    protected abstract void addProtocolHandlers(PipelineBuilder pipeline);
-
-    @SafeVarargs
-    private final void addHandlers(ChannelPipeline pipeline, Class<? extends ChannelHandler>... handlerClasses) {
-        for (Class<? extends ChannelHandler> handlerClass : handlerClasses) {
-            if (handlerClass != null) {
-                pipeline.addLast(Main.getInjector().getInstance(handlerClass));
-            }
-        }
-    }
-
     public static <T extends ChannelHandler> T getHandler(ChannelPipeline pipeline, Class<T> clazz) {
         for (Map.Entry<String, ChannelHandler> handlerEntry : pipeline) {
             ChannelHandler handler = handlerEntry.getValue();
@@ -62,6 +51,17 @@ public abstract class BasePipelineFactory extends ChannelInitializer<Channel> {
             }
         }
         return null;
+    }
+
+    protected abstract void addProtocolHandlers(PipelineBuilder pipeline);
+
+    @SafeVarargs
+    private final void addHandlers(ChannelPipeline pipeline, Class<? extends ChannelHandler>... handlerClasses) {
+        for (Class<? extends ChannelHandler> handlerClass : handlerClasses) {
+            if (handlerClass != null) {
+                pipeline.addLast(Main.getInjector().getInstance(handlerClass));
+            }
+        }
     }
 
     @Override

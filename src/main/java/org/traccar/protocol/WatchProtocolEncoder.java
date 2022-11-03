@@ -33,6 +33,16 @@ import java.util.TimeZone;
 
 public class WatchProtocolEncoder extends StringProtocolEncoder implements StringProtocolEncoder.ValueFormatter {
 
+    private static Map<Byte, Byte> mapping = new HashMap<>();
+
+    static {
+        mapping.put((byte) 0x7d, (byte) 0x01);
+        mapping.put((byte) 0x5B, (byte) 0x02);
+        mapping.put((byte) 0x5D, (byte) 0x03);
+        mapping.put((byte) 0x2C, (byte) 0x04);
+        mapping.put((byte) 0x2A, (byte) 0x05);
+    }
+
     public WatchProtocolEncoder(Protocol protocol) {
         super(protocol);
     }
@@ -88,16 +98,6 @@ public class WatchProtocolEncoder extends StringProtocolEncoder implements Strin
         buf.writeByte(']');
 
         return buf;
-    }
-
-    private static Map<Byte, Byte> mapping = new HashMap<>();
-
-    static {
-        mapping.put((byte) 0x7d, (byte) 0x01);
-        mapping.put((byte) 0x5B, (byte) 0x02);
-        mapping.put((byte) 0x5D, (byte) 0x03);
-        mapping.put((byte) 0x2C, (byte) 0x04);
-        mapping.put((byte) 0x2A, (byte) 0x05);
     }
 
     private ByteBuf getBinaryData(Command command) {

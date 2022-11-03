@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class AquilaProtocolDecoder extends BaseProtocolDecoder {
 
-    public AquilaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_A = new PatternBuilder()
             .text("$$")
             .expression("[^,]*,")                // client
@@ -129,6 +125,10 @@ public class AquilaProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("xx")                        // checksum
             .compile();
+
+    public AquilaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -21,11 +21,13 @@ import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.traccar.Context;
+import org.traccar.Main;
 import org.traccar.database.ConnectionManager;
 import org.traccar.model.Device;
 import org.traccar.model.Event;
 import org.traccar.model.Position;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +40,7 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
     private static final String KEY_DEVICES = "devices";
     private static final String KEY_POSITIONS = "positions";
     private static final String KEY_EVENTS = "events";
+
 
     private final long userId;
 

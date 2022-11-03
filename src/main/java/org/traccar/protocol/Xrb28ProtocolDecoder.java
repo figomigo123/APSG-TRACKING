@@ -31,16 +31,6 @@ import java.util.regex.Pattern;
 
 public class Xrb28ProtocolDecoder extends BaseProtocolDecoder {
 
-    private String pendingCommand;
-
-    public void setPendingCommand(String pendingCommand) {
-        this.pendingCommand = pendingCommand;
-    }
-
-    public Xrb28ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*")
             .expression("....,")
@@ -61,6 +51,15 @@ public class Xrb28ProtocolDecoder extends BaseProtocolDecoder {
             .expression(".,")                    // height unit
             .expression(".#")                    // mode
             .compile();
+    private String pendingCommand;
+
+    public Xrb28ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
+
+    public void setPendingCommand(String pendingCommand) {
+        this.pendingCommand = pendingCommand;
+    }
 
     @Override
     protected Object decode(

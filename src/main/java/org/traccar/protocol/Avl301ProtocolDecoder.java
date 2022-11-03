@@ -31,6 +31,9 @@ import java.net.SocketAddress;
 
 public class Avl301ProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_LOGIN = 'L';
+    public static final int MSG_STATUS = 'H';
+    public static final int MSG_GPS_LBS_STATUS = '$';
     public Avl301ProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -47,17 +50,14 @@ public class Avl301ProtocolDecoder extends BaseProtocolDecoder {
         return imei.toString();
     }
 
-    public static final int MSG_LOGIN = 'L';
-    public static final int MSG_STATUS = 'H';
-    public static final int MSG_GPS_LBS_STATUS = '$';
-
     private void sendResponse(Channel channel, int type) {
         if (channel != null) {
             ByteBuf response = Unpooled.buffer(5);
             response.writeByte('$');
             response.writeByte(type);
             response.writeByte('#');
-            response.writeByte('\r'); response.writeByte('\n');
+            response.writeByte('\r');
+            response.writeByte('\n');
             channel.writeAndFlush(new NetworkMessage(response, channel.remoteAddress()));
         }
     }

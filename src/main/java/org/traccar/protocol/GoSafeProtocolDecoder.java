@@ -34,17 +34,12 @@ import java.util.regex.Pattern;
 
 public class GoSafeProtocolDecoder extends BaseProtocolDecoder {
 
-    public GoSafeProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*GS")                         // header
             .number("d+,")                       // protocol version
             .number("(d+),")                     // imei
             .expression("([^#]*)#?")             // data
             .compile();
-
     private static final Pattern PATTERN_OLD = new PatternBuilder()
             .text("*GS")                         // header
             .number("d+,")                       // protocol version
@@ -61,6 +56,10 @@ public class GoSafeProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
+
+    public GoSafeProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeFragment(Position position, String fragment) {
 

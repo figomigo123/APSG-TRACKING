@@ -38,28 +38,6 @@ public class NotificatorTelegram extends Notificator {
     private final String chatId;
     private final boolean sendLocation;
 
-    public static class TextMessage {
-        @JsonProperty("chat_id")
-        private String chatId;
-        @JsonProperty("text")
-        private String text;
-        @JsonProperty("parse_mode")
-        private String parseMode = "html";
-    }
-
-    public static class LocationMessage {
-        @JsonProperty("chat_id")
-        private String chatId;
-        @JsonProperty("latitude")
-        private double latitude;
-        @JsonProperty("longitude")
-        private double longitude;
-        @JsonProperty("horizontal_accuracy")
-        private double accuracy;
-        @JsonProperty("bearing")
-        private int bearing;
-    }
-
     public NotificatorTelegram() {
         urlSendText = String.format(
                 "https://api.telegram.org/bot%s/sendMessage",
@@ -113,6 +91,28 @@ public class NotificatorTelegram extends Notificator {
     @Override
     public void sendAsync(long userId, Event event, Position position) {
         sendSync(userId, event, position);
+    }
+
+    public static class TextMessage {
+        @JsonProperty("chat_id")
+        private String chatId;
+        @JsonProperty("text")
+        private String text;
+        @JsonProperty("parse_mode")
+        private String parseMode = "html";
+    }
+
+    public static class LocationMessage {
+        @JsonProperty("chat_id")
+        private String chatId;
+        @JsonProperty("latitude")
+        private double latitude;
+        @JsonProperty("longitude")
+        private double longitude;
+        @JsonProperty("horizontal_accuracy")
+        private double accuracy;
+        @JsonProperty("bearing")
+        private int bearing;
     }
 
 }

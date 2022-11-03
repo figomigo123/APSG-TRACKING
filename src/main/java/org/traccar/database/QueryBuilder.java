@@ -34,10 +34,10 @@ public final class QueryBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryBuilder.class);
 
     private final Map<String, List<Integer>> indexMap = new HashMap<>();
-    private Connection connection;
-    private PreparedStatement statement;
     private final String query;
     private final boolean returnGeneratedKeys;
+    private Connection connection;
+    private PreparedStatement statement;
 
     private QueryBuilder(DataSource dataSource, String query, boolean returnGeneratedKeys) throws SQLException {
         this.query = query;
@@ -157,7 +157,21 @@ public final class QueryBuilder {
         }
         return this;
     }
+    public QueryBuilder setArray(String name, Collection<Long> value) throws SQLException {
+       final Long[] data = value.toArray(new Long[value.size()]);
+        final java.sql.Array sqlArray = connection.createArrayOf("int", data);
 
+        for (int i : indexes(name)) {
+            try {
+                statement.setArray(i, sqlArray);
+            } catch (SQLException error) {
+                statement.close();
+                connection.close();
+                throw error;
+            }
+        }
+        return this;
+    }
     public QueryBuilder setLong(String name, long value) throws SQLException {
         return setLong(name, value, false);
     }
@@ -281,22 +295,40 @@ public final class QueryBuilder {
     public Map<String, Long> getEventsCountByType() throws SQLException {
         Map<String, Long> eventsCount = new HashMap<>();
         if (query != null) {
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
-                        System.out.println(resultSet.getString(1)+" : "+resultSet.getLong(2));
-                        eventsCount.put(resultSet.getString(1),resultSet.getLong(2));
-                }}
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    System.out.println(resultSet.getString(1) + " : " + resultSet.getLong(2));
+                    eventsCount.put(resultSet.getString(1), resultSet.getLong(2));
+                }
+            }catch (Exception e){}
+            finally {
+                statement.close();
+                connection.close();
+            }
         }
 
         return eventsCount;
 
 
     }
+    public  Long getEventsCount() throws SQLException {
+         Long eventsCount = 0L;
+        if (query != null) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    eventsCount= resultSet.getLong(1);
+                    break;
+                }
+            }catch (Exception e){}
+            finally {
+                statement.close();
+                connection.close();
+            }
+        }
+        return eventsCount;
 
-    private interface ResultSetProcessor<T> {
-        void process(T object, ResultSet resultSet) throws SQLException;
+
     }
-
     public <T> T executeQuerySingle(Class<T> clazz) throws SQLException {
         Collection<T> result = executeQuery(clazz);
         if (!result.isEmpty()) {
@@ -324,6 +356,7 @@ public final class QueryBuilder {
                     method.invoke(object, resultSet.getInt(name));
                 } catch (IllegalAccessException | InvocationTargetException error) {
                     LOGGER.warn("Set property error", error);
+
                 }
             });
         } else if (parameterType.equals(long.class)) {
@@ -384,24 +417,20 @@ public final class QueryBuilder {
     }
 
     public <T> Collection<T> executeQuery(Class<T> clazz) throws SQLException {
-        List<T> result = new LinkedList<>();
 
+        List<T> result = new LinkedList<>();
         if (query != null) {
 
             try {
-System.out.println(query);
                 try (ResultSet resultSet = statement.executeQuery()) {
 
                     ResultSetMetaData resultMetaData = resultSet.getMetaData();
 
                     List<ResultSetProcessor<T>> processors = new LinkedList<>();
-
                     Method[] methods = clazz.getMethods();
-
                     for (final Method method : methods) {
                         if (method.getName().startsWith("set") && method.getParameterTypes().length == 1
                                 && !method.isAnnotationPresent(QueryIgnore.class)) {
-
                             final String name = method.getName().substring(3);
 
                             // Check if column exists
@@ -438,7 +467,6 @@ System.out.println(query);
                 connection.close();
             }
         }
-
         return result;
     }
 
@@ -483,6 +511,10 @@ System.out.println(query);
         }
 
         return result;
+    }
+
+    private interface ResultSetProcessor<T> {
+        void process(T object, ResultSet resultSet) throws SQLException;
     }
 
 }

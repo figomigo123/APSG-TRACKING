@@ -20,12 +20,12 @@ import javax.json.JsonObject;
 
 public class PositionStackGeocoder extends JsonGeocoder {
 
-    private static String formatUrl(String key) {
-        return "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=%f,%f";
-    }
-
     public PositionStackGeocoder(String key, int cacheSize, AddressFormat addressFormat) {
         super(formatUrl(key), cacheSize, addressFormat);
+    }
+
+    private static String formatUrl(String key) {
+        return "http://api.positionstack.com/v1/reverse?access_key=" + key + "&query=%f,%f";
     }
 
     @Override

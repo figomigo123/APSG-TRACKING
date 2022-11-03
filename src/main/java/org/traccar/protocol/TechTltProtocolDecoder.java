@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class TechTltProtocolDecoder extends BaseProtocolDecoder {
 
-    public TechTltProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_STATUS = new PatternBuilder()
             .number("(d+),")                     // id
             .text("INFOGPRS,")
@@ -43,7 +39,6 @@ public class TechTltProtocolDecoder extends BaseProtocolDecoder {
             .expression("[^,]*,")
             .number("(d+)")                      // rssi
             .compile();
-
     private static final Pattern PATTERN_POSITION = new PatternBuilder()
             .number("(d+)")                      // id
             .text("*POS=Y,")
@@ -60,6 +55,10 @@ public class TechTltProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // lac
             .number("(d+)")                      // cid
             .compile();
+
+    public TechTltProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodeStatus(Channel channel, SocketAddress remoteAddress, String sentence) {
 

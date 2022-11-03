@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 
 public class Tlt2hProtocolDecoder extends BaseProtocolDecoder {
 
-    public Tlt2hProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_HEADER = new PatternBuilder()
             .number("#(d+)")                     // imei
             .expression("#[^#]*")                // user
@@ -51,7 +47,6 @@ public class Tlt2hProtocolDecoder extends BaseProtocolDecoder {
             .expression("#([^#]+)")              // status
             .number("#d+")                       // number of records
             .compile();
-
     private static final Pattern PATTERN_POSITION = new PatternBuilder()
             .text("#")
             .number("(?:(dd)|x*)")               // cell or voltage
@@ -67,7 +62,6 @@ public class Tlt2hProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
-
     private static final Pattern PATTERN_WIFI = new PatternBuilder()
             .text("#")
             .number("(?:(dd)|x+)")               // cell or voltage
@@ -79,6 +73,10 @@ public class Tlt2hProtocolDecoder extends BaseProtocolDecoder {
             .text("*")
             .number("xx")                        // checksum
             .compile();
+
+    public Tlt2hProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeStatus(Position position, String status) {
         switch (status) {

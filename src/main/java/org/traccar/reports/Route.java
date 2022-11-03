@@ -37,10 +37,10 @@ public final class Route {
     }
 
     public static Collection<Position> getObjects(long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Date from, Date to) throws SQLException {
+                                                  Date from, Date to) throws SQLException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<Position> result = new ArrayList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             result.addAll(Context.getDataManager().getPositions(deviceId, from, to));
         }
@@ -48,23 +48,22 @@ public final class Route {
     }
 
     public static void getExcel(OutputStream outputStream,
-            long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Date from, Date to) throws SQLException, IOException {
+                                long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
+                                Date from, Date to) throws SQLException, IOException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<DeviceReport> devicesRoutes = new ArrayList<>();
         ArrayList<String> sheetNames = new ArrayList<>();
         String devicesNames = "";
         String groupsNames = "";
         List<RouteReport> positionList = new LinkedList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<Position> positions = Context.getDataManager()
                     .getPositions(deviceId, from, to);
             List<RouteReport> routes = new LinkedList<>();
             Device device = Context.getIdentityManager().getById(deviceId);
-            for(Position p :positions)
-            {
-                routes.add( RouteReport.Builder()
+            for (Position p : positions) {
+                routes.add(RouteReport.Builder()
                         .setProtocol(p.getProtocol())
                         .setAccuracy(p.getAccuracy())
                         .setAddress(p.getAddress())
@@ -87,7 +86,7 @@ public final class Route {
             positionList.addAll(routes);
 
 
-            devicesNames = devicesNames+" , "+device.getName();
+            devicesNames = devicesNames + " , " + device.getName();
             //deviceRoutes.setDeviceName(device.getName());
           /*  if(sheetNames.stream().count() == 0)
             {
@@ -97,7 +96,7 @@ public final class Route {
             if (device.getGroupId() != 0) {
                 Group group = Context.getGroupsManager().getById(device.getGroupId());
                 if (group != null) {
-                    groupsNames = groupsNames + ","+group.getName();
+                    groupsNames = groupsNames + "," + group.getName();
                     //deviceRoutes.setGroupName(group.getName());
                 }
             }
@@ -105,12 +104,10 @@ public final class Route {
 
             //devicesRoutes.add(deviceRoutes);
         }
-        if(devicesNames.length() > 1)
-        {
+        if (devicesNames.length() > 1) {
             devicesNames = devicesNames.substring(1, devicesNames.length());
         }
-        if(groupsNames.length() > 1)
-        {
+        if (groupsNames.length() > 1) {
             groupsNames = groupsNames.substring(1, groupsNames.length());
         }
         DeviceReport deviceRoutes = new DeviceReport();

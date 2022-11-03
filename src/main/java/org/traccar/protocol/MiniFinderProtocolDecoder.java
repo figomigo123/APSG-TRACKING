@@ -30,17 +30,12 @@ import java.util.regex.Pattern;
 
 public class MiniFinderProtocolDecoder extends BaseProtocolDecoder {
 
-    public MiniFinderProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_FIX = new PatternBuilder()
             .number("(d+)/(d+)/(d+),")           // date (dd/mm/yy)
             .number("(d+):(d+):(d+),")           // time (hh:mm:ss)
             .number("(-?d+.d+),")                // latitude
             .number("(-?d+.d+),")                // longitude
             .compile();
-
     private static final Pattern PATTERN_STATE = new PatternBuilder()
             .number("(d+.?d*),")                 // speed (km/h)
             .number("(d+.?d*),")                 // course
@@ -48,20 +43,17 @@ public class MiniFinderProtocolDecoder extends BaseProtocolDecoder {
             .number("(-?d+.d+),")                // altitude (meters)
             .number("(d+),")                     // battery (percentage)
             .compile();
-
     private static final Pattern PATTERN_A = new PatternBuilder()
             .text("!A,")
             .expression(PATTERN_FIX.pattern())
             .any()                               // unknown 3 fields
             .compile();
-
-   private static final Pattern PATTERN_C = new PatternBuilder()
+    private static final Pattern PATTERN_C = new PatternBuilder()
             .text("!C,")
             .expression(PATTERN_FIX.pattern())
             .expression(PATTERN_STATE.pattern())
             .any()                               // unknown 3 fields
             .compile();
-
     private static final Pattern PATTERN_BD = new PatternBuilder()
             .expression("![BD],")                // B - buffered, D - live
             .expression(PATTERN_FIX.pattern())
@@ -70,6 +62,10 @@ public class MiniFinderProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // satellites in view
             .number("(d+.?d*)")                  // hdop
             .compile();
+
+    public MiniFinderProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeFix(Position position, Parser parser) {
 

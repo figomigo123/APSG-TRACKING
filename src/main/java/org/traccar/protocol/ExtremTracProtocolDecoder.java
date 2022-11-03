@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class ExtremTracProtocolDecoder extends BaseProtocolDecoder {
 
-    public ExtremTracProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$GPRMC,")
             .number("(d+),")                     // device id
@@ -47,6 +43,10 @@ public class ExtremTracProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd),")             // date (ddmmyy)
             .any()
             .compile();
+
+    public ExtremTracProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

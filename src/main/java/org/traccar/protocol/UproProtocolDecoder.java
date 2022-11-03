@@ -36,10 +36,6 @@ import java.util.regex.Pattern;
 
 public class UproProtocolDecoder extends BaseProtocolDecoder {
 
-    public UproProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_HEADER = new PatternBuilder()
             .text("*")
             .expression("(..20)")                // head
@@ -49,7 +45,6 @@ public class UproProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.)")                   // subtype
             .any()
             .compile();
-
     private static final Pattern PATTERN_LOCATION = new PatternBuilder()
             .number("(dd)(dd)(dd)")              // time (hhmmss)
             .number("(dd)(dd)(dddd)")            // latitude
@@ -59,6 +54,10 @@ public class UproProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)")                      // course
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .compile();
+
+    public UproProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeLocation(Position position, String data) {
         Parser parser = new Parser(PATTERN_LOCATION, data);

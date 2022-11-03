@@ -7,6 +7,16 @@ import java.text.SimpleDateFormat;
 
 public class NewStatistics {
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+    private String captureTime;
+    private int activeUsers;
+    private int activeDevices;
+    private int requests;
+    private int messagesReceived;
+    private int messagesStored;
+    private int mailSent;
+    private int smsSent;
+    private int geocoderRequests;
+    private int geolocationRequests;
 
     public NewStatistics(Statistics statistics) {
         this.captureTime = formatter.format(statistics.getCaptureTime());
@@ -21,8 +31,6 @@ public class NewStatistics {
         this.geolocationRequests = statistics.getGeolocationRequests();
     }
 
-    private String captureTime;
-
     public String getCaptureTime() {
         return captureTime;
     }
@@ -30,8 +38,6 @@ public class NewStatistics {
     public void setCaptureTime(String captureTime) {
         this.captureTime = captureTime;
     }
-
-    private int activeUsers;
 
     public int getActiveUsers() {
         return activeUsers;
@@ -41,8 +47,6 @@ public class NewStatistics {
         this.activeUsers = activeUsers;
     }
 
-    private int activeDevices;
-
     public int getActiveDevices() {
         return activeDevices;
     }
@@ -50,8 +54,6 @@ public class NewStatistics {
     public void setActiveDevices(int activeDevices) {
         this.activeDevices = activeDevices;
     }
-
-    private int requests;
 
     public int getRequests() {
         return requests;
@@ -61,8 +63,6 @@ public class NewStatistics {
         this.requests = requests;
     }
 
-    private int messagesReceived;
-
     public int getMessagesReceived() {
         return messagesReceived;
     }
@@ -70,8 +70,6 @@ public class NewStatistics {
     public void setMessagesReceived(int messagesReceived) {
         this.messagesReceived = messagesReceived;
     }
-
-    private int messagesStored;
 
     public int getMessagesStored() {
         return messagesStored;
@@ -81,8 +79,6 @@ public class NewStatistics {
         this.messagesStored = messagesStored;
     }
 
-    private int mailSent;
-
     public int getMailSent() {
         return mailSent;
     }
@@ -90,8 +86,6 @@ public class NewStatistics {
     public void setMailSent(int mailSent) {
         this.mailSent = mailSent;
     }
-
-    private int smsSent;
 
     public int getSmsSent() {
         return smsSent;
@@ -101,8 +95,6 @@ public class NewStatistics {
         this.smsSent = smsSent;
     }
 
-    private int geocoderRequests;
-
     public int getGeocoderRequests() {
         return geocoderRequests;
     }
@@ -110,8 +102,6 @@ public class NewStatistics {
     public void setGeocoderRequests(int geocoderRequests) {
         this.geocoderRequests = geocoderRequests;
     }
-
-    private int geolocationRequests;
 
     public int getGeolocationRequests() {
         return geolocationRequests;

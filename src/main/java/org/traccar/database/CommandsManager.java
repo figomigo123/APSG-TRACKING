@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class CommandsManager  extends ExtendedObjectManager<Command> {
+public class CommandsManager extends ExtendedObjectManager<Command> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandsManager.class);
 

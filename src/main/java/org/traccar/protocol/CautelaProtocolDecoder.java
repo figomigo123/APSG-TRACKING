@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class CautelaProtocolDecoder extends BaseProtocolDecoder {
 
-    public CautelaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // type
             .number("(d+),")                     // imei
@@ -42,6 +38,10 @@ public class CautelaProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd),")                 // time (hhmm)
             .any()
             .compile();
+
+    public CautelaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

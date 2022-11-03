@@ -32,13 +32,12 @@ import java.net.SocketAddress;
 
 public class MxtProtocolDecoder extends BaseProtocolDecoder {
 
-    public MxtProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_ACK = 0x02;
     public static final int MSG_NACK = 0x03;
     public static final int MSG_POSITION = 0x31;
+    public MxtProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static void sendResponse(Channel channel, int device, long id, int crc) {
         if (channel != null) {

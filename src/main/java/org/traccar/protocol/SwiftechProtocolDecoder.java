@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class SwiftechProtocolDecoder extends BaseProtocolDecoder {
 
-    public SwiftechProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("@@")
             .number("(d+),")                     // imei
@@ -53,6 +49,10 @@ public class SwiftechProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // adc2
             .any()
             .compile();
+
+    public SwiftechProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

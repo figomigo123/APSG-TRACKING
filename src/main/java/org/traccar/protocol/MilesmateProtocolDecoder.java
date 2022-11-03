@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class MilesmateProtocolDecoder extends BaseProtocolDecoder {
 
-    public MilesmateProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("ApiString={")
             .number("A:(d+),")                   // imei
@@ -53,6 +49,10 @@ public class MilesmateProtocolDecoder extends BaseProtocolDecoder {
             .number("M:(d+.d+)")                 // course
             .text("}")
             .compile();
+
+    public MilesmateProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

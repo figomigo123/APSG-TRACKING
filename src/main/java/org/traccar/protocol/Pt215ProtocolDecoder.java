@@ -31,15 +31,14 @@ import java.net.SocketAddress;
 
 public class Pt215ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Pt215ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x01;
     public static final int MSG_HEARTBEAT = 0x08;
     public static final int MSG_GPS_REALTIME = 0x10;
     public static final int MSG_GPS_OFFLINE = 0x11;
     public static final int MSG_STATUS = 0x13;
+    public Pt215ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(
             Channel channel, SocketAddress remoteAddress, int type, ByteBuf content) {

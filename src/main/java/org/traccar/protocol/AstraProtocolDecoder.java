@@ -36,14 +36,12 @@ import java.util.List;
 
 public class AstraProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_HEARTBEAT = 0x1A;
+    public static final int MSG_DATA = 0x10;
     private static final Logger LOGGER = LoggerFactory.getLogger(AstraProtocolDecoder.class);
-
     public AstraProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_HEARTBEAT = 0x1A;
-    public static final int MSG_DATA = 0x10;
 
     @Override
     protected Object decode(
@@ -52,7 +50,7 @@ public class AstraProtocolDecoder extends BaseProtocolDecoder {
         ByteBuf buf = (ByteBuf) msg;
 
         if (channel != null) {
-            channel.writeAndFlush(new NetworkMessage(Unpooled.wrappedBuffer(new byte[] {0x06}), remoteAddress));
+            channel.writeAndFlush(new NetworkMessage(Unpooled.wrappedBuffer(new byte[]{0x06}), remoteAddress));
         }
 
         buf.readUnsignedByte(); // protocol

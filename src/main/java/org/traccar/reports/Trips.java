@@ -51,10 +51,10 @@ public final class Trips {
     }
 
     public static Collection<TripReport> getObjects(long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Date from, Date to) throws SQLException {
+                                                    Date from, Date to) throws SQLException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<TripReport> result = new ArrayList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             result.addAll(detectTrips(deviceId, from, to));
         }
@@ -62,44 +62,41 @@ public final class Trips {
     }
 
     public static void getExcel(OutputStream outputStream,
-            long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Date from, Date to) throws SQLException, IOException {
+                                long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
+                                Date from, Date to) throws SQLException, IOException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<DeviceReport> devicesTrips = new ArrayList<>();
         ArrayList<String> sheetNames = new ArrayList<>();
         String devicesNames = "";
         String groupNames = "";
         List<TripReport> tripList = new LinkedList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             Collection<TripReport> trips = detectTrips(deviceId, from, to);
             Device device = Context.getIdentityManager().getById(deviceId);
-            for (TripReport tr : trips)
-            {
+            for (TripReport tr : trips) {
                 tr.setDeviceName(device.getName());
             }
 
 
             //deviceTrips.setDeviceName(device.getName());
             //sheetNames.add(WorkbookUtil.createSafeSheetName(deviceTrips.getDeviceName()));
-            devicesNames = devicesNames+","+device.getName();
+            devicesNames = devicesNames + "," + device.getName();
             if (device.getGroupId() != 0) {
                 Group group = Context.getGroupsManager().getById(device.getGroupId());
                 if (group != null) {
                     //deviceTrips.setGroupName(group.getName());
-                    groupNames = groupNames+","+group.getName();
+                    groupNames = groupNames + "," + group.getName();
                 }
             }
             tripList.addAll(trips);
 
         }
 
-        if(devicesNames.length() > 1)
-        {
+        if (devicesNames.length() > 1) {
             devicesNames = devicesNames.substring(1, devicesNames.length());
         }
-        if(groupNames.length() > 1)
-        {
+        if (groupNames.length() > 1) {
             groupNames = groupNames.substring(1, groupNames.length());
         }
         DeviceReport deviceTrips = new DeviceReport();
@@ -109,7 +106,6 @@ public final class Trips {
         sheetNames.add(WorkbookUtil.createSafeSheetName("Trips"));
         deviceTrips.setObjects(tripList);
         devicesTrips.add(deviceTrips);
-
 
 
         String templatePath = Context.getConfig().getString("report.templatesPath",

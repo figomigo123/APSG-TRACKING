@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class AustinNbProtocolDecoder extends BaseProtocolDecoder {
 
-    public AustinNbProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+);")                     // imei
             .number("(dddd)-(dd)-(dd) ")         // date
@@ -46,6 +42,10 @@ public class AustinNbProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.*)")                  // operator
             .any()
             .compile();
+
+    public AustinNbProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

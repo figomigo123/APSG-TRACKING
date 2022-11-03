@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class L100ProtocolDecoder extends BaseProtocolDecoder {
 
-    public L100ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("ATL")
             .expression(",[^,]+,").optional()
@@ -66,7 +62,6 @@ public class L100ProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .text("ATL")
             .compile();
-
     private static final Pattern PATTERN_OBD_LOCATION = new PatternBuilder()
             .expression("[LH],")                 // archive
             .text("ATL,")
@@ -93,7 +88,6 @@ public class L100ProtocolDecoder extends BaseProtocolDecoder {
             .text("ATL,")
             .groupEnd("?")
             .compile();
-
     private static final Pattern PATTERN_OBD_DATA = new PatternBuilder()
             .expression("[LH],")                 // archive
             .text("ATLOBD,")
@@ -105,7 +99,6 @@ public class L100ProtocolDecoder extends BaseProtocolDecoder {
             .expression("[^,]+,")                // obd protocol
             .expression("(.+)")                  // data
             .compile();
-
     private static final Pattern PATTERN_NEW = new PatternBuilder()
             .groupBegin()
             .text("ATL,")
@@ -126,6 +119,10 @@ public class L100ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // lac
             .number("(d+)")                      // cid
             .compile();
+
+    public L100ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

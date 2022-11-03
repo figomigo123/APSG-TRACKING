@@ -32,13 +32,6 @@ import java.util.regex.Pattern;
 
 public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
 
-    private final boolean decodeLow;
-
-    public Tk103ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-        decodeLow = Context.getConfig().getBoolean(Keys.PROTOCOL_DECODE_LOW.withPrefix(getProtocolName()));
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(").optional()
             .groupBegin()
@@ -78,7 +71,6 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .number("([+-]ddd.d)?")              // temperature
             .text(")").optional()
             .compile();
-
     private static final Pattern PATTERN_BATTERY = new PatternBuilder()
             .text("(").optional()
             .number("(d+),")                     // device id
@@ -91,7 +83,6 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .number("d+")                        // installed
             .any()
             .compile();
-
     private static final Pattern PATTERN_NETWORK = new PatternBuilder()
             .text("(").optional()
             .number("(d{12})")                   // device id
@@ -102,7 +93,6 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .number("(x+),")                     // cid
             .any()
             .compile();
-
     private static final Pattern PATTERN_LBSWIFI = new PatternBuilder()
             .text("(").optional()
             .number("(d+),")                     // device id
@@ -117,7 +107,6 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // time (hhmmss)
             .any()
             .compile();
-
     private static final Pattern PATTERN_COMMAND_RESULT = new PatternBuilder()
             .text("(").optional()
             .number("(d+),")                     // device id
@@ -127,7 +116,6 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .expression("\\$([\\s\\S]*?)(?:\\$|$)") // message
             .any()
             .compile();
-
     private static final Pattern PATTERN_VIN = new PatternBuilder()
             .text("(")
             .number("(d+)")                      // device id
@@ -135,6 +123,12 @@ public class Tk103ProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.{17})")               // vin
             .text(")")
             .compile();
+    private final boolean decodeLow;
+
+    public Tk103ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+        decodeLow = Context.getConfig().getBoolean(Keys.PROTOCOL_DECODE_LOW.withPrefix(getProtocolName()));
+    }
 
     private String decodeAlarm(int value) {
         switch (value) {

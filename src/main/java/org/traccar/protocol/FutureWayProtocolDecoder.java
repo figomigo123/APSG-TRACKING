@@ -34,10 +34,6 @@ import java.util.regex.Pattern;
 
 public class FutureWayProtocolDecoder extends BaseProtocolDecoder {
 
-    public FutureWayProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_GPS = new PatternBuilder()
             .text("GPS:")
             .expression("([AV]),")               // validity
@@ -53,6 +49,10 @@ public class FutureWayProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+),")                  // speed
             .number("(d+.d+)")                   // course
             .compile();
+
+    public FutureWayProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

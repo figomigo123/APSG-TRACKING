@@ -160,7 +160,7 @@ public final class ReportUtils {
             xlsArea.processFormulas();
         }
 
-            transformer.deleteSheet(xlsAreas.get(0).getStartCellRef().getSheetName());
+        transformer.deleteSheet(xlsAreas.get(0).getStartCellRef().getSheetName());
 
 
         transformer.write();
@@ -321,7 +321,7 @@ public final class ReportUtils {
         ArrayList<Position> positions = new ArrayList<>(positionCollection);
         if (!positions.isEmpty()) {
             boolean trips = reportClass.equals(TripReport.class);
-            MotionEventHandler  motionHandler = new MotionEventHandler(identityManager, deviceManager, tripsConfig);
+            MotionEventHandler motionHandler = new MotionEventHandler(identityManager, deviceManager, tripsConfig);
             DeviceState deviceState = new DeviceState();
             deviceState.setMotionState(isMoving(positions, 0, tripsConfig));
             int startEventIndex = trips == deviceState.getMotionState() ? 0 : -1;
@@ -354,8 +354,8 @@ public final class ReportUtils {
             }
             if (startEventIndex != -1 && (startNoEventIndex != -1 || !trips)) {
                 result.add(calculateTripOrStop(positions, startEventIndex,
-                            startNoEventIndex != -1 ? startNoEventIndex : positions.size() - 1,
-                            ignoreOdometer, reportClass));
+                        startNoEventIndex != -1 ? startNoEventIndex : positions.size() - 1,
+                        ignoreOdometer, reportClass));
             }
         }
 

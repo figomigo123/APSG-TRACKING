@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class HomtecsProtocolDecoder extends BaseProtocolDecoder {
 
-    public HomtecsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("([^_]+)")               // id
             .text("_R")
@@ -49,6 +45,10 @@ public class HomtecsProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*)?,")                // hdop
             .number("(d+.?d*)?")                 // altitude
             .compile();
+
+    public HomtecsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

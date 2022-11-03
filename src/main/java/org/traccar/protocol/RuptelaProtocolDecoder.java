@@ -31,12 +31,6 @@ import java.util.List;
 
 public class RuptelaProtocolDecoder extends BaseProtocolDecoder {
 
-    private ByteBuf photo;
-
-    public RuptelaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_RECORDS = 1;
     public static final int MSG_DEVICE_CONFIGURATION = 2;
     public static final int MSG_DEVICE_VERSION = 3;
@@ -49,6 +43,10 @@ public class RuptelaProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_SET_IO = 17;
     public static final int MSG_FILES = 37;
     public static final int MSG_EXTENDED_RECORDS = 68;
+    private ByteBuf photo;
+    public RuptelaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodeCommandResponse(DeviceSession deviceSession, int type, ByteBuf buf) {
         Position position = new Position(getProtocolName());

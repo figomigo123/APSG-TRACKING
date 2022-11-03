@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class ArknavX8ProtocolDecoder extends BaseProtocolDecoder {
 
-    public ArknavX8ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_1G = new PatternBuilder()
             .expression("(..),")                 // type
             .number("(dd)(dd)(dd)")              // date (yymmdd)
@@ -44,7 +40,6 @@ public class ArknavX8ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+),")                  // hdop
             .number("(d+)")                      // status
             .compile();
-
     private static final Pattern PATTERN_2G = new PatternBuilder()
             .expression("..,")                   // type
             .number("(dd)(dd)(dd)")              // date (yymmdd)
@@ -55,6 +50,10 @@ public class ArknavX8ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.d+),")                  // battery
             .number("(d+.d+)")                   // odometer
             .compile();
+
+    public ArknavX8ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class CarTrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public CarTrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$$")                          // header
             .number("(d+)")                      // device id
@@ -56,6 +52,10 @@ public class CarTrackProtocolDecoder extends BaseProtocolDecoder {
             .expression("&E([^&]*)")             // alarm
             .expression("&Y([^&]*)").optional()  // adc
             .compile();
+
+    public CarTrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

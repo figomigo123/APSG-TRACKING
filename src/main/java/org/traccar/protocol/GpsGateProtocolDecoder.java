@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class GpsGateProtocolDecoder extends BaseProtocolDecoder {
 
-    public GpsGateProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_GPRMC = new PatternBuilder()
             .text("$GPRMC,")
             .number("(dd)(dd)(dd).?d*,")         // time (hhmmss)
@@ -48,7 +44,6 @@ public class GpsGateProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
-
     private static final Pattern PATTERN_FRCMD = new PatternBuilder()
             .text("$FRCMD,")
             .number("(d+),")                     // imei
@@ -66,6 +61,10 @@ public class GpsGateProtocolDecoder extends BaseProtocolDecoder {
             .expression("([01])")                // validity
             .any()
             .compile();
+
+    public GpsGateProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void send(Channel channel, SocketAddress remoteAddress, String message) {
         if (channel != null) {

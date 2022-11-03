@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class T57ProtocolDecoder extends BaseProtocolDecoder {
 
-    public T57ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*T57#")
             .number("Fd#")                       // type
@@ -49,6 +45,10 @@ public class T57ProtocolDecoder extends BaseProtocolDecoder {
             .number("d#")                        // fix type
             .number("(d+.d+)#")                  // battery
             .compile();
+
+    public T57ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -131,14 +131,20 @@ public class RouteReport extends Message {
     public static final String ALARM_REMOVING = "removing";
 
     private String deviceName;
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
+    private String protocol;
+    private Date serverTime = new Date();
+    private Date deviceTime;
+    private Date fixTime;
+    private boolean outdated;
+    private boolean valid;
+    private double latitude;
+    private double longitude;
+    private double altitude; // value in meters
+    private double speed; // value in knots
+    private double course;
+    private String address;
+    private double accuracy;
+    private Network network;
 
     public RouteReport() {
     }
@@ -146,158 +152,6 @@ public class RouteReport extends Message {
     public RouteReport(String protocol) {
         this.protocol = protocol;
         this.serverTime = new Date();
-    }
-
-    private String protocol;
-
-    public String getProtocol() {
-        return protocol;
-    }
-
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
-
-    private Date serverTime = new Date();
-
-    public Date getServerTime() {
-        return serverTime;
-    }
-
-    public void setServerTime(Date serverTime) {
-        this.serverTime = serverTime;
-    }
-
-    private Date deviceTime;
-
-    public Date getDeviceTime() {
-        return deviceTime;
-    }
-
-    public void setDeviceTime(Date deviceTime) {
-        this.deviceTime = deviceTime;
-    }
-
-    private Date fixTime;
-
-    public Date getFixTime() {
-        return fixTime;
-    }
-
-    public void setFixTime(Date fixTime) {
-        this.fixTime = fixTime;
-    }
-
-    public void setTime(Date time) {
-        setDeviceTime(time);
-        setFixTime(time);
-    }
-
-    private boolean outdated;
-
-    @QueryIgnore
-    public boolean getOutdated() {
-        return outdated;
-    }
-
-    public void setOutdated(boolean outdated) {
-        this.outdated = outdated;
-    }
-
-    private boolean valid;
-
-    public boolean getValid() {
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
-
-    private double latitude;
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    private double longitude;
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    private double altitude; // value in meters
-
-    public double getAltitude() {
-        return altitude;
-    }
-
-    public void setAltitude(double altitude) {
-        this.altitude = altitude;
-    }
-
-    private double speed; // value in knots
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    private double course;
-
-    public double getCourse() {
-        return course;
-    }
-
-    public void setCourse(double course) {
-        this.course = course;
-    }
-
-    private String address;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    private double accuracy;
-
-    public double getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(double accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    private Network network;
-
-    public Network getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(Network network) {
-        this.network = network;
-    }
-
-    @Override
-    @QueryIgnore
-    public String getType() {
-        return super.getType();
     }
 
     public RouteReport(String protocol, Date serverTime, Date deviceTime, Date fixTime, boolean outdated, boolean valid, double latitude, double longitude, double altitude, double speed, double course, String address, double accuracy, Network network, String deviceName) {
@@ -318,8 +172,139 @@ public class RouteReport extends Message {
         this.deviceName = deviceName;
     }
 
-    public static RouteReportBuilder Builder()
-    {
+    public static RouteReportBuilder Builder() {
         return new RouteReportBuilder();
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public Date getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(Date serverTime) {
+        this.serverTime = serverTime;
+    }
+
+    public Date getDeviceTime() {
+        return deviceTime;
+    }
+
+    public void setDeviceTime(Date deviceTime) {
+        this.deviceTime = deviceTime;
+    }
+
+    public Date getFixTime() {
+        return fixTime;
+    }
+
+    public void setFixTime(Date fixTime) {
+        this.fixTime = fixTime;
+    }
+
+    public void setTime(Date time) {
+        setDeviceTime(time);
+        setFixTime(time);
+    }
+
+    @QueryIgnore
+    public boolean getOutdated() {
+        return outdated;
+    }
+
+    public void setOutdated(boolean outdated) {
+        this.outdated = outdated;
+    }
+
+    public boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(double altitude) {
+        this.altitude = altitude;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getCourse() {
+        return course;
+    }
+
+    public void setCourse(double course) {
+        this.course = course;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
+    @Override
+    @QueryIgnore
+    public String getType() {
+        return super.getType();
     }
 }

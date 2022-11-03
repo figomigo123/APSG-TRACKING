@@ -30,16 +30,11 @@ import java.util.regex.Pattern;
 
 public class Tr20ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Tr20ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_PING = new PatternBuilder()
             .text("%%")
             .expression("[^,]+,")
             .number("(d+)")
             .compile();
-
     private static final Pattern PATTERN_DATA = new PatternBuilder()
             .text("%%")
             .expression("([^,]+),")              // id
@@ -57,6 +52,10 @@ public class Tr20ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // event
             .any()
             .compile();
+
+    public Tr20ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

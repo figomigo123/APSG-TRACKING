@@ -38,11 +38,6 @@ import java.util.regex.Pattern;
 public class WatchProtocolDecoder extends BaseProtocolDecoder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WatchProtocolDecoder.class);
-
-    public WatchProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_POSITION = new PatternBuilder()
             .number("(dd)(dd)(dd),")             // date (ddmmyy)
             .number("(dd)(dd)(dd),")             // time (hhmmss)
@@ -62,6 +57,12 @@ public class WatchProtocolDecoder extends BaseProtocolDecoder {
             .number("(x+),")                     // status
             .expression("(.*)")                  // cell and wifi
             .compile();
+    private boolean hasIndex;
+    private String manufacturer;
+
+    public WatchProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, String id, String index, String content) {
         if (channel != null) {
@@ -164,9 +165,6 @@ public class WatchProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private boolean hasIndex;
-    private String manufacturer;
 
     public boolean getHasIndex() {
         return hasIndex;

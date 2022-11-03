@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class C2stekProtocolDecoder extends BaseProtocolDecoder {
 
-    public C2stekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("PA$")
             .number("(d+)")                      // imei
@@ -56,6 +52,10 @@ public class C2stekProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .text("$AP")
             .compile();
+
+    public C2stekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int alarm) {
         switch (alarm) {

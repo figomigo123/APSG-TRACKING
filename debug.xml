@@ -47,8 +47,8 @@
 
     <entry key='server.timeout'>3900</entry>
     <entry key='status.timeout'>40</entry>
-    <entry key='teltonika.timeout'>20</entry>
-    <entry key='osmand.timeout'>20</entry>
+    <entry key='teltonika.timeout'>40</entry>
+    <entry key='osmand.timeout'>40</entry>
     <entry key='filter.zero'>true</entry>
     <entry key='filter.invalid'>true</entry>
 

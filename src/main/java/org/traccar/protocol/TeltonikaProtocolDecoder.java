@@ -34,20 +34,24 @@ import java.util.*;
 
 public class TeltonikaProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int CODEC_GH3000 = 0x07;
+    public static final int CODEC_8 = 0x08;
+    public static final int CODEC_8_EXT = 0x8E;
+    public static final int CODEC_12 = 0x0C;
+    public static final int CODEC_13 = 0x0D;
+    public static final int CODEC_16 = 0x10;
     private static final int IMAGE_PACKET_MAX = 2048;
-
     private final boolean connectionless;
-    private boolean extended;
     private final Map<Long, ByteBuf> photos = new HashMap<>();
-
-    public void setExtended(boolean extended) {
-        this.extended = extended;
-    }
-
+    private boolean extended;
     public TeltonikaProtocolDecoder(Protocol protocol, boolean connectionless) {
         super(protocol);
         this.connectionless = connectionless;
         this.extended = Context.getConfig().getBoolean(Keys.PROTOCOL_EXTENDED.withPrefix(getProtocolName()));
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
     }
 
     private void parseIdentification(Channel channel, SocketAddress remoteAddress, ByteBuf buf) {
@@ -66,13 +70,6 @@ public class TeltonikaProtocolDecoder extends BaseProtocolDecoder {
             channel.writeAndFlush(new NetworkMessage(response, remoteAddress));
         }
     }
-
-    public static final int CODEC_GH3000 = 0x07;
-    public static final int CODEC_8 = 0x08;
-    public static final int CODEC_8_EXT = 0x8E;
-    public static final int CODEC_12 = 0x0C;
-    public static final int CODEC_13 = 0x0D;
-    public static final int CODEC_16 = 0x10;
 
     private void sendImageRequest(Channel channel, SocketAddress remoteAddress, long id, int offset, int size) {
         if (channel != null) {

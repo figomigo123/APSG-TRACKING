@@ -64,6 +64,35 @@
       </column>
     </addColumn>
 
+
+ <createTable tableName="tc_landmarks">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints primaryKey="true" />
+      </column>
+      <column name="userid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="name" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+      <column name="description" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+
+      <column name="latitude" type="DOUBLE" defaultValueNumeric="0">
+        <constraints nullable="false" />
+      </column>
+      <column name="longitude" type="DOUBLE" defaultValueNumeric="0">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="tc_landmarks" baseColumnNames="userid" constraintName="fk_user_mark_userid" referencedTableName="tc_users" referencedColumnNames="id" onDelete="CASCADE" />
+
+
+
+
+
   </changeSet>
 
 </databaseChangeLog>

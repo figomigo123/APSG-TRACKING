@@ -16,10 +16,15 @@
  */
 package org.traccar.reports.model;
 
-public class StopReport extends BaseReport  {
+public class StopReport extends BaseReport {
 
     private long positionId;
-    private String  deviceName;
+    private String deviceName;
+    private double latitude;
+    private double longitude;
+    private String address;
+    private long duration;
+    private long engineHours; // milliseconds
 
     @Override
     public String getDeviceName() {
@@ -39,8 +44,6 @@ public class StopReport extends BaseReport  {
         this.positionId = positionId;
     }
 
-    private double latitude;
-
     public double getLatitude() {
         return latitude;
     }
@@ -48,8 +51,6 @@ public class StopReport extends BaseReport  {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-
-    private double longitude;
 
     public double getLongitude() {
         return longitude;
@@ -59,8 +60,6 @@ public class StopReport extends BaseReport  {
         this.longitude = longitude;
     }
 
-    private String address;
-
     public String getAddress() {
         return address;
     }
@@ -69,8 +68,6 @@ public class StopReport extends BaseReport  {
         this.address = address;
     }
 
-    private long duration;
-
     public long getDuration() {
         return duration;
     }
@@ -78,8 +75,6 @@ public class StopReport extends BaseReport  {
     public void setDuration(long duration) {
         this.duration = duration;
     }
-
-    private long engineHours; // milliseconds
 
     public long getEngineHours() {
         return engineHours;

@@ -33,11 +33,11 @@ import java.util.Date;
 
 public class FlexibleReportProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_GENERAL = 0x00;
+
     public FlexibleReportProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_GENERAL = 0x00;
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, int index) {
         if (channel != null) {

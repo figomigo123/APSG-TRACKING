@@ -41,6 +41,21 @@ import java.util.regex.Pattern;
 
 public class WristbandProtocolDecoder extends BaseProtocolDecoder {
 
+    private static final Pattern PATTERN = new PatternBuilder()
+            .expression("..")                    // header
+            .number("(d+)|")                     // imei
+            .number("([vV]d+.d+)|")              // version
+            .number("d+|")                       // model
+            .text("{")
+            .number("F(d+)")                     // function
+            .groupBegin()
+            .text("#")
+            .expression("(.*)")                  // data
+            .groupEnd("?")
+            .text("}")
+            .text("\r\n")
+            .compile();
+
     public WristbandProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -58,21 +73,6 @@ public class WristbandProtocolDecoder extends BaseProtocolDecoder {
             channel.writeAndFlush(new NetworkMessage(response, channel.remoteAddress()));
         }
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .expression("..")                    // header
-            .number("(d+)|")                     // imei
-            .number("([vV]d+.d+)|")              // version
-            .number("d+|")                       // model
-            .text("{")
-            .number("F(d+)")                     // function
-            .groupBegin()
-            .text("#")
-            .expression("(.*)")                  // data
-            .groupEnd("?")
-            .text("}")
-            .text("\r\n")
-            .compile();
 
     private Position decodePosition(DeviceSession deviceSession, String sentence) throws ParseException {
 

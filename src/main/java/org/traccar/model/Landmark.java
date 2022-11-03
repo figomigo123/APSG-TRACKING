@@ -1,11 +1,19 @@
 package org.traccar.model;
 
-public class Landmark extends BaseModel{
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Landmark extends BaseModel {
+
+    private long userid;
+    private String name;
+    private String description;
+    private double latitude;
+    private double longitude;
 
     public Landmark() {
     }
 
-    private long userid;
     public long getUserid() {
         return userid;
     }
@@ -13,7 +21,6 @@ public class Landmark extends BaseModel{
     public void setUserid(long userid) {
         this.userid = userid;
     }
-    private String name;
 
     public String getName() {
         return name;
@@ -23,8 +30,6 @@ public class Landmark extends BaseModel{
         this.name = name;
     }
 
-    private String description;
-
     public String getDescription() {
         return description;
     }
@@ -33,8 +38,6 @@ public class Landmark extends BaseModel{
         this.description = description;
     }
 
-    private double latitude;
-
     public double getLatitude() {
         return latitude;
     }
@@ -42,8 +45,6 @@ public class Landmark extends BaseModel{
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-
-    private double longitude;
 
     public double getLongitude() {
         return longitude;
@@ -54,6 +55,14 @@ public class Landmark extends BaseModel{
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Landmark{" +
+                "userid=" + userid +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                "} " + super.toString();
+    }
 }

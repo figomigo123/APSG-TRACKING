@@ -7,14 +7,15 @@ public class NewCommand {
     private String description;
     private String type;
     private String sendSMS;
+    private long id;
 
     public NewCommand(Command command) {
         this.description = command.getDescription();
         this.type = command.getType();
-        this.id=command.getId();
-        if(command.getTextChannel()) this.sendSMS="Yes";else this.sendSMS="No";
+        this.id = command.getId();
+        if (command.getTextChannel()) this.sendSMS = "Yes";
+        else this.sendSMS = "No";
     }
-    private long id;
 
     public final long getId() {
         return id;
@@ -23,6 +24,7 @@ public class NewCommand {
     public final void setId(long id) {
         this.id = id;
     }
+
     public String getDescription() {
         return description;
     }

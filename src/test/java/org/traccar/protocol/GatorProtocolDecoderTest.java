@@ -6,12 +6,12 @@ import org.traccar.ProtocolTest;
 import static org.junit.Assert.assertEquals;
 
 public class GatorProtocolDecoderTest extends ProtocolTest {
-    
+
     @Test
     public void testDecodeId() {
-        
+
         assertEquals("3512345006", GatorProtocolDecoder.decodeId(12, 162, 50, 134));
-        
+
     }
 
     @Test
@@ -47,7 +47,7 @@ public class GatorProtocolDecoderTest extends ProtocolTest {
 
         verifyPosition(decoder, binary(
                 "24248000260009632d141121072702059226180104367500000000c04700079c0c34000ad80b00ff000a0d"));
-        
+
     }
 
 }

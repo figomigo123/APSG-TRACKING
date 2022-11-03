@@ -43,7 +43,7 @@ public class SnsSmsClient implements SmsManager {
                 && Context.getConfig().hasKey(Keys.SMS_AWS_SECRET)) {
             BasicAWSCredentials awsCredentials =
                     new BasicAWSCredentials(Context.getConfig().getString(Keys.SMS_AWS_ACCESS),
-                    Context.getConfig().getString(Keys.SMS_AWS_SECRET));
+                            Context.getConfig().getString(Keys.SMS_AWS_SECRET));
             snsClient = AmazonSNSAsyncClientBuilder.standard()
                     .withRegion(Context.getConfig().getString(Keys.SMS_AWS_REGION))
                     .withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
@@ -68,6 +68,7 @@ public class SnsSmsClient implements SmsManager {
             public void onError(Exception exception) {
                 LOGGER.error("SMS send failed", exception);
             }
+
             @Override
             public void onSuccess(PublishRequest request, PublishResult result) {
             }

@@ -37,14 +37,16 @@ import java.util.Date;
 public class AplicomProtocolDecoder extends BaseProtocolDecoder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AplicomProtocolDecoder.class);
-
-    public AplicomProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final long IMEI_BASE_TC65_V20 = 0x1437207000000L;
     private static final long IMEI_BASE_TC65_V28 = 358244010000000L;
     private static final long IMEI_BASE_TC65I_V11 = 0x14143B4000000L;
+    private static final int DEFAULT_SELECTOR_D = 0x0002fC;
+    private static final int DEFAULT_SELECTOR_E = 0x007ffc;
+    private static final int DEFAULT_SELECTOR_F = 0x0007fd;
+    private static final int EVENT_DATA = 119;
+    public AplicomProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static boolean validateImei(long imei) {
         return Checksum.luhn(imei / 10) == imei % 10;
@@ -80,12 +82,6 @@ public class AplicomProtocolDecoder extends BaseProtocolDecoder {
 
         return unitId;
     }
-
-    private static final int DEFAULT_SELECTOR_D = 0x0002fC;
-    private static final int DEFAULT_SELECTOR_E = 0x007ffc;
-    private static final int DEFAULT_SELECTOR_F = 0x0007fd;
-
-    private static final int EVENT_DATA = 119;
 
     private void decodeEventData(Position position, ByteBuf buf, int event) {
         switch (event) {

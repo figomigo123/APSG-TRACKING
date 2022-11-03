@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class MegastekProtocolDecoder extends BaseProtocolDecoder {
 
-    public MegastekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_GPRMC = new PatternBuilder()
             .text("$GPRMC,")
             .number("(dd)(dd)(dd).(ddd),")       // time (hhmmss.sss)
@@ -46,7 +42,6 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()                               // checksum
             .compile();
-
     private static final Pattern PATTERN_SIMPLE = new PatternBuilder()
             .expression("[FL],")                 // flag
             .expression("([^,]*),")              // alarm
@@ -61,7 +56,6 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxxx);")                   // cid
             .any()                               // checksum
             .compile();
-
     private static final Pattern PATTERN_ALTERNATIVE = new PatternBuilder()
             .number("(d+),")                     // mcc
             .number("(d+),")                     // mnc
@@ -80,6 +74,63 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
             .expression("([^;]+);")              // alarm
             .any()                               // checksum
             .compile();
+    private static final Pattern PATTERN_NEW = new PatternBuilder()
+            .number("dddd").optional()
+            .text("$MGV")
+            .number("ddd,")
+            .number("(d+),")                     // imei
+            .expression("[^,]*,")                // name
+            .expression("([RS]),")
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .expression("([AV]),")               // validity
+            .number("(d+)(dd.d+),([NS]),")       // latitude
+            .number("(d+)(dd.d+),([EW]),")       // longitude
+            .number("dd,")
+            .number("(dd),")                     // satellites
+            .number("dd,")
+            .number("(d+.d+)?,")                 // hdop
+            .number("(d+.d+)?,")                 // speed
+            .number("(d+.d+)?,")                 // course
+            .number("(-?d+.d+)?,")               // altitude
+            .number("(d+.d+)?,")                 // odometer
+            .number("(d+)?,")                    // mcc
+            .number("(d+)?,")                    // mnc
+            .number("(xxxx)?,")                  // lac
+            .number("(x+)?,")                    // cid
+            .number("(d+)?,")                    // gsm
+            .groupBegin()
+            .number("([01]{4})?,")               // input
+            .number("([01]{4})?,")               // output
+            .number("(d+)?,")                    // adc1
+            .number("(d+)?,")                    // adc2
+            .number("(d+)?,")                    // adc3
+            .or()
+            .number("(d+),")                     // input
+            .number("(d+),")                     // output
+            .number("(d+),")                     // adc1
+            .number("(d+),")                     // adc2
+            .number("(d+),")                     // adc3
+            .groupEnd()
+            .groupBegin()
+            .number("(-?d+.?d*)")                // temperature 1
+            .or().text(" ")
+            .groupEnd("?").text(",")
+            .groupBegin()
+            .number("(-?d+.?d*)")                // temperature 2
+            .or().text(" ")
+            .groupEnd("?").text(",")
+            .number("(d+)?,")                    // rfid
+            .number("([01])(d)?").optional()     // charge and belt status
+            .expression("[^,]*,")
+            .number("(d+)?,")                    // battery
+            .expression("([^,]*)[,;]")           // alert
+            .any()
+            .compile();
+
+    public MegastekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private boolean parseLocation(String location, Position position) {
 
@@ -230,60 +281,6 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN_NEW = new PatternBuilder()
-            .number("dddd").optional()
-            .text("$MGV")
-            .number("ddd,")
-            .number("(d+),")                     // imei
-            .expression("[^,]*,")                // name
-            .expression("([RS]),")
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .expression("([AV]),")               // validity
-            .number("(d+)(dd.d+),([NS]),")       // latitude
-            .number("(d+)(dd.d+),([EW]),")       // longitude
-            .number("dd,")
-            .number("(dd),")                     // satellites
-            .number("dd,")
-            .number("(d+.d+)?,")                 // hdop
-            .number("(d+.d+)?,")                 // speed
-            .number("(d+.d+)?,")                 // course
-            .number("(-?d+.d+)?,")               // altitude
-            .number("(d+.d+)?,")                 // odometer
-            .number("(d+)?,")                    // mcc
-            .number("(d+)?,")                    // mnc
-            .number("(xxxx)?,")                  // lac
-            .number("(x+)?,")                    // cid
-            .number("(d+)?,")                    // gsm
-            .groupBegin()
-            .number("([01]{4})?,")               // input
-            .number("([01]{4})?,")               // output
-            .number("(d+)?,")                    // adc1
-            .number("(d+)?,")                    // adc2
-            .number("(d+)?,")                    // adc3
-            .or()
-            .number("(d+),")                     // input
-            .number("(d+),")                     // output
-            .number("(d+),")                     // adc1
-            .number("(d+),")                     // adc2
-            .number("(d+),")                     // adc3
-            .groupEnd()
-            .groupBegin()
-            .number("(-?d+.?d*)")                // temperature 1
-            .or().text(" ")
-            .groupEnd("?").text(",")
-            .groupBegin()
-            .number("(-?d+.?d*)")                // temperature 2
-            .or().text(" ")
-            .groupEnd("?").text(",")
-            .number("(d+)?,")                    // rfid
-            .number("([01])(d)?").optional()     // charge and belt status
-            .expression("[^,]*,")
-            .number("(d+)?,")                    // battery
-            .expression("([^,]*)[,;]")           // alert
-            .any()
-            .compile();
 
     private Position decodeNew(Channel channel, SocketAddress remoteAddress, String sentence) {
 

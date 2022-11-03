@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class MtxProtocolDecoder extends BaseProtocolDecoder {
 
-    public MtxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("#MTX,")
             .number("(d+),")                     // imei
@@ -56,6 +52,10 @@ public class MtxProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // adc2
             .any()
             .compile();
+
+    public MtxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

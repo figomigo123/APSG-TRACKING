@@ -36,10 +36,6 @@ import java.util.regex.Pattern;
 
 public class TrvProtocolDecoder extends BaseProtocolDecoder {
 
-    public TrvProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("[A-Z]{2,3}")
             .expression("[A-Z]P")
@@ -66,7 +62,6 @@ public class TrvProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // cell
             .any()
             .compile();
-
     private static final Pattern PATTERN_HEATRBEAT = new PatternBuilder()
             .expression("[A-Z]{2,3}")
             .text("CP01,")
@@ -88,7 +83,6 @@ public class TrvProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
-
     private static final Pattern PATTERN_LBS = new PatternBuilder()
             .expression("[A-Z]{2,3}")
             .text("AP02,")
@@ -107,6 +101,10 @@ public class TrvProtocolDecoder extends BaseProtocolDecoder {
             .number("d+,")                       // wifi count
             .expression("(.*)")                  // wifi
             .compile();
+
+    public TrvProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Boolean decodeOptionalValue(Parser parser, int activeValue) {
         int value = parser.nextInt();

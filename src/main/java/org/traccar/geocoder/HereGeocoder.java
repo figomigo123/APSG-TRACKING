@@ -19,6 +19,11 @@ import javax.json.JsonObject;
 
 public class HereGeocoder extends JsonGeocoder {
 
+    public HereGeocoder(
+            String url, String id, String key, String language, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url, id, key, language), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url, String id, String key, String language) {
         if (url == null) {
             url = "https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json";
@@ -32,11 +37,6 @@ public class HereGeocoder extends JsonGeocoder {
             url += "&language=" + language;
         }
         return url;
-    }
-
-    public HereGeocoder(
-            String url, String id, String key, String language, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url, id, key, language), cacheSize, addressFormat);
     }
 
     @Override

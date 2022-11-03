@@ -41,10 +41,6 @@ import java.util.regex.Pattern;
 
 public class EelinkProtocolDecoder extends BaseProtocolDecoder {
 
-    public EelinkProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x01;
     public static final int MSG_GPS = 0x02;
     public static final int MSG_HEARTBEAT = 0x03;
@@ -54,7 +50,6 @@ public class EelinkProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_OBD = 0x07;
     public static final int MSG_DOWNLINK = 0x80;
     public static final int MSG_DATA = 0x81;
-
     public static final int MSG_NORMAL = 0x12;
     public static final int MSG_WARNING = 0x14;
     public static final int MSG_REPORT = 0x15;
@@ -64,6 +59,27 @@ public class EelinkProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_OBD_CODE = 0x19;
     public static final int MSG_CAMERA_INFO = 0x1E;
     public static final int MSG_CAMERA_DATA = 0x1F;
+    private static final Pattern PATTERN = new PatternBuilder()
+            .text("Lat:")
+            .number("([NS])(d+.d+)")             // latitude
+            .any()
+            .text("Lon:")
+            .number("([EW])(d+.d+)")             // longitude
+            .any()
+            .text("Course:")
+            .number("(d+.d+)")                   // course
+            .any()
+            .text("Speed:")
+            .number("(d+.d+)")                   // speed
+            .any()
+            .expression("Date ?Time:")
+            .number("(dddd)-(dd)-(dd) ")         // date
+            .number("(dd):(dd):(dd)")            // time
+            .compile();
+
+    public EelinkProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(Short value) {
         switch (value) {
@@ -295,24 +311,6 @@ public class EelinkProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .text("Lat:")
-            .number("([NS])(d+.d+)")             // latitude
-            .any()
-            .text("Lon:")
-            .number("([EW])(d+.d+)")             // longitude
-            .any()
-            .text("Course:")
-            .number("(d+.d+)")                   // course
-            .any()
-            .text("Speed:")
-            .number("(d+.d+)")                   // speed
-            .any()
-            .expression("Date ?Time:")
-            .number("(dddd)-(dd)-(dd) ")         // date
-            .number("(dd):(dd):(dd)")            // time
-            .compile();
 
     private Position decodeResult(DeviceSession deviceSession, ByteBuf buf, int index) {
 

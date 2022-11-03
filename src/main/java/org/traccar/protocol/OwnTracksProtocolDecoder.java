@@ -51,7 +51,7 @@ public class OwnTracksProtocolDecoder extends BaseHttpProtocolDecoder {
             return null;
         }
         if (!root.getString("_type").equals("location")
-            && !root.getString("_type").equals("lwt")) {
+                && !root.getString("_type").equals("lwt")) {
             sendResponse(channel, HttpResponseStatus.BAD_REQUEST);
             return null;
         }
@@ -112,7 +112,7 @@ public class OwnTracksProtocolDecoder extends BaseHttpProtocolDecoder {
             position.set("t", trigger);
             int reportType = -1;
             if (root.containsKey("rty")) {
-                 reportType = root.getInt("rty");
+                reportType = root.getInt("rty");
             }
             setEventOrAlarm(position, trigger, reportType);
         }
@@ -156,7 +156,7 @@ public class OwnTracksProtocolDecoder extends BaseHttpProtocolDecoder {
                 }
                 if (root.containsKey("temp_c-" + indexString)) {
                     position.set(Position.PREFIX_TEMP + (i + 1),
-                        root.getJsonNumber("temp_c-" + indexString).doubleValue());
+                            root.getJsonNumber("temp_c-" + indexString).doubleValue());
                 }
             }
         }

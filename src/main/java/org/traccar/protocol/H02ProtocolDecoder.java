@@ -35,6 +35,137 @@ import java.util.regex.Pattern;
 
 public class H02ProtocolDecoder extends BaseProtocolDecoder {
 
+    private static final Pattern PATTERN = new PatternBuilder()
+            .text("*")
+            .expression("..,")                   // manufacturer
+            .number("(d+)?,")                    // imei
+            .groupBegin()
+            .text("V4,")
+            .expression("(.*),")                 // response
+            .or()
+            .expression("(V[^,]*),")
+            .groupEnd()
+            .number("(?:(dd)(dd)(dd))?,")        // time (hhmmss)
+            .groupBegin()
+            .expression("([ABV])?,")             // validity
+            .or()
+            .number("(d+),")                     // coding scheme
+            .groupEnd()
+            .groupBegin()
+            .number("-(d+)-(d+.d+),")            // latitude
+            .or()
+            .number("(d+)(dd.d+),")              // latitude
+            .groupEnd()
+            .expression("([NS]),")
+            .groupBegin()
+            .number("-(d+)-(d+.d+),")            // longitude
+            .or()
+            .number("(d+)(dd.d+),")              // longitude
+            .groupEnd()
+            .expression("([EW]),")
+            .number(" *(d+.?d*),")               // speed
+            .number("(d+.?d*)?,")                // course
+            .number("(?:d+,)?")                  // battery
+            .number("(?:(dd)(dd)(dd))?")         // date (ddmmyy)
+            .groupBegin()
+            .expression(",[^,]*,")
+            .expression("[^,]*,")
+            .expression("[^,]*")                 // sim info
+            .groupEnd("?")
+            .groupBegin()
+            .number(",(x{8})")
+            .groupBegin()
+            .number(",(d+),")                    // odometer
+            .number("(-?d+),")                   // temperature
+            .number("(d+.d+),")                  // fuel
+            .number("(-?d+),")                   // altitude
+            .number("(x+),")                     // lac
+            .number("(x+)")                      // cid
+            .or()
+            .text(",")
+            .expression("(.*)")                  // data
+            .or()
+            .groupEnd()
+            .or()
+            .groupEnd()
+            .text("#")
+            .compile();
+    private static final Pattern PATTERN_NBR = new PatternBuilder()
+            .text("*")
+            .expression("..,")                   // manufacturer
+            .number("(d+),")                     // imei
+            .text("NBR,")
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .number("(d+),")                     // mcc
+            .number("(d+),")                     // mnc
+            .number("d+,")                       // gsm delay time
+            .number("d+,")                       // count
+            .number("((?:d+,d+,-?d+,)+)")        // cells
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(x{8})")                    // status
+            .any()
+            .compile();
+    private static final Pattern PATTERN_LINK = new PatternBuilder()
+            .text("*")
+            .expression("..,")                   // manufacturer
+            .number("(d+),")                     // imei
+            .text("LINK,")
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .number("(d+),")                     // rssi
+            .number("(d+),")                     // satellites
+            .number("(d+),")                     // battery
+            .number("(d+),")                     // steps
+            .number("(d+),")                     // turnovers
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(x{8})")                    // status
+            .any()
+            .compile();
+    private static final Pattern PATTERN_V3 = new PatternBuilder()
+            .text("*")
+            .expression("..,")                   // manufacturer
+            .number("(d+),")                     // imei
+            .text("V3,")
+            .number("(dd)(dd)(dd),")             // time (hhmmss)
+            .number("(ddd)")                     // mcc
+            .number("(d+),")                     // mnc
+            .number("(d+),")                     // count
+            .expression("(.*),")                 // cell info
+            .number("(x{4}),")                   // battery
+            .number("d+,")                       // reboot info
+            .text("X,")
+            .number("(dd)(dd)(dd),")             // date (ddmmyy)
+            .number("(x{8})")                    // status
+            .text("#").optional()
+            .compile();
+    private static final Pattern PATTERN_VP1 = new PatternBuilder()
+            .text("*hq,")
+            .number("(d{15}),")                  // imei
+            .text("VP1,")
+            .groupBegin()
+            .text("V,")
+            .number("(d+),")                     // mcc
+            .number("(d+),")                     // mnc
+            .expression("([^#]+)")               // cells
+            .or()
+            .expression("[AB],")                 // validity
+            .number("(d+)(dd.d+),")              // latitude
+            .expression("([NS]),")
+            .number("(d+)(dd.d+),")              // longitude
+            .expression("([EW]),")
+            .number("(d+.d+),")                  // speed
+            .number("(d+.d+),")                  // course
+            .number("(dd)(dd)(dd)")              // date (ddmmyy)
+            .groupEnd()
+            .any()
+            .compile();
+    private static final Pattern PATTERN_HTBT = new PatternBuilder()
+            .text("*HQ,")
+            .number("(d{15}),")                  // imei
+            .text("HTBT,")
+            .number("(d+)")                      // battery
+            .any()
+            .compile();
+
     public H02ProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -150,142 +281,6 @@ public class H02ProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    private static final Pattern PATTERN = new PatternBuilder()
-            .text("*")
-            .expression("..,")                   // manufacturer
-            .number("(d+)?,")                    // imei
-            .groupBegin()
-            .text("V4,")
-            .expression("(.*),")                 // response
-            .or()
-            .expression("(V[^,]*),")
-            .groupEnd()
-            .number("(?:(dd)(dd)(dd))?,")        // time (hhmmss)
-            .groupBegin()
-            .expression("([ABV])?,")             // validity
-            .or()
-            .number("(d+),")                     // coding scheme
-            .groupEnd()
-            .groupBegin()
-            .number("-(d+)-(d+.d+),")            // latitude
-            .or()
-            .number("(d+)(dd.d+),")              // latitude
-            .groupEnd()
-            .expression("([NS]),")
-            .groupBegin()
-            .number("-(d+)-(d+.d+),")            // longitude
-            .or()
-            .number("(d+)(dd.d+),")              // longitude
-            .groupEnd()
-            .expression("([EW]),")
-            .number(" *(d+.?d*),")               // speed
-            .number("(d+.?d*)?,")                // course
-            .number("(?:d+,)?")                  // battery
-            .number("(?:(dd)(dd)(dd))?")         // date (ddmmyy)
-            .groupBegin()
-            .expression(",[^,]*,")
-            .expression("[^,]*,")
-            .expression("[^,]*")                 // sim info
-            .groupEnd("?")
-            .groupBegin()
-            .number(",(x{8})")
-            .groupBegin()
-            .number(",(d+),")                    // odometer
-            .number("(-?d+),")                   // temperature
-            .number("(d+.d+),")                  // fuel
-            .number("(-?d+),")                   // altitude
-            .number("(x+),")                     // lac
-            .number("(x+)")                      // cid
-            .or()
-            .text(",")
-            .expression("(.*)")                  // data
-            .or()
-            .groupEnd()
-            .or()
-            .groupEnd()
-            .text("#")
-            .compile();
-
-    private static final Pattern PATTERN_NBR = new PatternBuilder()
-            .text("*")
-            .expression("..,")                   // manufacturer
-            .number("(d+),")                     // imei
-            .text("NBR,")
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .number("(d+),")                     // mcc
-            .number("(d+),")                     // mnc
-            .number("d+,")                       // gsm delay time
-            .number("d+,")                       // count
-            .number("((?:d+,d+,-?d+,)+)")        // cells
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(x{8})")                    // status
-            .any()
-            .compile();
-
-    private static final Pattern PATTERN_LINK = new PatternBuilder()
-            .text("*")
-            .expression("..,")                   // manufacturer
-            .number("(d+),")                     // imei
-            .text("LINK,")
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .number("(d+),")                     // rssi
-            .number("(d+),")                     // satellites
-            .number("(d+),")                     // battery
-            .number("(d+),")                     // steps
-            .number("(d+),")                     // turnovers
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(x{8})")                    // status
-            .any()
-            .compile();
-
-    private static final Pattern PATTERN_V3 = new PatternBuilder()
-            .text("*")
-            .expression("..,")                   // manufacturer
-            .number("(d+),")                     // imei
-            .text("V3,")
-            .number("(dd)(dd)(dd),")             // time (hhmmss)
-            .number("(ddd)")                     // mcc
-            .number("(d+),")                     // mnc
-            .number("(d+),")                     // count
-            .expression("(.*),")                 // cell info
-            .number("(x{4}),")                   // battery
-            .number("d+,")                       // reboot info
-            .text("X,")
-            .number("(dd)(dd)(dd),")             // date (ddmmyy)
-            .number("(x{8})")                    // status
-            .text("#").optional()
-            .compile();
-
-    private static final Pattern PATTERN_VP1 = new PatternBuilder()
-            .text("*hq,")
-            .number("(d{15}),")                  // imei
-            .text("VP1,")
-            .groupBegin()
-            .text("V,")
-            .number("(d+),")                     // mcc
-            .number("(d+),")                     // mnc
-            .expression("([^#]+)")               // cells
-            .or()
-            .expression("[AB],")                 // validity
-            .number("(d+)(dd.d+),")              // latitude
-            .expression("([NS]),")
-            .number("(d+)(dd.d+),")              // longitude
-            .expression("([EW]),")
-            .number("(d+.d+),")                  // speed
-            .number("(d+.d+),")                  // course
-            .number("(dd)(dd)(dd)")              // date (ddmmyy)
-            .groupEnd()
-            .any()
-            .compile();
-
-    private static final Pattern PATTERN_HTBT = new PatternBuilder()
-            .text("*HQ,")
-            .number("(d{15}),")                  // imei
-            .text("HTBT,")
-            .number("(d+)")                      // battery
-            .any()
-            .compile();
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, String id, String type) {
         if (channel != null && id != null) {

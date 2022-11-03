@@ -31,12 +31,11 @@ import java.nio.charset.StandardCharsets;
 
 public class NiotProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_RESPONSE = 0x21;
+    public static final int MSG_POSITION_DATA = 0x80;
     public NiotProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_RESPONSE = 0x21;
-    public static final int MSG_POSITION_DATA = 0x80;
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, int type, int checksum) {
         if (channel != null) {

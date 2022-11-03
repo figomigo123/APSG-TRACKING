@@ -53,10 +53,6 @@ public class ReportResource extends BaseResource {
     private static final String XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private static final String CONTENT_DISPOSITION_VALUE_XLSX = "attachment; filename=report.xlsx";
 
-    private interface ReportExecutor {
-        void execute(ByteArrayOutputStream stream) throws SQLException, IOException;
-    }
-
     private Response executeReport(
             long userId, boolean mail, ReportExecutor executor) throws SQLException, IOException {
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -199,6 +195,10 @@ public class ReportResource extends BaseResource {
             LogAction.logReport(getUserId(), "stops", from, to, deviceIds, groupIds);
             Stops.getExcel(stream, getUserId(), deviceIds, groupIds, from, to);
         });
+    }
+
+    private interface ReportExecutor {
+        void execute(ByteArrayOutputStream stream) throws SQLException, IOException;
     }
 
 }

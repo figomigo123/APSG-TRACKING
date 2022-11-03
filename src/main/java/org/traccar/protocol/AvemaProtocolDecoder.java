@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class AvemaProtocolDecoder extends BaseProtocolDecoder {
 
-    public AvemaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // device id
             .number("(dddd)(dd)(dd)")            // date (yyyymmdd)
@@ -62,6 +58,10 @@ public class AvemaProtocolDecoder extends BaseProtocolDecoder {
             .number("([^,]+)?")                  // rfid
             .any()
             .compile();
+
+    public AvemaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

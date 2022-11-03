@@ -71,6 +71,7 @@ public class ServerResource extends BaseResource {
             throw new RuntimeException("Reverse geocoding is not enabled");
         }
     }
+
     @Path("maplayers")
     @GET
     public List<String> maplayer() {
@@ -87,7 +88,8 @@ public class ServerResource extends BaseResource {
                 "Custom (ArcGIS)"
         );
     }
- @Path("coordinates")
+
+    @Path("coordinates")
     @GET
     public List<String> coordinates() {
         return Arrays.asList(

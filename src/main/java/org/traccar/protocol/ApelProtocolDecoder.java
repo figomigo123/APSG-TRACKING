@@ -34,13 +34,6 @@ import java.util.List;
 
 public class ApelProtocolDecoder extends BaseProtocolDecoder {
 
-    private long lastIndex;
-    private long newIndex;
-
-    public ApelProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final short MSG_NULL = 0;
     public static final short MSG_REQUEST_TRACKER_ID = 10;
     public static final short MSG_TRACKER_ID = 11;
@@ -65,6 +58,11 @@ public class ApelProtocolDecoder extends BaseProtocolDecoder {
     public static final short MSG_ACK_ALARM = 160;
     public static final short MSG_SET_TRACKER_MODE = 170;
     public static final short MSG_GPRS_COMMAND = 180;
+    private long lastIndex;
+    private long newIndex;
+    public ApelProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendSimpleMessage(Channel channel, short type) {
         ByteBuf request = Unpooled.buffer(8);

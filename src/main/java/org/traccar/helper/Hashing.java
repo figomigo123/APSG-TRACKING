@@ -26,32 +26,14 @@ public final class Hashing {
     public static final int ITERATIONS = 1000;
     public static final int SALT_SIZE = 24;
     public static final int HASH_SIZE = 24;
-
+    private static final SecureRandom RANDOM = new SecureRandom();
     private static SecretKeyFactory factory;
+
     static {
         try {
             factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static class HashingResult {
-
-        private final String hash;
-        private final String salt;
-
-        public HashingResult(String hash, String salt) {
-            this.hash = hash;
-            this.salt = salt;
-        }
-
-        public String getHash() {
-            return hash;
-        }
-
-        public String getSalt() {
-            return salt;
         }
     }
 
@@ -66,8 +48,6 @@ public final class Hashing {
             throw new SecurityException(e);
         }
     }
-
-    private static final SecureRandom RANDOM = new SecureRandom();
 
     public static HashingResult createHash(String password) {
         byte[] salt = new byte[SALT_SIZE];
@@ -95,6 +75,25 @@ public final class Hashing {
             diff |= a[i] ^ b[i];
         }
         return diff == 0;
+    }
+
+    public static class HashingResult {
+
+        private final String hash;
+        private final String salt;
+
+        public HashingResult(String hash, String salt) {
+            this.hash = hash;
+            this.salt = salt;
+        }
+
+        public String getHash() {
+            return hash;
+        }
+
+        public String getSalt() {
+            return salt;
+        }
     }
 
 }

@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class NetProtocolDecoder extends BaseProtocolDecoder {
 
-    public NetProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("@L")
             .number("ddd")
@@ -50,6 +46,10 @@ public class NetProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxx)")                     // alarm
             .any()
             .compile();
+
+    public NetProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

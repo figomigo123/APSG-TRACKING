@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class VisiontekProtocolDecoder extends BaseProtocolDecoder {
 
-    public VisiontekProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$1,")
             .expression("([^,]+),")              // identifier
@@ -72,6 +68,10 @@ public class VisiontekProtocolDecoder extends BaseProtocolDecoder {
             .number(",(d{10})").optional()       // rfid
             .any()
             .compile();
+
+    public VisiontekProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -31,18 +31,6 @@ import java.util.regex.Pattern;
 
 public class XirgoProtocolDecoder extends BaseProtocolDecoder {
 
-    private Boolean newFormat;
-    private String form;
-
-    public XirgoProtocolDecoder(Protocol protocol) {
-        super(protocol);
-        form = Context.getConfig().getString(Keys.PROTOCOL_FORM.withPrefix(getProtocolName()));
-    }
-
-    public void setForm(String form) {
-        this.form = form;
-    }
-
     private static final Pattern PATTERN_OLD = new PatternBuilder()
             .text("$$")
             .number("(d+),")                     // imei
@@ -62,7 +50,6 @@ public class XirgoProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // gps
             .any()
             .compile();
-
     private static final Pattern PATTERN_NEW = new PatternBuilder()
             .text("$$")
             .number("(d+),")                     // imei
@@ -103,6 +90,17 @@ public class XirgoProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+    private Boolean newFormat;
+    private String form;
+
+    public XirgoProtocolDecoder(Protocol protocol) {
+        super(protocol);
+        form = Context.getConfig().getString(Keys.PROTOCOL_FORM.withPrefix(getProtocolName()));
+    }
+
+    public void setForm(String form) {
+        this.form = form;
+    }
 
     private void decodeEvent(Position position, int event) {
 

@@ -65,51 +65,6 @@ public class Mta6ProtocolDecoder extends BaseProtocolDecoder {
         channel.writeAndFlush(new NetworkMessage(response, channel.remoteAddress()));
     }
 
-    private static class FloatReader {
-
-        private int previousFloat;
-
-        public float readFloat(ByteBuf buf) {
-            switch (buf.getUnsignedByte(buf.readerIndex()) >> 6) {
-                case 0:
-                    previousFloat = buf.readInt() << 2;
-                    break;
-                case 1:
-                    previousFloat = (previousFloat & 0xffffff00) + ((buf.readUnsignedByte() & 0x3f) << 2);
-                    break;
-                case 2:
-                    previousFloat = (previousFloat & 0xffff0000) + ((buf.readUnsignedShort() & 0x3fff) << 2);
-                    break;
-                case 3:
-                    previousFloat = (previousFloat & 0xff000000) + ((buf.readUnsignedMedium() & 0x3fffff) << 2);
-                    break;
-                default:
-                    LOGGER.warn("MTA6 float decoding error", new IllegalArgumentException());
-                    break;
-            }
-            return Float.intBitsToFloat(previousFloat);
-        }
-
-    }
-
-    private static class TimeReader extends FloatReader {
-
-        private long weekNumber;
-
-        public Date readTime(ByteBuf buf) {
-            long weekTime = (long) (readFloat(buf) * 1000);
-            if (weekNumber == 0) {
-                weekNumber = buf.readUnsignedShort();
-            }
-
-            DateBuilder dateBuilder = new DateBuilder().setDate(1980, 1, 6);
-            dateBuilder.addMillis(weekNumber * 7 * 24 * 60 * 60 * 1000 + weekTime);
-
-            return dateBuilder.getDate();
-        }
-
-    }
-
     private List<Position> parseFormatA(DeviceSession deviceSession, ByteBuf buf) {
         List<Position> positions = new LinkedList<>();
 
@@ -310,6 +265,51 @@ public class Mta6ProtocolDecoder extends BaseProtocolDecoder {
         } // else if (0x34 0x38 0x4F 0x59)
 
         return null;
+    }
+
+    private static class FloatReader {
+
+        private int previousFloat;
+
+        public float readFloat(ByteBuf buf) {
+            switch (buf.getUnsignedByte(buf.readerIndex()) >> 6) {
+                case 0:
+                    previousFloat = buf.readInt() << 2;
+                    break;
+                case 1:
+                    previousFloat = (previousFloat & 0xffffff00) + ((buf.readUnsignedByte() & 0x3f) << 2);
+                    break;
+                case 2:
+                    previousFloat = (previousFloat & 0xffff0000) + ((buf.readUnsignedShort() & 0x3fff) << 2);
+                    break;
+                case 3:
+                    previousFloat = (previousFloat & 0xff000000) + ((buf.readUnsignedMedium() & 0x3fffff) << 2);
+                    break;
+                default:
+                    LOGGER.warn("MTA6 float decoding error", new IllegalArgumentException());
+                    break;
+            }
+            return Float.intBitsToFloat(previousFloat);
+        }
+
+    }
+
+    private static class TimeReader extends FloatReader {
+
+        private long weekNumber;
+
+        public Date readTime(ByteBuf buf) {
+            long weekTime = (long) (readFloat(buf) * 1000);
+            if (weekNumber == 0) {
+                weekNumber = buf.readUnsignedShort();
+            }
+
+            DateBuilder dateBuilder = new DateBuilder().setDate(1980, 1, 6);
+            dateBuilder.addMillis(weekNumber * 7 * 24 * 60 * 60 * 1000 + weekTime);
+
+            return dateBuilder.getDate();
+        }
+
     }
 
 }

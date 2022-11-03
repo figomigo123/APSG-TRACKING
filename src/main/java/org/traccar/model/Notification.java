@@ -24,6 +24,8 @@ import java.util.Set;
 public class Notification extends ScheduledModel {
 
     private boolean always;
+    private String type;
+    private String notificators;
 
     public boolean getAlways() {
         return always;
@@ -33,8 +35,6 @@ public class Notification extends ScheduledModel {
         this.always = always;
     }
 
-    private String type;
-
     public String getType() {
         return type;
     }
@@ -42,9 +42,6 @@ public class Notification extends ScheduledModel {
     public void setType(String type) {
         this.type = type;
     }
-
-
-    private String notificators;
 
     public String getNotificators() {
         return notificators;

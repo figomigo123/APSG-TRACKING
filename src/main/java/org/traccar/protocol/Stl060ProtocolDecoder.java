@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class Stl060ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Stl060ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .any()
             .text("$1,")
@@ -66,6 +62,10 @@ public class Stl060ProtocolDecoder extends BaseProtocolDecoder {
             .expression("([AV])")                // validity
             .any()
             .compile();
+
+    public Stl060ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -23,7 +23,7 @@
         <constraints nullable="false" />
       </column>
       <column name="description" type="VARCHAR(128)">
-        <constraints nullable="false" />
+        <constraints nullable="true" />
       </column>
 
       <column name="latitude" type="DOUBLE" defaultValueNumeric="0">

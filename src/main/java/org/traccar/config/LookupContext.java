@@ -24,12 +24,12 @@ public interface LookupContext {
 
         private final long userId;
 
-        public long getUserId() {
-            return userId;
-        }
-
         public User(long userId) {
             this.userId = userId;
+        }
+
+        public long getUserId() {
+            return userId;
         }
 
     }
@@ -38,12 +38,12 @@ public interface LookupContext {
 
         private final long deviceId;
 
-        public long getDeviceId() {
-            return deviceId;
-        }
-
         public Device(long deviceId) {
             this.deviceId = deviceId;
+        }
+
+        public long getDeviceId() {
+            return deviceId;
         }
 
     }

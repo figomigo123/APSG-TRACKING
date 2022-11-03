@@ -32,13 +32,6 @@ import java.util.regex.Pattern;
 public class Pt502ProtocolDecoder extends BaseProtocolDecoder {
 
     private static final int MAX_CHUNK_SIZE = 960;
-
-    private ByteBuf photo;
-
-    public Pt502ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .any().text("$")
             .expression("([^,]+),")              // type
@@ -61,6 +54,11 @@ public class Pt502ProtocolDecoder extends BaseProtocolDecoder {
             .number("(xxx)").optional(2)         // state
             .any()
             .compile();
+    private ByteBuf photo;
+
+    public Pt502ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(String value) {
         switch (value) {

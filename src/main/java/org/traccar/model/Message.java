@@ -18,6 +18,7 @@ package org.traccar.model;
 public class Message extends ExtendedModel {
 
     private long deviceId;
+    private String type;
 
     public long getDeviceId() {
         return deviceId;
@@ -26,8 +27,6 @@ public class Message extends ExtendedModel {
     public void setDeviceId(long deviceId) {
         this.deviceId = deviceId;
     }
-
-    private String type;
 
     public String getType() {
         return type;

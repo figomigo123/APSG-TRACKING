@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
 
 public class FlexCommProtocolDecoder extends BaseProtocolDecoder {
 
-    public FlexCommProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("7E")
             .number("(dd)")                      // status
@@ -63,6 +59,10 @@ public class FlexCommProtocolDecoder extends BaseProtocolDecoder {
             .number("(ddd)")                     // power
             .any()
             .compile();
+
+    public FlexCommProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static double parseSignedValue(Parser parser, int decimalPoints) {
         String stringValue = parser.next();

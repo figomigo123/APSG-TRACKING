@@ -159,25 +159,42 @@ public class ConnectionManager {
     }
 
     public synchronized void updateDevice(Device device) {
-        for (long userId : Context.getPermissionsManager().getDeviceUsers(device.getId())) {
-            if (listeners.containsKey(userId)) {
+        Set<Long> deviceUsers = Context.getPermissionsManager().getDeviceUsers(device.getId());
+        for (long userId : Context.getUsersManager().getAllItems()) {
+            System.out.println("updateDevice userId: "+userId+"   is admin:"+Context.getPermissionsManager().getUserAdmin(userId));
+            if ((deviceUsers.contains(userId)||  Context.getPermissionsManager().getUserAdmin(userId) )&&listeners.containsKey(userId)) {
+                System.out.println("send1 ...");
                 for (UpdateListener listener : listeners.get(userId)) {
+                    System.out.println("send2 ...");
                     listener.onUpdateDevice(device);
                 }
             }
+            System.out.println("================");
         }
     }
 
     public synchronized void updatePosition(Position position) {
+//        long deviceId = position.getDeviceId();
+//        for (long userId : Context.getPermissionsManager().getDeviceUsers(deviceId)) {
+//            if (listeners.containsKey(userId)) {
+//                for (UpdateListener listener : listeners.get(userId)) {
+//                    listener.onUpdatePosition(position);
+//                }
+//            }
+//        }
         long deviceId = position.getDeviceId();
-
-        for (long userId : Context.getPermissionsManager().getDeviceUsers(deviceId)) {
-            if (listeners.containsKey(userId)) {
+        Set<Long> deviceUsers = Context.getPermissionsManager().getDeviceUsers(deviceId);
+        for (long userId : Context.getUsersManager().getAllItems()) {
+            if ((deviceUsers.contains(userId)||  Context.getPermissionsManager().getUserAdmin(userId) )&&listeners.containsKey(userId)) {
                 for (UpdateListener listener : listeners.get(userId)) {
                     listener.onUpdatePosition(position);
                 }
             }
         }
+
+
+
+
     }
 
     public synchronized void updateEvent(long userId, Event event) {
@@ -186,13 +203,6 @@ public class ConnectionManager {
                 listener.onUpdateEvent(event);
             }
         }
-    }
-
-    public interface UpdateListener {
-        void onKeepalive();
-        void onUpdateDevice(Device device);
-        void onUpdatePosition(Position position);
-        void onUpdateEvent(Event event);
     }
 
     public synchronized void addListener(long userId, UpdateListener listener) {
@@ -207,6 +217,16 @@ public class ConnectionManager {
             listeners.put(userId, new HashSet<>());
         }
         listeners.get(userId).remove(listener);
+    }
+
+    public interface UpdateListener {
+        void onKeepalive();
+
+        void onUpdateDevice(Device device);
+
+        void onUpdatePosition(Position position);
+
+        void onUpdateEvent(Event event);
     }
 
 }

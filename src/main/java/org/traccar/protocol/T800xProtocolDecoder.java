@@ -38,18 +38,7 @@ import java.util.Date;
 
 public class T800xProtocolDecoder extends BaseProtocolDecoder {
 
-    private short header = DEFAULT_HEADER;
-
-    public short getHeader() {
-        return header;
-    }
-
-    public T800xProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final short DEFAULT_HEADER = 0x2323;
-
     public static final int MSG_LOGIN = 0x01;
     public static final int MSG_GPS = 0x02;
     public static final int MSG_HEARTBEAT = 0x03;
@@ -59,6 +48,14 @@ public class T800xProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_DRIVER_BEHAVIOR_2 = 0x06; // 0x2626
     public static final int MSG_BLE = 0x10;
     public static final int MSG_COMMAND = 0x81;
+    private short header = DEFAULT_HEADER;
+    public T800xProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
+
+    public short getHeader() {
+        return header;
+    }
 
     private void sendResponse(Channel channel, short header, int type, int index, ByteBuf imei, int alarm) {
         if (channel != null) {

@@ -36,10 +36,6 @@ import java.nio.charset.StandardCharsets;
 
 public class HuaShengProtocolDecoder extends BaseProtocolDecoder {
 
-    public HuaShengProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_POSITION = 0xAA00;
     public static final int MSG_POSITION_RSP = 0xFF01;
     public static final int MSG_LOGIN = 0xAA02;
@@ -48,6 +44,9 @@ public class HuaShengProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_UPFAULT_RSP = 0xFF13;
     public static final int MSG_HSO_REQ = 0x0002;
     public static final int MSG_HSO_RSP = 0x0003;
+    public HuaShengProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int type, int index, ByteBuf content) {
         if (channel != null) {

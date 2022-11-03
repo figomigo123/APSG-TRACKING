@@ -33,13 +33,8 @@ import java.util.regex.Pattern;
 
 public class RaceDynamicsProtocolDecoder extends BaseProtocolDecoder {
 
-    public RaceDynamicsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 12;
     public static final int MSG_LOCATION = 15;
-
     private static final Pattern PATTERN_LOGIN = new PatternBuilder()
             .text("$GPRMC,")
             .number("d+,")                       // type
@@ -47,7 +42,6 @@ public class RaceDynamicsProtocolDecoder extends BaseProtocolDecoder {
             .number("d{6},")                     // time
             .number("(d{15}),")
             .compile();
-
     private static final Pattern PATTERN_LOCATION = new PatternBuilder()
             .number("(dd)(dd)(dd),")             // time (hhmmss)
             .expression("([AV]),")               // validity
@@ -84,8 +78,11 @@ public class RaceDynamicsProtocolDecoder extends BaseProtocolDecoder {
             .number("(d),")                      // overdriver alert
             .any()
             .compile();
-
     private String imei;
+
+    public RaceDynamicsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, int type) {
         if (channel != null) {

@@ -32,10 +32,6 @@ import java.util.regex.Pattern;
 
 public class WondexProtocolDecoder extends BaseProtocolDecoder {
 
-    public WondexProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("[^d]*")                     // header
             .number("(d+),")                     // device identifier
@@ -56,6 +52,10 @@ public class WondexProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)?")                     // output
             .any()
             .compile();
+
+    public WondexProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -36,12 +36,11 @@ import java.time.temporal.ChronoUnit;
 
 public class SmokeyProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_DATE_RECORD = 0;
+    public static final int MSG_DATE_RECORD_ACK = 1;
     public SmokeyProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_DATE_RECORD = 0;
-    public static final int MSG_DATE_RECORD_ACK = 1;
 
     private static void sendResponse(
             Channel channel, SocketAddress remoteAddress, ByteBuf id, int index, int report) {

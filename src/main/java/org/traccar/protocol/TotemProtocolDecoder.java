@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class TotemProtocolDecoder extends BaseProtocolDecoder {
 
-    public TotemProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN1 = new PatternBuilder()
             .text("$$")                          // header
             .number("xx")                        // length
@@ -67,7 +63,6 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
             .number("xxxx")                      // checksum
             .any()
             .compile();
-
     private static final Pattern PATTERN2 = new PatternBuilder()
             .text("$$")                          // header
             .number("xx")                        // length
@@ -96,7 +91,6 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
             .number("xxxx")                      // checksum
             .any()
             .compile();
-
     private static final Pattern PATTERN3 = new PatternBuilder()
             .text("$$")                          // header
             .number("xx")                        // length
@@ -126,7 +120,6 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
             .number("xxxx")                      // checksum
             .any()
             .compile();
-
     private static final Pattern PATTERN4 = new PatternBuilder()
             .text("$$")                          // header
             .number("dddd")                      // length
@@ -165,7 +158,6 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
             .number("xx")                        // checksum
             .any()
             .compile();
-
     private static final Pattern PATTERN_OBD = new PatternBuilder()
             .text("$$")                          // header
             .number("dddd")                      // length
@@ -192,6 +184,10 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
             .number("|xx")                       // checksum
             .any()
             .compile();
+
+    public TotemProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm123(int value) {
         switch (value) {
@@ -241,9 +237,9 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
         DateBuilder dateBuilder = new DateBuilder();
         int year = 0, month = 0, day = 0;
         if (pattern == PATTERN2) {
-            day   = parser.nextInt(0);
+            day = parser.nextInt(0);
             month = parser.nextInt(0);
-            year  = parser.nextInt(0);
+            year = parser.nextInt(0);
         }
         dateBuilder.setTime(parser.nextInt(0), parser.nextInt(0), parser.nextInt(0));
 
@@ -254,9 +250,9 @@ public class TotemProtocolDecoder extends BaseProtocolDecoder {
         position.setCourse(parser.nextDouble(0));
 
         if (pattern == PATTERN1) {
-            day   = parser.nextInt(0);
+            day = parser.nextInt(0);
             month = parser.nextInt(0);
-            year  = parser.nextInt(0);
+            year = parser.nextInt(0);
         }
         if (year == 0) {
             return false; // ignore invalid data

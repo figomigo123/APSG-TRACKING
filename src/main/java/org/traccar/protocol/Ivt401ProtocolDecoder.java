@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Ivt401ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Ivt401ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .expression("TL[ABLN],")             // header
@@ -78,6 +74,10 @@ public class Ivt401ProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+
+    public Ivt401ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

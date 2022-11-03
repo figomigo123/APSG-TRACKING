@@ -37,19 +37,17 @@ import java.util.List;
 
 public class At2000ProtocolDecoder extends BaseProtocolDecoder {
 
-    private static final int BLOCK_LENGTH = 16;
-
-    public At2000ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_ACKNOWLEDGEMENT = 0x00;
     public static final int MSG_DEVICE_ID = 0x01;
     public static final int MSG_TRACK_REQUEST = 0x88;
     public static final int MSG_TRACK_RESPONSE = 0x89;
     public static final int MSG_SESSION_END = 0x0c;
-
+    private static final int BLOCK_LENGTH = 16;
     private Cipher cipher;
+
+    public At2000ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static void sendRequest(Channel channel) {
         if (channel != null) {

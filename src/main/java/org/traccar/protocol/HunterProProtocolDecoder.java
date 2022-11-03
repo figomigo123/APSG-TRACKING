@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class HunterProProtocolDecoder extends BaseProtocolDecoder {
 
-    public HunterProProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number(">(d+)<")                    // identifier
             .text("$GPRMC,")
@@ -47,6 +43,10 @@ public class HunterProProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
+
+    public HunterProProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -21,6 +21,16 @@ import java.util.Map;
 public class Statistics extends ExtendedModel {
 
     private Date captureTime;
+    private int activeUsers;
+    private int activeDevices;
+    private int requests;
+    private int messagesReceived;
+    private int messagesStored;
+    private int mailSent;
+    private int smsSent;
+    private int geocoderRequests;
+    private int geolocationRequests;
+    private Map<String, Integer> protocols;
 
     public Date getCaptureTime() {
         return captureTime;
@@ -30,8 +40,6 @@ public class Statistics extends ExtendedModel {
         this.captureTime = captureTime;
     }
 
-    private int activeUsers;
-
     public int getActiveUsers() {
         return activeUsers;
     }
@@ -39,8 +47,6 @@ public class Statistics extends ExtendedModel {
     public void setActiveUsers(int activeUsers) {
         this.activeUsers = activeUsers;
     }
-
-    private int activeDevices;
 
     public int getActiveDevices() {
         return activeDevices;
@@ -50,8 +56,6 @@ public class Statistics extends ExtendedModel {
         this.activeDevices = activeDevices;
     }
 
-    private int requests;
-
     public int getRequests() {
         return requests;
     }
@@ -59,8 +63,6 @@ public class Statistics extends ExtendedModel {
     public void setRequests(int requests) {
         this.requests = requests;
     }
-
-    private int messagesReceived;
 
     public int getMessagesReceived() {
         return messagesReceived;
@@ -70,8 +72,6 @@ public class Statistics extends ExtendedModel {
         this.messagesReceived = messagesReceived;
     }
 
-    private int messagesStored;
-
     public int getMessagesStored() {
         return messagesStored;
     }
@@ -79,8 +79,6 @@ public class Statistics extends ExtendedModel {
     public void setMessagesStored(int messagesStored) {
         this.messagesStored = messagesStored;
     }
-
-    private int mailSent;
 
     public int getMailSent() {
         return mailSent;
@@ -90,8 +88,6 @@ public class Statistics extends ExtendedModel {
         this.mailSent = mailSent;
     }
 
-    private int smsSent;
-
     public int getSmsSent() {
         return smsSent;
     }
@@ -99,8 +95,6 @@ public class Statistics extends ExtendedModel {
     public void setSmsSent(int smsSent) {
         this.smsSent = smsSent;
     }
-
-    private int geocoderRequests;
 
     public int getGeocoderRequests() {
         return geocoderRequests;
@@ -110,8 +104,6 @@ public class Statistics extends ExtendedModel {
         this.geocoderRequests = geocoderRequests;
     }
 
-    private int geolocationRequests;
-
     public int getGeolocationRequests() {
         return geolocationRequests;
     }
@@ -119,8 +111,6 @@ public class Statistics extends ExtendedModel {
     public void setGeolocationRequests(int geolocationRequests) {
         this.geolocationRequests = geolocationRequests;
     }
-
-    private Map<String, Integer> protocols;
 
     public Map<String, Integer> getProtocols() {
         return protocols;

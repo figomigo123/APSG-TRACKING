@@ -32,13 +32,12 @@ import java.net.SocketAddress;
 
 public class VnetProtocolDecoder extends BaseProtocolDecoder {
 
-    public VnetProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x0000;
     public static final int MSG_LBS = 0x32;
     public static final int MSG_GPS = 0x33;
+    public VnetProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

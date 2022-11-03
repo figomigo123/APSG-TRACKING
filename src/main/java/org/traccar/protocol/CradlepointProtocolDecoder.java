@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class CradlepointProtocolDecoder extends BaseProtocolDecoder {
 
-    public CradlepointProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("([^,]+),")              // id
             .number("(d{1,6}),")                 // time (hhmmss)
@@ -51,6 +47,10 @@ public class CradlepointProtocolDecoder extends BaseProtocolDecoder {
             .expression("([^,]+)?,")             // ecio
             .expression("([^,]+)?")              // wan ip
             .compile();
+
+    public CradlepointProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

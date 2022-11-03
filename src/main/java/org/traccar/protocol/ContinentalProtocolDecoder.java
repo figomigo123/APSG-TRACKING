@@ -29,14 +29,13 @@ import java.util.Date;
 
 public class ContinentalProtocolDecoder extends BaseProtocolDecoder {
 
-    public ContinentalProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_KEEPALIVE = 0x00;
     public static final int MSG_STATUS = 0x02;
     public static final int MSG_ACK = 0x06;
     public static final int MSG_NACK = 0x15;
+    public ContinentalProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private double readCoordinate(ByteBuf buf, boolean extended) {
         long value = buf.readUnsignedInt();

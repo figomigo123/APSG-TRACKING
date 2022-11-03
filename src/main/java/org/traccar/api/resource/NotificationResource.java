@@ -50,7 +50,7 @@ public class NotificationResource extends ExtendedObjectResource<Notification> {
     @Path("notificators")
     public Collection<Typed> getNotificators() {
         Set<Typed> allNotificatorTypes = Context.getNotificatorManager().getAllNotificatorTypes();
-        for(Typed t:allNotificatorTypes) System.out.println(t.getType());
+        for (Typed t : allNotificatorTypes) System.out.println(t.getType());
         return allNotificatorTypes;
     }
 
@@ -85,50 +85,51 @@ public class NotificationResource extends ExtendedObjectResource<Notification> {
         });
         return newNotifications;
     }
- @Path("alarms")
+
+    @Path("alarms")
     @GET
     public List<String> getAlarms() {
-      return Arrays.asList(
-     "GENERAL"
-     ,"SOS"
-     ,"VIBRATION"
-     ,"MOVEMENT"
-     ,"LOW SPEED"
-     ,"OVER SPEED"
-     ,"FALL DOWN"
-     ,"LOW POWER"
-     ,"LOW BATTERY"
-     ,"FAULT"
-     ,"POWER OFF"
-     ,"POWER ON"
-     ,"DOOR"
-     ,"LOCK"
-     ,"UNLOCK"
-     ,"GEOFENCE"
-     ,"GEOFENCE ENTER"
-     ,"GEOFENCE EXIT"
-     ,"GPS ANTENNA CUT"
-     ,"ACCIDENT"
-     ,"TOW"
-     ,"IDLE"
-     ,"HIGH RPM"
-     ,"ACCELERATION"
-     ,"BRAKING"
-     ,"CORNERING"
-     ,"LANE CHANGE"
-     ,"FATIGUE DRIVING"
-     ,"POWER CUT"
-     ,"POWER RESTORED"
-     ,"JAMMING"
-     ,"TEMPERATURE"
-     ,"PARKING"
-     ,"SHOCK"
-     ,"BONNET"
-     ,"FOOT BRAKE"
-     ,"FUEL LEAK"
-     ,"TAMPERING"       
-     ,"REMOVING" 
-      );
+        return Arrays.asList(
+                "GENERAL"
+                , "SOS"
+                , "VIBRATION"
+                , "MOVEMENT"
+                , "LOW SPEED"
+                , "OVER SPEED"
+                , "FALL DOWN"
+                , "LOW POWER"
+                , "LOW BATTERY"
+                , "FAULT"
+                , "POWER OFF"
+                , "POWER ON"
+                , "DOOR"
+                , "LOCK"
+                , "UNLOCK"
+                , "GEOFENCE"
+                , "GEOFENCE ENTER"
+                , "GEOFENCE EXIT"
+                , "GPS ANTENNA CUT"
+                , "ACCIDENT"
+                , "TOW"
+                , "IDLE"
+                , "HIGH RPM"
+                , "ACCELERATION"
+                , "BRAKING"
+                , "CORNERING"
+                , "LANE CHANGE"
+                , "FATIGUE DRIVING"
+                , "POWER CUT"
+                , "POWER RESTORED"
+                , "JAMMING"
+                , "TEMPERATURE"
+                , "PARKING"
+                , "SHOCK"
+                , "BONNET"
+                , "FOOT BRAKE"
+                , "FUEL LEAK"
+                , "TAMPERING"
+                , "REMOVING"
+        );
     }
 
 }

@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class NeosProtocolDecoder extends BaseProtocolDecoder {
 
-    public NeosProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text(">")
             .number("(d{8}),")                   // id
@@ -58,6 +54,10 @@ public class NeosProtocolDecoder extends BaseProtocolDecoder {
             .number("xx!")
             .any()
             .compile();
+
+    public NeosProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

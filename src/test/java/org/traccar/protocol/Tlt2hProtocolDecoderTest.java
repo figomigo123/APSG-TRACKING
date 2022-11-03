@@ -29,12 +29,12 @@ public class Tlt2hProtocolDecoderTest extends ProtocolTest {
 
         verifyAttribute(decoder, text(
                 "#869260042149724#MP90_4G#0000#AUTOLOW#1\r\n" +
-                "#02201be0000$GPRMC,001645.00,A,5333.2920,N,11334.3857,W,0.03,,250419,,,A*5E\r\n"),
+                        "#02201be0000$GPRMC,001645.00,A,5333.2920,N,11334.3857,W,0.03,,250419,,,A*5E\r\n"),
                 Position.KEY_IGNITION, false);
 
         verifyPositions(decoder, text(
                 "#867962040161955#MT600#0000#0#0#137#41#0#AUTO#1\r\n" +
-                "#00019023402$GPRMC,084702.00,A,3228.6772,S,11545.9684,E,,159.80,251018,,,A*56\r\n"));
+                        "#00019023402$GPRMC,084702.00,A,3228.6772,S,11545.9684,E,,159.80,251018,,,A*56\r\n"));
 
         verifyPositions(decoder, text(
                 "#868323028789359#MT600#0000#AUTOLOW#1\r\n",

@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class M2cProtocolDecoder extends BaseProtocolDecoder {
 
-    public M2cProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("#M2C,")
             .expression("[^,]+,")                // model
@@ -63,6 +59,10 @@ public class M2cProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+.?d*),")                 // temperature
             .any()
             .compile();
+
+    public M2cProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Position decodePosition(Channel channel, SocketAddress remoteAddress, String line) {
 

@@ -122,10 +122,10 @@ public final class Summary {
     }
 
     public static Collection<SummaryReport> getObjects(long userId, Collection<Long> deviceIds,
-            Collection<Long> groupIds, Date from, Date to, boolean daily) throws SQLException {
+                                                       Collection<Long> groupIds, Date from, Date to, boolean daily) throws SQLException {
         ReportUtils.checkPeriodLimit(from, to);
         ArrayList<SummaryReport> result = new ArrayList<>();
-        for (long deviceId: ReportUtils.getDeviceList(deviceIds, groupIds)) {
+        for (long deviceId : ReportUtils.getDeviceList(deviceIds, groupIds)) {
             Context.getPermissionsManager().checkDevice(userId, deviceId);
             result.addAll(calculateSummaryResults(userId, deviceId, from, to, daily));
         }
@@ -133,8 +133,8 @@ public final class Summary {
     }
 
     public static void getExcel(OutputStream outputStream,
-            long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
-            Date from, Date to, boolean daily) throws SQLException, IOException {
+                                long userId, Collection<Long> deviceIds, Collection<Long> groupIds,
+                                Date from, Date to, boolean daily) throws SQLException, IOException {
         ReportUtils.checkPeriodLimit(from, to);
         Collection<SummaryReport> summaries = getObjects(userId, deviceIds, groupIds, from, to, daily);
 

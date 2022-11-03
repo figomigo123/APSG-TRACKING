@@ -21,6 +21,26 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
 public class CharacterDelimiterFrameDecoder extends DelimiterBasedFrameDecoder {
 
+    public CharacterDelimiterFrameDecoder(int maxFrameLength, char delimiter) {
+        super(maxFrameLength, createDelimiter(delimiter));
+    }
+
+    public CharacterDelimiterFrameDecoder(int maxFrameLength, String delimiter) {
+        super(maxFrameLength, createDelimiter(delimiter));
+    }
+
+    public CharacterDelimiterFrameDecoder(int maxFrameLength, boolean stripDelimiter, String delimiter) {
+        super(maxFrameLength, stripDelimiter, createDelimiter(delimiter));
+    }
+
+    public CharacterDelimiterFrameDecoder(int maxFrameLength, String... delimiters) {
+        super(maxFrameLength, convertDelimiters(delimiters));
+    }
+
+    public CharacterDelimiterFrameDecoder(int maxFrameLength, boolean stripDelimiter, String... delimiters) {
+        super(maxFrameLength, stripDelimiter, convertDelimiters(delimiters));
+    }
+
     private static ByteBuf createDelimiter(char delimiter) {
         byte[] buf = {(byte) delimiter};
         return Unpooled.wrappedBuffer(buf);
@@ -40,26 +60,6 @@ public class CharacterDelimiterFrameDecoder extends DelimiterBasedFrameDecoder {
             result[i] = createDelimiter(delimiters[i]);
         }
         return result;
-    }
-
-    public CharacterDelimiterFrameDecoder(int maxFrameLength, char delimiter) {
-        super(maxFrameLength, createDelimiter(delimiter));
-    }
-
-    public CharacterDelimiterFrameDecoder(int maxFrameLength, String delimiter) {
-        super(maxFrameLength, createDelimiter(delimiter));
-    }
-
-    public CharacterDelimiterFrameDecoder(int maxFrameLength, boolean stripDelimiter, String delimiter) {
-        super(maxFrameLength, stripDelimiter, createDelimiter(delimiter));
-    }
-
-    public CharacterDelimiterFrameDecoder(int maxFrameLength, String... delimiters) {
-        super(maxFrameLength, convertDelimiters(delimiters));
-    }
-
-    public CharacterDelimiterFrameDecoder(int maxFrameLength, boolean stripDelimiter, String... delimiters) {
-        super(maxFrameLength, stripDelimiter, convertDelimiters(delimiters));
     }
 
 }

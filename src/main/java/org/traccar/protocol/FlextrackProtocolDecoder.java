@@ -32,17 +32,12 @@ import java.util.regex.Pattern;
 
 public class FlextrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public FlextrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_LOGON = new PatternBuilder()
             .number("(-?d+),")                   // index
             .text("LOGON,")
             .number("(d+),")                     // node id
             .number("(d+)")                      // iccid
             .compile();
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(-?d+),")                   // index
             .text("UNITSTAT,")
@@ -66,6 +61,10 @@ public class FlextrackProtocolDecoder extends BaseProtocolDecoder {
             .number("(x+),")                     // lac
             .number("(d+)")                      // odometer
             .compile();
+
+    public FlextrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendAcknowledgement(Channel channel, SocketAddress remoteAddress, String index) {
         if (channel != null) {

@@ -1,10 +1,11 @@
 package org.traccar.handler.events;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.traccar.BaseTest;
+import org.traccar.model.DeviceState;
+import org.traccar.model.Event;
+import org.traccar.model.Position;
+import org.traccar.reports.model.TripsConfig;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,12 +14,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.traccar.BaseTest;
-import org.traccar.model.DeviceState;
-import org.traccar.model.Event;
-import org.traccar.model.Position;
-import org.traccar.reports.model.TripsConfig;
+import static org.junit.Assert.*;
 
 public class MotionEventHandlerTest extends BaseTest {
 
@@ -50,7 +46,7 @@ public class MotionEventHandlerTest extends BaseTest {
         assertNull(events);
 
         nextPosition.set(Position.KEY_TOTAL_DISTANCE, 600);
-        events = motionEventHandler.updateMotionState(deviceState, nextPosition);        
+        events = motionEventHandler.updateMotionState(deviceState, nextPosition);
         assertNotNull(events);
         Event event = events.keySet().iterator().next();
         assertEquals(Event.TYPE_DEVICE_MOVING, event.getType());

@@ -54,26 +54,26 @@ public class GeolocationHandler extends ChannelInboundHandlerAdapter {
 
                 geolocationProvider.getLocation(position.getNetwork(),
                         new GeolocationProvider.LocationProviderCallback() {
-                    @Override
-                    public void onSuccess(double latitude, double longitude, double accuracy) {
-                        position.set(Position.KEY_APPROXIMATE, true);
-                        position.setValid(true);
-                        position.setFixTime(position.getDeviceTime());
-                        position.setLatitude(latitude);
-                        position.setLongitude(longitude);
-                        position.setAccuracy(accuracy);
-                        position.setAltitude(0);
-                        position.setSpeed(0);
-                        position.setCourse(0);
-                        ctx.fireChannelRead(position);
-                    }
+                            @Override
+                            public void onSuccess(double latitude, double longitude, double accuracy) {
+                                position.set(Position.KEY_APPROXIMATE, true);
+                                position.setValid(true);
+                                position.setFixTime(position.getDeviceTime());
+                                position.setLatitude(latitude);
+                                position.setLongitude(longitude);
+                                position.setAccuracy(accuracy);
+                                position.setAltitude(0);
+                                position.setSpeed(0);
+                                position.setCourse(0);
+                                ctx.fireChannelRead(position);
+                            }
 
-                    @Override
-                    public void onFailure(Throwable e) {
-                        LOGGER.warn("Geolocation network error", e);
-                        ctx.fireChannelRead(position);
-                    }
-                });
+                            @Override
+                            public void onFailure(Throwable e) {
+                                LOGGER.warn("Geolocation network error", e);
+                                ctx.fireChannelRead(position);
+                            }
+                        });
             } else {
                 ctx.fireChannelRead(position);
             }

@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class CarscopProtocolDecoder extends BaseProtocolDecoder {
 
-    public CarscopProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("*")
             .any()
@@ -50,6 +46,10 @@ public class CarscopProtocolDecoder extends BaseProtocolDecoder {
             .number("L(d{6})")                   // odometer
             .groupEnd("?")
             .compile();
+
+    public CarscopProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

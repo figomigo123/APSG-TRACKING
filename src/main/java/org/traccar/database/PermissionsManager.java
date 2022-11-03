@@ -34,15 +34,12 @@ public class PermissionsManager {
 
     private final DataManager dataManager;
     private final UsersManager usersManager;
-
-    private volatile Server server;
-
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-
     private final Map<Long, Set<Long>> groupPermissions = new HashMap<>();
     private final Map<Long, Set<Long>> devicePermissions = new HashMap<>();
     private final Map<Long, Set<Long>> deviceUsers = new HashMap<>();
     private final Map<Long, Set<Long>> groupDevices = new HashMap<>();
+    private volatile Server server;
 
     public PermissionsManager(DataManager dataManager, UsersManager usersManager) {
         this.dataManager = dataManager;
@@ -156,6 +153,7 @@ public class PermissionsManager {
                 GroupTree groupTree = new GroupTree(Context.getGroupsManager().getItems(
                         Context.getGroupsManager().getAllItems()),
                         Context.getDeviceManager().getAllDevices());
+
                 for (Permission groupPermission : dataManager.getPermissions(User.class, Group.class)) {
                     Set<Long> userGroupPermissions = getGroupPermissions(groupPermission.getOwnerId());
                     Set<Long> userDevicePermissions = getDevicePermissions(groupPermission.getOwnerId());
@@ -163,9 +161,9 @@ public class PermissionsManager {
                     for (Group group : groupTree.getGroups(groupPermission.getPropertyId())) {
                         userGroupPermissions.add(group.getId());
                     }
-                    for (Device device : groupTree.getDevices(groupPermission.getPropertyId())) {
-                        userDevicePermissions.add(device.getId());
-                    }
+//                    for (Device device : groupTree.getDevices(groupPermission.getPropertyId())) {
+//                        userDevicePermissions.add(device.getId());
+//                    }
                 }
 
                 for (Permission devicePermission : dataManager.getPermissions(User.class, Device.class)) {

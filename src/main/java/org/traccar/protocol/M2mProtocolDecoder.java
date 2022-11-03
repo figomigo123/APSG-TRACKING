@@ -27,11 +27,11 @@ import java.net.SocketAddress;
 
 public class M2mProtocolDecoder extends BaseProtocolDecoder {
 
+    private boolean firstPacket = true;
+
     public M2mProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    private boolean firstPacket = true;
 
     @Override
     protected Object decode(

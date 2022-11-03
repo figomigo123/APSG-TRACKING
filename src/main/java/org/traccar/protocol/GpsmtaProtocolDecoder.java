@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class GpsmtaProtocolDecoder extends BaseProtocolDecoder {
 
-    public GpsmtaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("([^ ]+) ")              // uid
             .number("(d+) ")                     // time (unix time)
@@ -49,6 +45,10 @@ public class GpsmtaProtocolDecoder extends BaseProtocolDecoder {
             .number("(d)")                       // charging status
             .any()
             .compile();
+
+    public GpsmtaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

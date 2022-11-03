@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class DishaProtocolDecoder extends BaseProtocolDecoder {
 
-    public DishaProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$A#A#")
             .number("(d+)#")                     // imei
@@ -56,6 +52,10 @@ public class DishaProtocolDecoder extends BaseProtocolDecoder {
             .expression("([01]+)")               // digital inputs
             .text("*")
             .compile();
+
+    public DishaProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

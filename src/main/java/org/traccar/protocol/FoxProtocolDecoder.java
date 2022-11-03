@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class FoxProtocolDecoder extends BaseProtocolDecoder {
 
-    public FoxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // status id
             .expression("([AV]),")               // validity
@@ -56,6 +52,10 @@ public class FoxProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // odometer
             .expression("(.+)")                  // status info
             .compile();
+
+    public FoxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String getAttribute(String xml, String key) {
         int start = xml.indexOf(key + "=\"");

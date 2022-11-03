@@ -36,12 +36,6 @@ import java.util.regex.Pattern;
 
 public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
 
-    private ByteBuf photo;
-
-    public MeitrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$$").expression(".")          // flag
             .number("d+,")                       // length
@@ -92,6 +86,11 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
             .number("xx")
             .text("\r\n").optional()
             .compile();
+    private ByteBuf photo;
+
+    public MeitrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int event) {
         switch (event) {
@@ -526,10 +525,10 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
                 }
 
                 index = index + 1 + type.length() + 1;
-                int endIndex =  buf.indexOf(index, buf.writerIndex(), (byte) ',');
+                int endIndex = buf.indexOf(index, buf.writerIndex(), (byte) ',');
                 String file = buf.toString(index, endIndex - index, StandardCharsets.US_ASCII);
                 index = endIndex + 1;
-                endIndex =  buf.indexOf(index, buf.writerIndex(), (byte) ',');
+                endIndex = buf.indexOf(index, buf.writerIndex(), (byte) ',');
                 int total = Integer.parseInt(buf.toString(index, endIndex - index, StandardCharsets.US_ASCII));
                 index = endIndex + 1;
                 endIndex = buf.indexOf(index, buf.writerIndex(), (byte) ',');

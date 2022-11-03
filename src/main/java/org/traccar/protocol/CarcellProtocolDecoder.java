@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class CarcellProtocolDecoder extends BaseProtocolDecoder {
 
-    public CarcellProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("([$%])")                // memory flag
             .number("(d+),")                     // imei
@@ -76,6 +72,10 @@ public class CarcellProtocolDecoder extends BaseProtocolDecoder {
             .number("(xx)")                      // crc
             .any()                               // full format
             .compile();
+
+    public CarcellProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

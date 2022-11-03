@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class RitiProtocolDecoder extends BaseProtocolDecoder {
 
-    public RitiProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$GPRMC,")
             .number("(dd)(dd)(dd).?d*,")         // time (hhmmss)
@@ -48,6 +44,10 @@ public class RitiProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .any()
             .compile();
+
+    public RitiProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

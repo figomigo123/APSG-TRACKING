@@ -32,10 +32,6 @@ import java.util.Date;
 
 public class ObdDongleProtocolDecoder extends BaseProtocolDecoder {
 
-    public ObdDongleProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_TYPE_CONNECT = 0x01;
     public static final int MSG_TYPE_CONNACK = 0x02;
     public static final int MSG_TYPE_PUBLISH = 0x03;
@@ -43,6 +39,9 @@ public class ObdDongleProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_TYPE_PINGREQ = 0x0C;
     public static final int MSG_TYPE_PINGRESP = 0x0D;
     public static final int MSG_TYPE_DISCONNECT = 0x0E;
+    public ObdDongleProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static void sendResponse(Channel channel, int type, int index, String imei, ByteBuf content) {
         if (channel != null) {

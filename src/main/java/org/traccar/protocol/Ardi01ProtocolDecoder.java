@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class Ardi01ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Ardi01ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(d+),")                     // imei
             .number("(dddd)(dd)(dd)")            // date (yyyymmdd)
@@ -47,6 +43,10 @@ public class Ardi01ProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // battery
             .number("(-?d+)")                    // temperature
             .compile();
+
+    public Ardi01ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

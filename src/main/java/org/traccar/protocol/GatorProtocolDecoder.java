@@ -32,10 +32,6 @@ import java.net.SocketAddress;
 
 public class GatorProtocolDecoder extends BaseProtocolDecoder {
 
-    public GatorProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_HEARTBEAT = 0x21;
     public static final int MSG_POSITION_DATA = 0x80;
     public static final int MSG_ROLLCALL_RESPONSE = 0x81;
@@ -47,6 +43,9 @@ public class GatorProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_PICTURE_FRAME = 0x54;
     public static final int MSG_CAMERA_RESPONSE = 0x56;
     public static final int MSG_PICTURE_DATA = 0x57;
+    public GatorProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     public static String decodeId(int b1, int b2, int b3, int b4) {
 

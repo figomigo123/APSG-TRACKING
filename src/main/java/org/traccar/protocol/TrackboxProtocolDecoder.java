@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class TrackboxProtocolDecoder extends BaseProtocolDecoder {
 
-    public TrackboxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .number("(dd)(dd)(dd).(ddd),")       // time (hhmmss.sss)
             .number("(dd)(dd.dddd)([NS]),")      // latitude
@@ -47,6 +43,10 @@ public class TrackboxProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd),")             // date (ddmmyy)
             .number("(d+)")                      // satellites
             .compile();
+
+    public TrackboxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress) {
         if (channel != null) {

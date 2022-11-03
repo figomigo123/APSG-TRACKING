@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class AlematicsProtocolDecoder extends BaseProtocolDecoder {
 
-    public AlematicsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$T,")
             .number("(d+),")                     // type
@@ -65,6 +61,10 @@ public class AlematicsProtocolDecoder extends BaseProtocolDecoder {
             .any()
             .groupEnd()
             .compile();
+
+    public AlematicsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeExtras(Position position, Parser parser) {
 

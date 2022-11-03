@@ -36,6 +36,28 @@ import java.util.List;
 
 public class Gl200BinaryProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_RSP_LCB = 3;
+    public static final int MSG_RSP_GEO = 8;
+    public static final int MSG_RSP_COMPRESSED = 100;
+    public static final int MSG_EVT_BPL = 6;
+    public static final int MSG_EVT_VGN = 45;
+    public static final int MSG_EVT_VGF = 46;
+    public static final int MSG_EVT_UPD = 15;
+    public static final int MSG_EVT_IDF = 17;
+    public static final int MSG_EVT_GSS = 21;
+    public static final int MSG_EVT_GES = 26;
+    public static final int MSG_EVT_GPJ = 31;
+    public static final int MSG_EVT_RMD = 35;
+    public static final int MSG_EVT_JDS = 33;
+    public static final int MSG_EVT_CRA = 23;
+    public static final int MSG_EVT_UPC = 34;
+    public static final int MSG_INF_GPS = 2;
+    public static final int MSG_INF_CID = 4;
+    public static final int MSG_INF_CSQ = 5;
+    public static final int MSG_INF_VER = 6;
+    public static final int MSG_INF_BAT = 7;
+    public static final int MSG_INF_TMZ = 9;
+    public static final int MSG_INF_GIR = 10;
     public Gl200BinaryProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
@@ -46,10 +68,6 @@ public class Gl200BinaryProtocolDecoder extends BaseProtocolDecoder {
                 .setTime(buf.readUnsignedByte(), buf.readUnsignedByte(), buf.readUnsignedByte());
         return dateBuilder.getDate();
     }
-
-    public static final int MSG_RSP_LCB = 3;
-    public static final int MSG_RSP_GEO = 8;
-    public static final int MSG_RSP_COMPRESSED = 100;
 
     private List<Position> decodeLocation(Channel channel, SocketAddress remoteAddress, ByteBuf buf) {
 
@@ -85,7 +103,7 @@ public class Gl200BinaryProtocolDecoder extends BaseProtocolDecoder {
 
         if (type == MSG_RSP_LCB) {
             buf.readUnsignedByte(); // phone length
-            for (int b = buf.readUnsignedByte();; b = buf.readUnsignedByte()) {
+            for (int b = buf.readUnsignedByte(); ; b = buf.readUnsignedByte()) {
                 if ((b & 0xf) == 0xf || (b & 0xf0) == 0xf0) {
                     break;
                 }
@@ -190,19 +208,6 @@ public class Gl200BinaryProtocolDecoder extends BaseProtocolDecoder {
         return positions;
     }
 
-    public static final int MSG_EVT_BPL = 6;
-    public static final int MSG_EVT_VGN = 45;
-    public static final int MSG_EVT_VGF = 46;
-    public static final int MSG_EVT_UPD = 15;
-    public static final int MSG_EVT_IDF = 17;
-    public static final int MSG_EVT_GSS = 21;
-    public static final int MSG_EVT_GES = 26;
-    public static final int MSG_EVT_GPJ = 31;
-    public static final int MSG_EVT_RMD = 35;
-    public static final int MSG_EVT_JDS = 33;
-    public static final int MSG_EVT_CRA = 23;
-    public static final int MSG_EVT_UPC = 34;
-
     private Position decodeEvent(Channel channel, SocketAddress remoteAddress, ByteBuf buf) {
 
         Position position = new Position(getProtocolName());
@@ -300,14 +305,6 @@ public class Gl200BinaryProtocolDecoder extends BaseProtocolDecoder {
 
         return position;
     }
-
-    public static final int MSG_INF_GPS = 2;
-    public static final int MSG_INF_CID = 4;
-    public static final int MSG_INF_CSQ = 5;
-    public static final int MSG_INF_VER = 6;
-    public static final int MSG_INF_BAT = 7;
-    public static final int MSG_INF_TMZ = 9;
-    public static final int MSG_INF_GIR = 10;
 
     private Position decodeInformation(Channel channel, SocketAddress remoteAddress, ByteBuf buf) {
 

@@ -29,28 +29,22 @@ import java.util.List;
 public final class LogAction {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogAction.class);
-
-    private LogAction() {
-    }
-
     private static final String ACTION_CREATE = "create";
     private static final String ACTION_EDIT = "edit";
     private static final String ACTION_REMOVE = "remove";
-
     private static final String ACTION_LINK = "link";
     private static final String ACTION_UNLINK = "unlink";
-
     private static final String ACTION_LOGIN = "login";
     private static final String ACTION_LOGOUT = "logout";
-
     private static final String ACTION_DEVICE_ACCUMULATORS = "resetDeviceAccumulators";
-
     private static final String PATTERN_OBJECT = "user: %d, action: %s, object: %s, id: %d";
     private static final String PATTERN_LINK = "user: %d, action: %s, owner: %s, id: %d, property: %s, id: %d";
     private static final String PATTERN_LOGIN = "user: %d, action: %s";
     private static final String PATTERN_LOGIN_FAILED = "login failed from: %s";
     private static final String PATTERN_DEVICE_ACCUMULATORS = "user: %d, action: %s, deviceId: %d";
     private static final String PATTERN_REPORT = "user: %d, report: %s, from: %s, to: %s, devices: %s, groups: %s";
+    private LogAction() {
+    }
 
     public static void create(long userId, BaseModel object) {
         logObjectAction(ACTION_CREATE, userId, object.getClass(), object.getId());

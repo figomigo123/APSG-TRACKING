@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class HaicomProtocolDecoder extends BaseProtocolDecoder {
 
-    public HaicomProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$GPRS")
             .number("(d+),")                     // imei
@@ -53,6 +49,10 @@ public class HaicomProtocolDecoder extends BaseProtocolDecoder {
             .number("#V(d+)")                    // battery
             .any()
             .compile();
+
+    public HaicomProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

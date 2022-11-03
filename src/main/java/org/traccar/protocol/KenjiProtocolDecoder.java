@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class KenjiProtocolDecoder extends BaseProtocolDecoder {
 
-    public KenjiProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text(">")
             .number("C(d{6}),")                  // device id
@@ -50,6 +46,10 @@ public class KenjiProtocolDecoder extends BaseProtocolDecoder {
             .number("G(d+)")                     // satellites
             .any()
             .compile();
+
+    public KenjiProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(int value) {
         if (BitUtil.check(value, 2)) {

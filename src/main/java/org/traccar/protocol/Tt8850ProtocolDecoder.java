@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class Tt8850ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Tt8850ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .binary("0004,")
             .number("xxxx,")
@@ -60,6 +56,10 @@ public class Tt8850ProtocolDecoder extends BaseProtocolDecoder {
             .number("(dd)(dd)(dd),")             // time (hhmmss)
             .number("(xxxx)")
             .compile();
+
+    public Tt8850ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -18,11 +18,10 @@ package org.traccar.helper;
 
 public final class DistanceCalculator {
 
-    private DistanceCalculator() {
-    }
-
     private static final double EQUATORIAL_EARTH_RADIUS = 6378.1370;
     private static final double DEG_TO_RAD = Math.PI / 180;
+    private DistanceCalculator() {
+    }
 
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
         double dlong = (lon2 - lon1) * DEG_TO_RAD;

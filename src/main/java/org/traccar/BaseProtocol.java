@@ -34,13 +34,13 @@ public abstract class BaseProtocol implements Protocol {
 
     private StringProtocolEncoder textCommandEncoder = null;
 
+    public BaseProtocol() {
+        name = nameFromClass(getClass());
+    }
+
     public static String nameFromClass(Class<?> clazz) {
         String className = clazz.getSimpleName();
         return className.substring(0, className.length() - 8).toLowerCase();
-    }
-
-    public BaseProtocol() {
-        name = nameFromClass(getClass());
     }
 
     @Override
@@ -57,14 +57,6 @@ public abstract class BaseProtocol implements Protocol {
         return serverList;
     }
 
-    public void setSupportedDataCommands(String... commands) {
-        supportedDataCommands.addAll(Arrays.asList(commands));
-    }
-
-    public void setSupportedTextCommands(String... commands) {
-        supportedTextCommands.addAll(Arrays.asList(commands));
-    }
-
     @Override
     public Collection<String> getSupportedDataCommands() {
         Set<String> commands = new HashSet<>(supportedDataCommands);
@@ -72,13 +64,23 @@ public abstract class BaseProtocol implements Protocol {
         return commands;
     }
 
+    public void setSupportedDataCommands(String... commands) {
+        supportedDataCommands.addAll(Arrays.asList(commands));
+    }
+
     @Override
     public Collection<String> getSupportedTextCommands() {
         Set<String> commands = new HashSet<>(supportedTextCommands);
         commands.add(Command.TYPE_CUSTOM);
         System.out.println("supportedTextCommands : ");
-        commands.forEach(a->{ System.out.println("- "+a);});
+        commands.forEach(a -> {
+            System.out.println("- " + a);
+        });
         return commands;
+    }
+
+    public void setSupportedTextCommands(String... commands) {
+        supportedTextCommands.addAll(Arrays.asList(commands));
     }
 
     @Override

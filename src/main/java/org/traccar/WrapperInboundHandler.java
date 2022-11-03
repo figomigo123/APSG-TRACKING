@@ -22,12 +22,12 @@ public class WrapperInboundHandler implements ChannelInboundHandler {
 
     private final ChannelInboundHandler handler;
 
-    public ChannelInboundHandler getWrappedHandler() {
-        return handler;
-    }
-
     public WrapperInboundHandler(ChannelInboundHandler handler) {
         this.handler = handler;
+    }
+
+    public ChannelInboundHandler getWrappedHandler() {
+        return handler;
     }
 
     @Override

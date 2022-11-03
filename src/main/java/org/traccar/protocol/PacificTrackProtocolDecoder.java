@@ -169,7 +169,7 @@ public class PacificTrackProtocolDecoder extends BaseProtocolDecoder {
                                     buf.readUnsignedShort();
                                     break;
                             }
-                        }  else if (fieldPrefix < 0b111) {
+                        } else if (fieldPrefix < 0b111) {
                             switch (BitUtil.to(field, 5)) {
                                 case 0b00000:
                                     position.set(Position.KEY_ODOMETER, buf.readUnsignedInt() * 100);

@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class TmgProtocolDecoder extends BaseProtocolDecoder {
 
-    public TmgProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$")
             .expression("(...),")                // type
@@ -83,6 +79,10 @@ public class TmgProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd()
             .any()
             .compile();
+
+    public TmgProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

@@ -31,15 +31,14 @@ import java.nio.charset.StandardCharsets;
 
 public class NyitechProtocolDecoder extends BaseProtocolDecoder {
 
-    public NyitechProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final short MSG_LOGIN = 0x1001;
     public static final short MSG_COMPREHENSIVE_LIVE = 0x2001;
     public static final short MSG_COMPREHENSIVE_HISTORY = 0x2002;
     public static final short MSG_ALARM = 0x2003;
     public static final short MSG_FIXED = 0x2004;
+    public NyitechProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void decodeLocation(Position position, ByteBuf buf) {
 

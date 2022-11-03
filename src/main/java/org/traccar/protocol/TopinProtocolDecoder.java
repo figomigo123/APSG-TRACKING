@@ -38,10 +38,6 @@ import java.util.TimeZone;
 
 public class TopinProtocolDecoder extends BaseProtocolDecoder {
 
-    public TopinProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_LOGIN = 0x01;
     public static final int MSG_GPS_2 = 0x08;
     public static final int MSG_GPS_OFFLINE_2 = 0x09;
@@ -51,6 +47,9 @@ public class TopinProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_WIFI_OFFLINE = 0x17;
     public static final int MSG_TIME_UPDATE = 0x30;
     public static final int MSG_WIFI = 0x69;
+    public TopinProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int length, int type, ByteBuf content) {
         if (channel != null) {

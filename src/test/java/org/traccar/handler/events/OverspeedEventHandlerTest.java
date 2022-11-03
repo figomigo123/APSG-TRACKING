@@ -1,17 +1,5 @@
 package org.traccar.handler.events;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.junit.Test;
 import org.traccar.BaseTest;
 import org.traccar.config.Config;
@@ -20,7 +8,16 @@ import org.traccar.model.DeviceState;
 import org.traccar.model.Event;
 import org.traccar.model.Position;
 
-public class OverspeedEventHandlerTest  extends BaseTest {
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static org.junit.Assert.*;
+
+public class OverspeedEventHandlerTest extends BaseTest {
 
     private Date date(String time) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -117,7 +114,7 @@ public class OverspeedEventHandlerTest  extends BaseTest {
     public void testOverspeedEventHandler() throws Exception {
         testOverspeedWithPosition(false, 0);
         testOverspeedWithPosition(true, 0);
-        
+
         testOverspeedWithPosition(false, 1);
         testOverspeedWithPosition(true, 1);
 

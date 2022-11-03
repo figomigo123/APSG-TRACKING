@@ -41,10 +41,6 @@ import java.util.regex.Pattern;
 
 public class MictrackProtocolDecoder extends BaseProtocolDecoder {
 
-    public MictrackProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_LOW_ALTITUDE = new PatternBuilder()
             .number("(dd)(dd)(dd).d+,")          // time (hhmmss.sss)
             .expression("([AV]),")               // validity
@@ -57,6 +53,10 @@ public class MictrackProtocolDecoder extends BaseProtocolDecoder {
             .number("(-?d+.?d*)?,")              // altitude
             .number("(dd)(dd)(dd)")              // date (ddmmyy)
             .compile();
+
+    public MictrackProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Date decodeTime(String data) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");

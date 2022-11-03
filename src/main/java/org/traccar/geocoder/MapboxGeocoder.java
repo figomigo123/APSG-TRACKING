@@ -21,12 +21,12 @@ import javax.json.JsonString;
 
 public class MapboxGeocoder extends JsonGeocoder {
 
-    private static String formatUrl(String key) {
-        return "https://api.mapbox.com/geocoding/v5/mapbox.places/%2$f,%1$f.json?access_token=" + key;
-    }
-
     public MapboxGeocoder(String key, int cacheSize, AddressFormat addressFormat) {
         super(formatUrl(key), cacheSize, addressFormat);
+    }
+
+    private static String formatUrl(String key) {
+        return "https://api.mapbox.com/geocoding/v5/mapbox.places/%2$f,%1$f.json?access_token=" + key;
     }
 
     @Override

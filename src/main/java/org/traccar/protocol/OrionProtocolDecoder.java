@@ -31,12 +31,11 @@ import java.util.List;
 
 public class OrionProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_USERLOG = 0;
+    public static final int MSG_SYSLOG = 3;
     public OrionProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_USERLOG = 0;
-    public static final int MSG_SYSLOG = 3;
 
     private static void sendResponse(Channel channel, ByteBuf buf) {
         if (channel != null) {

@@ -33,14 +33,13 @@ import java.nio.charset.StandardCharsets;
 
 public class OigoProtocolDecoder extends BaseProtocolDecoder {
 
+    public static final int MSG_AR_LOCATION = 0x00;
+    public static final int MSG_AR_REMOTE_START = 0x10;
+    public static final int MSG_ACKNOWLEDGEMENT = 0xE0;
+
     public OigoProtocolDecoder(Protocol protocol) {
         super(protocol);
     }
-
-    public static final int MSG_AR_LOCATION = 0x00;
-    public static final int MSG_AR_REMOTE_START = 0x10;
-
-    public static final int MSG_ACKNOWLEDGEMENT = 0xE0;
 
     private Position decodeArMessage(Channel channel, SocketAddress remoteAddress, ByteBuf buf) {
 

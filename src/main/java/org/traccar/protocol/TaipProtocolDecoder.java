@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class TaipProtocolDecoder extends BaseProtocolDecoder {
 
-    public TaipProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .groupBegin()
             .expression("R[EP]V")                // type
@@ -99,6 +95,10 @@ public class TaipProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd()
             .any()
             .compile();
+
+    public TaipProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Date getTime(long week, long day, long seconds) {
         DateBuilder dateBuilder = new DateBuilder()

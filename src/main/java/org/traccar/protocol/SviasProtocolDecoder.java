@@ -31,10 +31,6 @@ import java.util.regex.Pattern;
 
 public class SviasProtocolDecoder extends BaseProtocolDecoder {
 
-    public SviasProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("[")                           // delimiter
             .number("d{4},")                     // hardware version
@@ -58,6 +54,10 @@ public class SviasProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+),")                     // rssi
             .any()
             .compile();
+
+    public SviasProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(Channel channel, SocketAddress remoteAddress, Object msg)

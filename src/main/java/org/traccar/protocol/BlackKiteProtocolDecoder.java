@@ -32,10 +32,6 @@ import java.util.*;
 
 public class BlackKiteProtocolDecoder extends BaseProtocolDecoder {
 
-    public BlackKiteProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final int TAG_IMEI = 0x03;
     private static final int TAG_DATE = 0x20;
     private static final int TAG_COORDINATES = 0x30;
@@ -51,6 +47,9 @@ public class BlackKiteProtocolDecoder extends BaseProtocolDecoder {
     private static final int TAG_XT1 = 0x60;
     private static final int TAG_XT2 = 0x61;
     private static final int TAG_XT3 = 0x62;
+    public BlackKiteProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, int checksum) {
         if (channel != null) {

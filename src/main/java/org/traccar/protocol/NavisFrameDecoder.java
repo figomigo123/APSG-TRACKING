@@ -59,7 +59,7 @@ public class NavisFrameDecoder extends BaseFrameDecoder {
                 switch (type) {
                     // FLEX 1.0
                     case "~A":
-                        length = flexDataSize  * buf.getByte(buf.readerIndex() + FLEX_HEADER_LENGTH) + 1 + 1;
+                        length = flexDataSize * buf.getByte(buf.readerIndex() + FLEX_HEADER_LENGTH) + 1 + 1;
                         break;
                     case "~T":
                         length = flexDataSize + 4 + 1;

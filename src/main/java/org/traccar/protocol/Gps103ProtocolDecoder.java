@@ -30,13 +30,6 @@ import java.util.regex.Pattern;
 
 public class Gps103ProtocolDecoder extends BaseProtocolDecoder {
 
-    private int photoPackets = 0;
-    private ByteBuf photo;
-
-    public Gps103ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("imei:")
             .number("(d+),")                     // imei
@@ -80,7 +73,6 @@ public class Gps103ProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd()
             .any()
             .compile();
-
     private static final Pattern PATTERN_OBD = new PatternBuilder()
             .text("imei:")
             .number("(d+),")                     // imei
@@ -100,7 +92,6 @@ public class Gps103ProtocolDecoder extends BaseProtocolDecoder {
             .number("([^;]*)")                   // dtcs
             .any()
             .compile();
-
     private static final Pattern PATTERN_ALT = new PatternBuilder()
             .text("imei:")
             .number("(d+),")                     // imei
@@ -124,6 +115,12 @@ public class Gps103ProtocolDecoder extends BaseProtocolDecoder {
             .expression("(?:-+|(.+))")           // error
             .any()
             .compile();
+    private int photoPackets = 0;
+    private ByteBuf photo;
+
+    public Gps103ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(String value) {
         if (value.startsWith("T:")) {

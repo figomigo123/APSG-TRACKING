@@ -19,6 +19,10 @@ import javax.json.JsonObject;
 
 public class NominatimGeocoder extends JsonGeocoder {
 
+    public NominatimGeocoder(String url, String key, String language, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url, key, language), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url, String key, String language) {
         if (url == null) {
             url = "https://nominatim.openstreetmap.org/reverse";
@@ -31,10 +35,6 @@ public class NominatimGeocoder extends JsonGeocoder {
             url += "&accept-language=" + language;
         }
         return url;
-    }
-
-    public NominatimGeocoder(String url, String key, String language, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url, key, language), cacheSize, addressFormat);
     }
 
     @Override

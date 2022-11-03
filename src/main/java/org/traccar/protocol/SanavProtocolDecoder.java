@@ -30,10 +30,6 @@ import java.util.regex.Pattern;
 
 public class SanavProtocolDecoder extends BaseProtocolDecoder {
 
-    public SanavProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("imei[:=]")
             .number("(d+)")                      // imei
@@ -57,6 +53,10 @@ public class SanavProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd("?")
             .any()
             .compile();
+
+    public SanavProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

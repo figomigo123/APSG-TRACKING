@@ -36,6 +36,11 @@ public class LandmarkResource extends BaseResource {
     public Collection<Landmark> get() throws SQLException {
         return Context.getDataManager().getUserLandmarks(getUserId());
     }
+    @Path("view")
+    @GET
+    public Collection<Landmark> getview() throws SQLException {
+        return Context.getDataManager().getUserLandmarks(getUserId());
+    }
 
     @Path("{id}")
     @GET
@@ -45,16 +50,28 @@ public class LandmarkResource extends BaseResource {
 
     @PermitAll
     @POST
-    public Response add(Landmark entity) throws SQLException {
+    public long add(Landmark entity) throws SQLException {
+System.out.println(entity.toString());
         if (entity != null)
+            entity.setUserid(getUserId());
+        if(entity.getDescription()==null)entity.setDescription("");
             Context.getDataManager().addObject(entity);
-
-        return Response.ok().build();
+      //  return Response.ok().build();
+        return getUserId();
     }
 
-
+    @Path("{id}")
     @PUT
-    public Response update(Landmark entity) throws SQLException {
+    public Response update(@PathParam("id") long id,Landmark entity) throws SQLException {
+        entity.setId(id);
+        entity.setUserid(getUserId());
+        if(entity.getLatitude()==0&&entity.getLongitude()==0){
+            Landmark single = getSingle(id);
+            entity.setLongitude(single.getLongitude());
+            entity.setLatitude(single.getLatitude());
+
+        }
+
         Context.getDataManager().updateObject(entity);
         return Response.noContent().build();
     }

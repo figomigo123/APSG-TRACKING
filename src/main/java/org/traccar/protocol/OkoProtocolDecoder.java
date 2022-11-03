@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class OkoProtocolDecoder extends BaseProtocolDecoder {
 
-    public OkoProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("{")
             .number("(d{15}),").optional()       // imei
@@ -53,6 +49,10 @@ public class OkoProtocolDecoder extends BaseProtocolDecoder {
             .number(",(xx)").optional()          // io
             .any()
             .compile();
+
+    public OkoProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private double decodeVoltage(Parser parser) {
         String value = parser.next();

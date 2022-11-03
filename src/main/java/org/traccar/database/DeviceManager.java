@@ -33,14 +33,11 @@ public class DeviceManager extends BaseObjectManager<Device> implements Identity
 
     private final Config config;
     private final long dataRefreshDelay;
-
+    private final AtomicLong devicesLastUpdate = new AtomicLong();
+    private final Map<Long, Position> positions = new ConcurrentHashMap<>();
+    private final Map<Long, DeviceState> deviceStates = new ConcurrentHashMap<>();
     private Map<String, Device> devicesByUniqueId;
     private Map<String, Device> devicesByPhone;
-    private final AtomicLong devicesLastUpdate = new AtomicLong();
-
-    private final Map<Long, Position> positions = new ConcurrentHashMap<>();
-
-    private final Map<Long, DeviceState> deviceStates = new ConcurrentHashMap<>();
 
     public DeviceManager(DataManager dataManager) {
         super(dataManager, Device.class);
@@ -250,7 +247,7 @@ public class DeviceManager extends BaseObjectManager<Device> implements Identity
     protected void addNewItem(Device device) {
         super.addNewItem(device);
         addByUniqueId(device);
-        if (device.getPhone() != null  && !device.getPhone().isEmpty()) {
+        if (device.getPhone() != null && !device.getPhone().isEmpty()) {
             addByPhone(device);
         }
         if (Context.getGeofenceManager() != null) {
@@ -353,7 +350,7 @@ public class DeviceManager extends BaseObjectManager<Device> implements Identity
 
         if (Context.getPermissionsManager() != null) {
             for (long deviceId : Context.getPermissionsManager().getUserAdmin(userId)
-                    ? getAllUserItems(userId) : getUserItems(userId)) {
+                    ? getAllItems() : getUserItems(userId)) {
                 if (positions.containsKey(deviceId)) {
                     result.add(positions.get(deviceId));
                 }

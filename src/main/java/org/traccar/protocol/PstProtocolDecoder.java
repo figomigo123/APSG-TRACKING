@@ -32,13 +32,12 @@ import java.util.Date;
 
 public class PstProtocolDecoder extends BaseProtocolDecoder {
 
-    public PstProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_ACK = 0x00;
     public static final int MSG_STATUS = 0x05;
     public static final int MSG_COMMAND = 0x06;
+    public PstProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private Date readDate(ByteBuf buf) {
         long value = buf.readUnsignedInt();

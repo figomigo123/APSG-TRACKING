@@ -29,10 +29,6 @@ import java.util.regex.Pattern;
 
 public class SiwiProtocolDecoder extends BaseProtocolDecoder {
 
-    public SiwiProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$").expression("[A-Z]+,")     // header
             .number("(d+),")                     // device id
@@ -69,6 +65,10 @@ public class SiwiProtocolDecoder extends BaseProtocolDecoder {
             .expression("([^,]+),")              // sw version
             .any()
             .compile();
+
+    public SiwiProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

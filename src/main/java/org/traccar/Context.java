@@ -45,76 +45,81 @@ import java.util.Properties;
 
 public final class Context {
 
+    private static Config config;
+    private static ObjectMapper objectMapper;
+    private static IdentityManager identityManager;
+    private static DataManager dataManager;
+    private static LdapProvider ldapProvider;
+    private static MailManager mailManager;
+    private static MediaManager mediaManager;
+    private static UsersManager usersManager;
+    private static GroupsManager groupsManager;
+    private static DeviceManager deviceManager;
+    private static ConnectionManager connectionManager;
+    private static PermissionsManager permissionsManager;
+    private static WebServer webServer;
+    private static ServerManager serverManager;
+    private static ScheduleManager scheduleManager;
+    private static GeofenceManager geofenceManager;
+    private static CalendarManager calendarManager;
+    private static NotificationManager notificationManager;
+    private static NotificatorManager notificatorManager;
+    private static VelocityEngine velocityEngine;
+    private static Client client = ClientBuilder.newClient();
+    private static EventForwarder eventForwarder;
+    private static AttributesManager attributesManager;
+    private static DriversManager driversManager;
+    private static CommandsManager commandsManager;
+    private static MaintenancesManager maintenancesManager;
+    private static SmsManager smsManager;
+    private static TripsConfig tripsConfig;
+
     private Context() {
     }
-
-    private static Config config;
 
     public static Config getConfig() {
         return config;
     }
 
-    private static ObjectMapper objectMapper;
-
     public static ObjectMapper getObjectMapper() {
         return objectMapper;
     }
-
-    private static IdentityManager identityManager;
 
     public static IdentityManager getIdentityManager() {
         return identityManager;
     }
 
-    private static DataManager dataManager;
-
     public static DataManager getDataManager() {
         return dataManager;
     }
-
-    private static LdapProvider ldapProvider;
 
     public static LdapProvider getLdapProvider() {
         return ldapProvider;
     }
 
-    private static MailManager mailManager;
-
     public static MailManager getMailManager() {
         return mailManager;
     }
-
-    private static MediaManager mediaManager;
 
     public static MediaManager getMediaManager() {
         return mediaManager;
     }
 
-    private static UsersManager usersManager;
-
     public static UsersManager getUsersManager() {
         return usersManager;
     }
-
-    private static GroupsManager groupsManager;
 
     public static GroupsManager getGroupsManager() {
         return groupsManager;
     }
 
-    private static DeviceManager deviceManager;
-
     public static DeviceManager getDeviceManager() {
         return deviceManager;
     }
 
-    private static ConnectionManager connectionManager;
-
     public static ConnectionManager getConnectionManager() {
         return connectionManager;
     }
-
-    private static PermissionsManager permissionsManager;
 
     public static PermissionsManager getPermissionsManager() {
         return permissionsManager;
@@ -124,97 +129,65 @@ public final class Context {
         return Main.getInjector() != null ? Main.getInjector().getInstance(Geocoder.class) : null;
     }
 
-    private static WebServer webServer;
-
     public static WebServer getWebServer() {
         return webServer;
     }
-
-    private static ServerManager serverManager;
 
     public static ServerManager getServerManager() {
         return serverManager;
     }
 
-    private static ScheduleManager scheduleManager;
-
     public static ScheduleManager getScheduleManager() {
         return scheduleManager;
     }
-
-    private static GeofenceManager geofenceManager;
 
     public static GeofenceManager getGeofenceManager() {
         return geofenceManager;
     }
 
-    private static CalendarManager calendarManager;
-
     public static CalendarManager getCalendarManager() {
         return calendarManager;
     }
-
-    private static NotificationManager notificationManager;
 
     public static NotificationManager getNotificationManager() {
         return notificationManager;
     }
 
-    private static NotificatorManager notificatorManager;
-
     public static NotificatorManager getNotificatorManager() {
         return notificatorManager;
     }
-
-    private static VelocityEngine velocityEngine;
 
     public static VelocityEngine getVelocityEngine() {
         return velocityEngine;
     }
 
-    private static Client client = ClientBuilder.newClient();
-
     public static Client getClient() {
         return client;
     }
-
-    private static EventForwarder eventForwarder;
 
     public static EventForwarder getEventForwarder() {
         return eventForwarder;
     }
 
-    private static AttributesManager attributesManager;
-
     public static AttributesManager getAttributesManager() {
         return attributesManager;
     }
-
-    private static DriversManager driversManager;
 
     public static DriversManager getDriversManager() {
         return driversManager;
     }
 
-    private static CommandsManager commandsManager;
-
     public static CommandsManager getCommandsManager() {
         return commandsManager;
     }
-
-    private static MaintenancesManager maintenancesManager;
 
     public static MaintenancesManager getMaintenancesManager() {
         return maintenancesManager;
     }
 
-    private static SmsManager smsManager;
-
     public static SmsManager getSmsManager() {
         return smsManager;
     }
-
-    private static TripsConfig tripsConfig;
 
     public static TripsConfig getTripsConfig() {
         return tripsConfig;
@@ -229,15 +202,6 @@ public final class Context {
                 config.getBoolean(Keys.REPORT_TRIP_USE_IGNITION),
                 config.getBoolean(Keys.EVENT_MOTION_PROCESS_INVALID_POSITIONS),
                 config.getDouble(Keys.EVENT_MOTION_SPEED_THRESHOLD));
-    }
-
-    private static class ObjectMapperContextResolver implements ContextResolver<ObjectMapper> {
-
-        @Override
-        public ObjectMapper getContext(Class<?> clazz) {
-            return objectMapper;
-        }
-
     }
 
     public static void init(String configFile) throws Exception {
@@ -372,6 +336,15 @@ public final class Context {
             return (BaseObjectManager<T>) notificationManager;
         }
         return null;
+    }
+
+    private static class ObjectMapperContextResolver implements ContextResolver<ObjectMapper> {
+
+        @Override
+        public ObjectMapper getContext(Class<?> clazz) {
+            return objectMapper;
+        }
+
     }
 
 }

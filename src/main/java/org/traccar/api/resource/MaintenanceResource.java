@@ -51,6 +51,7 @@ public class MaintenanceResource extends ExtendedObjectResource<Maintenance> {
         });
         return newMaintenances;
     }
+
     @Path("types")
     @GET
     public List<String> maplayer() {
@@ -84,7 +85,6 @@ public class MaintenanceResource extends ExtendedObjectResource<Maintenance> {
                 "OBD Odometer"
         );
     }
-
 
 
 }

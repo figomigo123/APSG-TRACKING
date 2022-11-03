@@ -31,12 +31,6 @@ import java.util.Date;
 
 public class NavigilProtocolDecoder extends BaseProtocolDecoder {
 
-    public NavigilProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
-    private static final int LEAP_SECONDS_DELTA = 25;
-
     public static final int MSG_ERROR = 2;
     public static final int MSG_INDICATION = 4;
     public static final int MSG_CONN_OPEN = 5;
@@ -52,12 +46,16 @@ public class NavigilProtocolDecoder extends BaseProtocolDecoder {
     public static final int MSG_TRACKING_DATA = 18;
     public static final int MSG_MOTION_ALARM = 19;
     public static final int MSG_ACKNOWLEDGEMENT = 255;
+    private static final int LEAP_SECONDS_DELTA = 25;
+    private int senderSequenceNumber = 1;
+
+    public NavigilProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private static Date convertTimestamp(long timestamp) {
         return new Date((timestamp - LEAP_SECONDS_DELTA) * 1000);
     }
-
-    private int senderSequenceNumber = 1;
 
     private void sendAcknowledgment(Channel channel, int sequenceNumber) {
         ByteBuf data = Unpooled.buffer(4);
@@ -65,7 +63,8 @@ public class NavigilProtocolDecoder extends BaseProtocolDecoder {
         data.writeShortLE(0); // OK
 
         ByteBuf header = Unpooled.buffer(20);
-        header.writeByte(1); header.writeByte(0);
+        header.writeByte(1);
+        header.writeByte(0);
         header.writeShortLE(senderSequenceNumber++);
         header.writeShortLE(MSG_ACKNOWLEDGEMENT);
         header.writeShortLE(header.capacity() + data.capacity());

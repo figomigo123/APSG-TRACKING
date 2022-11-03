@@ -34,10 +34,14 @@ import java.util.regex.Pattern;
 
 public class CityeasyProtocolDecoder extends BaseProtocolDecoder {
 
-    public CityeasyProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
+    public static final int MSG_ADDRESS_REQUEST = 0x0001;
+    public static final int MSG_STATUS = 0x0002;
+    public static final int MSG_LOCATION_REPORT = 0x0003;
+    public static final int MSG_LOCATION_REQUEST = 0x0004;
+    public static final int MSG_LOCATION_INTERVAL = 0x0005;
+    public static final int MSG_PHONE_NUMBER = 0x0006;
+    public static final int MSG_MONITORING = 0x0007;
+    public static final int MSG_TIMEZONE = 0x0008;
     private static final Pattern PATTERN = new PatternBuilder()
             .groupBegin()
             .number("(dddd)(dd)(dd)")            // date (yyyymmdd)
@@ -56,15 +60,9 @@ public class CityeasyProtocolDecoder extends BaseProtocolDecoder {
             .number("(d+)")                      // cell
             .any()
             .compile();
-
-    public static final int MSG_ADDRESS_REQUEST = 0x0001;
-    public static final int MSG_STATUS = 0x0002;
-    public static final int MSG_LOCATION_REPORT = 0x0003;
-    public static final int MSG_LOCATION_REQUEST = 0x0004;
-    public static final int MSG_LOCATION_INTERVAL = 0x0005;
-    public static final int MSG_PHONE_NUMBER = 0x0006;
-    public static final int MSG_MONITORING = 0x0007;
-    public static final int MSG_TIMEZONE = 0x0008;
+    public CityeasyProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

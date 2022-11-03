@@ -27,18 +27,123 @@ import java.util.logging.*;
 
 public final class Log {
 
+    private static final String STACK_PACKAGE = "org.traccar";
+    private static final int STACK_LIMIT = 3;
     private Log() {
     }
 
-    private static final String STACK_PACKAGE = "org.traccar";
-    private static final int STACK_LIMIT = 3;
+    public static void setupDefaultLogger() {
+        String path = null;
+        URL url = ClassLoader.getSystemClassLoader().getResource(".");
+        if (url != null) {
+            File jarPath = new File(url.getPath());
+            File logsPath = new File(jarPath, "logs");
+            if (!logsPath.exists() || !logsPath.isDirectory()) {
+                logsPath = jarPath;
+            }
+            path = new File(logsPath, "tracker-server.log").getPath();
+        }
+        setupLogger(path == null, path, Level.WARNING.getName(), false, true);
+    }
+
+    public static void setupLogger(Config config) {
+        setupLogger(
+                config.getBoolean(Keys.LOGGER_CONSOLE),
+                config.getString(Keys.LOGGER_FILE),
+                config.getString(Keys.LOGGER_LEVEL),
+                config.getBoolean(Keys.LOGGER_FULL_STACK_TRACES),
+                config.getBoolean(Keys.LOGGER_ROTATE));
+    }
+
+    private static void setupLogger(
+            boolean console, String file, String levelString, boolean fullStackTraces, boolean rotate) {
+
+        Logger rootLogger = Logger.getLogger("");
+        for (Handler handler : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(handler);
+        }
+
+        Handler handler;
+        if (console) {
+            handler = new ConsoleHandler();
+        } else {
+            handler = new RollingFileHandler(file, rotate);
+        }
+
+        handler.setFormatter(new LogFormatter(fullStackTraces));
+
+        Level level = Level.parse(levelString.toUpperCase());
+        rootLogger.setLevel(level);
+        handler.setLevel(level);
+        handler.setFilter(record -> record != null && !record.getLoggerName().startsWith("sun"));
+
+        rootLogger.addHandler(handler);
+    }
+
+    public static String exceptionStack(Throwable exception) {
+        Throwable cause = exception.getCause();
+        while (cause != null && exception != cause) {
+            exception = cause;
+            cause = cause.getCause();
+        }
+
+        StringBuilder s = new StringBuilder();
+        String exceptionMsg = exception.getMessage();
+        if (exceptionMsg != null) {
+            s.append(exceptionMsg);
+            s.append(" - ");
+        }
+        s.append(exception.getClass().getSimpleName());
+        StackTraceElement[] stack = exception.getStackTrace();
+
+        if (stack.length > 0) {
+            int count = STACK_LIMIT;
+            boolean first = true;
+            boolean skip = false;
+            String file = "";
+            s.append(" (");
+            for (StackTraceElement element : stack) {
+                if (count > 0 && element.getClassName().startsWith(STACK_PACKAGE)) {
+                    if (!first) {
+                        s.append(" < ");
+                    } else {
+                        first = false;
+                    }
+
+                    if (skip) {
+                        s.append("... < ");
+                        skip = false;
+                    }
+
+                    if (file.equals(element.getFileName())) {
+                        s.append("*");
+                    } else {
+                        file = element.getFileName();
+                        s.append(file, 0, file.length() - 5); // remove ".java"
+                        count -= 1;
+                    }
+                    s.append(":").append(element.getLineNumber());
+                } else {
+                    skip = true;
+                }
+            }
+            if (skip) {
+                if (!first) {
+                    s.append(" < ");
+                }
+                s.append("...");
+            }
+            s.append(")");
+        }
+        return s.toString();
+    }
 
     private static class RollingFileHandler extends Handler {
 
         private final String name;
+        private final boolean rotate;
         private String suffix;
         private Writer writer;
-        private final boolean rotate;
 
         RollingFileHandler(String name, boolean rotate) {
             this.name = name;
@@ -149,112 +254,6 @@ public final class Log {
                     new Date(record.getMillis()), formatLevel(record.getLevel()), message.toString());
         }
 
-    }
-
-    public static void setupDefaultLogger() {
-        String path = null;
-        URL url =  ClassLoader.getSystemClassLoader().getResource(".");
-        if (url != null) {
-            File jarPath = new File(url.getPath());
-            File logsPath = new File(jarPath, "logs");
-            if (!logsPath.exists() || !logsPath.isDirectory()) {
-                logsPath = jarPath;
-            }
-            path = new File(logsPath, "tracker-server.log").getPath();
-        }
-        setupLogger(path == null, path, Level.WARNING.getName(), false, true);
-    }
-
-    public static void setupLogger(Config config) {
-        setupLogger(
-                config.getBoolean(Keys.LOGGER_CONSOLE),
-                config.getString(Keys.LOGGER_FILE),
-                config.getString(Keys.LOGGER_LEVEL),
-                config.getBoolean(Keys.LOGGER_FULL_STACK_TRACES),
-                config.getBoolean(Keys.LOGGER_ROTATE));
-    }
-
-    private static void setupLogger(
-            boolean console, String file, String levelString, boolean fullStackTraces, boolean rotate) {
-
-        Logger rootLogger = Logger.getLogger("");
-        for (Handler handler : rootLogger.getHandlers()) {
-            rootLogger.removeHandler(handler);
-        }
-
-        Handler handler;
-        if (console) {
-            handler = new ConsoleHandler();
-        } else {
-            handler = new RollingFileHandler(file, rotate);
-        }
-
-        handler.setFormatter(new LogFormatter(fullStackTraces));
-
-        Level level = Level.parse(levelString.toUpperCase());
-        rootLogger.setLevel(level);
-        handler.setLevel(level);
-        handler.setFilter(record -> record != null && !record.getLoggerName().startsWith("sun"));
-
-        rootLogger.addHandler(handler);
-    }
-
-    public static String exceptionStack(Throwable exception) {
-        Throwable cause = exception.getCause();
-        while (cause != null && exception != cause) {
-            exception = cause;
-            cause = cause.getCause();
-        }
-
-        StringBuilder s = new StringBuilder();
-        String exceptionMsg = exception.getMessage();
-        if (exceptionMsg != null) {
-            s.append(exceptionMsg);
-            s.append(" - ");
-        }
-        s.append(exception.getClass().getSimpleName());
-        StackTraceElement[] stack = exception.getStackTrace();
-
-        if (stack.length > 0) {
-            int count = STACK_LIMIT;
-            boolean first = true;
-            boolean skip = false;
-            String file = "";
-            s.append(" (");
-            for (StackTraceElement element : stack) {
-                if (count > 0 && element.getClassName().startsWith(STACK_PACKAGE)) {
-                    if (!first) {
-                        s.append(" < ");
-                    } else {
-                        first = false;
-                    }
-
-                    if (skip) {
-                        s.append("... < ");
-                        skip = false;
-                    }
-
-                    if (file.equals(element.getFileName())) {
-                        s.append("*");
-                    } else {
-                        file = element.getFileName();
-                        s.append(file, 0, file.length() - 5); // remove ".java"
-                        count -= 1;
-                    }
-                    s.append(":").append(element.getLineNumber());
-                } else {
-                    skip = true;
-                }
-            }
-            if (skip) {
-                if (!first) {
-                    s.append(" < ");
-                }
-                s.append("...");
-            }
-            s.append(")");
-        }
-        return s.toString();
     }
 
 }

@@ -33,13 +33,12 @@ import java.nio.charset.StandardCharsets;
 
 public class Gt02ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Gt02ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_DATA = 0x10;
     public static final int MSG_HEARTBEAT = 0x1A;
     public static final int MSG_RESPONSE = 0x1C;
+    public Gt02ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

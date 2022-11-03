@@ -36,17 +36,6 @@ public class NotificatorPushover extends Notificator {
     private final String token;
     private final String user;
 
-    public static class Message {
-        @JsonProperty("token")
-        private String token;
-        @JsonProperty("user")
-        private String user;
-        @JsonProperty("device")
-        private String device;
-        @JsonProperty("message")
-        private String message;
-    }
-
     public NotificatorPushover() {
         url = "https://api.pushover.net/1/messages.json";
         token = Context.getConfig().getString(Keys.NOTIFICATOR_PUSHOVER_TOKEN);
@@ -96,6 +85,17 @@ public class NotificatorPushover extends Notificator {
     @Override
     public void sendAsync(long userId, Event event, Position position) {
         sendSync(userId, event, position);
+    }
+
+    public static class Message {
+        @JsonProperty("token")
+        private String token;
+        @JsonProperty("user")
+        private String user;
+        @JsonProperty("device")
+        private String device;
+        @JsonProperty("message")
+        private String message;
     }
 
 }

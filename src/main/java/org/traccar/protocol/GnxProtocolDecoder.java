@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class GnxProtocolDecoder extends BaseProtocolDecoder {
 
-    public GnxProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN_LOCATION = new PatternBuilder()
             .number("(d+),")                     // imei
             .number("d+,")                       // length
@@ -46,7 +42,6 @@ public class GnxProtocolDecoder extends BaseProtocolDecoder {
             .number("(ddd.d+),")                 // longitude
             .expression("([EW]),")
             .compile();
-
     private static final Pattern PATTERN_MIF = new PatternBuilder()
             .text("$GNX_MIF,")
             .expression(PATTERN_LOCATION.pattern())
@@ -54,13 +49,16 @@ public class GnxProtocolDecoder extends BaseProtocolDecoder {
             .expression("([^,]+),")              // rfid
             .any()
             .compile();
-
     private static final Pattern PATTERN_OTHER = new PatternBuilder()
             .text("$GNX_")
             .expression("...,")
             .expression(PATTERN_LOCATION.pattern())
             .any()
             .compile();
+
+    public GnxProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

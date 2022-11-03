@@ -33,16 +33,10 @@ import java.util.regex.Pattern;
 
 public class Pt60ProtocolDecoder extends BaseProtocolDecoder {
 
-    public Pt60ProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     public static final int MSG_G_TRACK = 6;
     public static final int MSG_G_STEP_COUNT = 13;
     public static final int MSG_G_HEART_RATE = 14;
-
     public static final int MSG_B_POSITION = 1;
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("@(.)#@[,|]")            // header
             .number("V?dd[,|]")                  // protocol version
@@ -59,6 +53,10 @@ public class Pt60ProtocolDecoder extends BaseProtocolDecoder {
             .expression("(.*)")                  // data
             .expression("[,|]")
             .compile();
+
+    public Pt60ProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private void sendResponse(Channel channel, SocketAddress remoteAddress, String format, int type, String imei) {
         if (channel != null) {

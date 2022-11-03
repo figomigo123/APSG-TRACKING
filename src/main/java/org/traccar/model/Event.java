@@ -19,22 +19,6 @@ import java.util.Date;
 
 public class Event extends Message {
 
-    public Event(String type, Position position) {
-        setType(type);
-        setPositionId(position.getId());
-        setDeviceId(position.getDeviceId());
-        eventTime = position.getDeviceTime();
-    }
-
-    public Event(String type, long deviceId) {
-        setType(type);
-        setDeviceId(deviceId);
-        eventTime = new Date();
-    }
-
-    public Event() {
-    }
-
     public static final String ALL_EVENTS = "allEvents";
     public static final String TYPE_COMMAND_RESULT = "commandResult";
     public static final String TYPE_DEVICE_ONLINE = "deviceOnline";
@@ -53,8 +37,26 @@ public class Event extends Message {
     public static final String TYPE_MAINTENANCE = "maintenance";
     public static final String TYPE_TEXT_MESSAGE = "textMessage";
     public static final String TYPE_DRIVER_CHANGED = "driverChanged";
-
     private Date eventTime;
+    private long positionId;
+    private long geofenceId = 0;
+    private long maintenanceId = 0;
+
+    public Event(String type, Position position) {
+        setType(type);
+        setPositionId(position.getId());
+        setDeviceId(position.getDeviceId());
+        eventTime = position.getDeviceTime();
+    }
+
+    public Event(String type, long deviceId) {
+        setType(type);
+        setDeviceId(deviceId);
+        eventTime = new Date();
+    }
+
+    public Event() {
+    }
 
     public Date getEventTime() {
         return eventTime;
@@ -64,8 +66,6 @@ public class Event extends Message {
         this.eventTime = eventTime;
     }
 
-    private long positionId;
-
     public long getPositionId() {
         return positionId;
     }
@@ -74,8 +74,6 @@ public class Event extends Message {
         this.positionId = positionId;
     }
 
-    private long geofenceId = 0;
-
     public long getGeofenceId() {
         return geofenceId;
     }
@@ -83,8 +81,6 @@ public class Event extends Message {
     public void setGeofenceId(long geofenceId) {
         this.geofenceId = geofenceId;
     }
-
-    private long maintenanceId = 0;
 
     public long getMaintenanceId() {
         return maintenanceId;

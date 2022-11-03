@@ -27,19 +27,16 @@ import static org.locationtech.spatial4j.distance.DistanceUtils.DEG_TO_KM;
 
 public class GeofencePolygon extends GeofenceGeometry {
 
+    private ArrayList<Coordinate> coordinates;
+    private double[] constant;
+    private double[] multiple;
+    private boolean needNormalize = false;
     public GeofencePolygon() {
     }
 
     public GeofencePolygon(String wkt) throws ParseException {
         fromWkt(wkt);
     }
-
-    private ArrayList<Coordinate> coordinates;
-
-    private double[] constant;
-    private double[] multiple;
-
-    private boolean needNormalize = false;
 
     private void preCalculate() {
         if (coordinates == null) {

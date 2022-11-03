@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class GpsMarkerProtocolDecoder extends BaseProtocolDecoder {
 
-    public GpsMarkerProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("$GM")
             .number("d")                         // type
@@ -52,6 +48,10 @@ public class GpsMarkerProtocolDecoder extends BaseProtocolDecoder {
             .number("(ddd)")                     // temperature
             .any()
             .compile();
+
+    public GpsMarkerProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(

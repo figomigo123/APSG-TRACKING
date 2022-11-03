@@ -36,10 +36,6 @@ import java.util.regex.Pattern;
 
 public class ItsProtocolDecoder extends BaseProtocolDecoder {
 
-    public ItsProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .expression("[^$]*")
             .text("$")
@@ -114,6 +110,10 @@ public class ItsProtocolDecoder extends BaseProtocolDecoder {
             .groupEnd()
             .any()
             .compile();
+
+    public ItsProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     private String decodeAlarm(String status) {
         switch (status) {

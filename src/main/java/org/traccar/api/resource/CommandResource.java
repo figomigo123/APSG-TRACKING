@@ -90,20 +90,19 @@ public class CommandResource extends ExtendedObjectResource<Command> {
         Command command = new Command();
         command.setTextChannel(true);
         command.setType("custom");
-        command.getAttributes().put("data","singleReport");
-
+        command.getAttributes().put("data", "singleReport");
         DeviceResource deviceResource = new DeviceResource();
         Collection<Device> all = deviceResource.getAllDevices();
         for (Device device : all) {
             command.setDeviceId(device.getId());
-            try{
-            Context.getCommandsManager().sendCommand(command);}
-            catch (Exception e){
-              // if ( e.getMessage().contains("Bad credentials"))return "{\"type\":\"SMS GateWay Bad credentials\"}";
-              // return e.getMessage();
+            try {
+                Context.getCommandsManager().sendCommand(command);
+            } catch (Exception e) {
+                // if ( e.getMessage().contains("Bad credentials"))return "{\"type\":\"SMS GateWay Bad credentials\"}";
+                // return e.getMessage();
             }
         }
-        return  "{\"type\":\" Command is sending to " + all.size() + " Devices ...\"}";
+        return "{\"type\":\" Command is sending to " + all.size() + " Devices ...\"}";
     }
 
     @GET
@@ -112,7 +111,7 @@ public class CommandResource extends ExtendedObjectResource<Command> {
             @QueryParam("deviceId") long deviceId,
             @QueryParam("protocol") String protocol,
             @QueryParam("textChannel") boolean textChannel) {
-        System.out.println("types get");
+
         if (deviceId != 0) {
             Context.getPermissionsManager().checkDevice(getUserId(), deviceId);
             return Context.getCommandsManager().getCommandTypes(deviceId, textChannel);

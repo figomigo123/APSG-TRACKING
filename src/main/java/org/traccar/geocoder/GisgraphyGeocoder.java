@@ -19,16 +19,16 @@ import javax.json.JsonObject;
 
 public class GisgraphyGeocoder extends JsonGeocoder {
 
+    public GisgraphyGeocoder(String url, int cacheSize, AddressFormat addressFormat) {
+        super(formatUrl(url), cacheSize, addressFormat);
+    }
+
     private static String formatUrl(String url) {
         if (url == null) {
             url = "http://services.gisgraphy.com/reversegeocoding/search";
         }
         url += "?format=json&lat=%f&lng=%f&from=1&to=1";
         return url;
-    }
-
-    public GisgraphyGeocoder(String url, int cacheSize, AddressFormat addressFormat) {
-        super(formatUrl(url), cacheSize, addressFormat);
     }
 
     @Override

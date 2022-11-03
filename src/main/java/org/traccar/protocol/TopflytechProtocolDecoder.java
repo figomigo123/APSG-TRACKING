@@ -28,10 +28,6 @@ import java.util.regex.Pattern;
 
 public class TopflytechProtocolDecoder extends BaseProtocolDecoder {
 
-    public TopflytechProtocolDecoder(Protocol protocol) {
-        super(protocol);
-    }
-
     private static final Pattern PATTERN = new PatternBuilder()
             .text("(")
             .number("(d+)")                      // imei
@@ -44,6 +40,10 @@ public class TopflytechProtocolDecoder extends BaseProtocolDecoder {
             .number("(ddd.d)")                   // speed
             .number("(d+.d+)")                   // course
             .compile();
+
+    public TopflytechProtocolDecoder(Protocol protocol) {
+        super(protocol);
+    }
 
     @Override
     protected Object decode(
